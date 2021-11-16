@@ -24,12 +24,12 @@ const ProjectsTable = () => {
       });
   };
 
-  const getDataAsync = async () => {
-    const intervalID = setInterval(fetchDataDB, 5000);
-    if (isMounted.current === false) clearInterval(intervalID);
-  };
-
   useEffect(() => {
+    const getDataAsync = async () => {
+      const intervalID = setInterval(fetchDataDB, 5000);
+      if (isMounted.current === false) clearInterval(intervalID);
+    };
+
     fetchDataDB();
     getDataAsync();
 

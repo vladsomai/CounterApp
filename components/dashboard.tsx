@@ -5,7 +5,7 @@ const Dashboard = () => {
   return (
     <>
       <div className="d-flex justify-content-around">
-        <Link href="/viewprojects">
+        <Link href="/viewprojects" passHref={true}>
           <button className="btn btn-secondary rounded-top rounded-end rounded-pill">
             <Card
               displayText="View projects"
@@ -15,7 +15,7 @@ const Dashboard = () => {
             ></Card>
           </button>
         </Link>
-        <Link href="/editprojects">
+        <Link href="/editprojects" passHref={true}>
           <button className="btn btn-danger rounded-top rounded-start rounded-pill">
             <Card
               displayText="Edit projects"

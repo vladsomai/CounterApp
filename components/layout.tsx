@@ -18,6 +18,7 @@ export default function Layout({ children }: any) {
           <Navbar />
         </div>
       </div>
+
       <div className="container">
         <main className={styles.height80}>{children}</main>
       </div>

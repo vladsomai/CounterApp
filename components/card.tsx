@@ -15,13 +15,14 @@ const Card = ({
 }: CardProperties) => {
   return (
     <>
-        <p className="display-3">{displayText}</p>
-        <Image
-          src={picturePath}
-          height={pictureHeight}
-          width={pictureWidth}
-          priority
-        ></Image>
+      <p className="display-3">{displayText}</p>
+      <Image
+        src={picturePath}
+        height={pictureHeight}
+        width={pictureWidth}
+        alt="card"
+        priority
+      ></Image>
     </>
   );
 };
