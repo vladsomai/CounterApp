@@ -8,12 +8,12 @@ const Navbar = () => {
       <ul className="list-unstyled display-6 d-flex justify-content-around mt-3">
         <li className="me-5">
           <Link href="/">
-            <a className="btn btn-primary btn-lg fw-bold">Dashboard</a>
+            <a className="btn btn-primary btn-lg fw-bold fs-3">Dashboard</a>
           </Link>
         </li>{" "}
         <li>
           <Link href="/signin">
-            <a className="btn btn-primary btn-lg fw-bold">Sign in</a>
+            <a className="btn btn-primary btn-lg fw-bold fs-3">Sign in</a>
           </Link>
         </li>
       </ul>

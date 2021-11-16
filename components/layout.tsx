@@ -14,10 +14,14 @@ export default function Layout({ children }: any) {
         />
       </Head>
       <div className={styles.height10}>
-        <Navbar />
+        <div className="bg-primary">
+          <Navbar />
+        </div>
       </div>
-      <main className={styles.height80}>{children}</main>
-      <hr></hr>
+      <div className="container">
+        <main className={styles.height80}>{children}</main>
+      </div>
+
       <div className={styles.height10}>
         <Footer />
       </div>

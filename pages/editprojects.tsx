@@ -1,17 +1,17 @@
 import Layout from "../components/layout";
 
-const Signin = () => {
+const EditProjects = () => {
   return (
     <>
       <p className="text-light display-3 d-flex justify-content-center">
-        Sign in page
+        Edit
       </p>
     </>
   );
 };
 
-export default Signin;
+export default EditProjects;
 
-Signin.getLayout = function getLayout(page: any) {
+EditProjects.getLayout = function getLayout(page: any) {
   return <Layout>{page}</Layout>;
 };
