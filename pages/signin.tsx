@@ -1,23 +1,21 @@
 import Layout from "../components/layout";
 import Navbar from "../components/navbar";
-import Dashboard from "../components/dashboard";
 import Footer from "../components/footer";
 
-const Home = () => {
+const Signin = () => {
   return (
-    <>
-      <Dashboard />
-    </>
+      <>
+      <p className="text-light display-3 d-flex justify-content-center">Sign in page</p>
+      </>
   );
 };
 
-export default Home;
+export default Signin;
 
-Home.getLayout = function getLayout(page: any) {
+Signin.getLayout = function getLayout(page: any) {
   return (
     <Layout>
       {page}
-      <hr></hr>
     </Layout>
   );
 };
