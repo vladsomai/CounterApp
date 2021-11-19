@@ -3,15 +3,16 @@ import Navbar from "./navbar";
 import Footer from "./footer";
 import styles from "./styles/layout.module.scss";
 
-export default function Layout({ children }: any) {
+export default function Layout({ session, children }: any) {
   return (
     <>
       <Head>
         <title>Line Counter</title>
         <meta
-          name="Counter app used for tracking fixture contacts"
-          content="Counter app"
+          content="Counter app used for tracking fixture contacts"
+          name="Counter app"
         />
+        <link rel="shortcut icon" href="/images/favicon.ico" />
       </Head>
       <div className={styles.height10}>
         <div className="bg-primary">
@@ -19,7 +20,7 @@ export default function Layout({ children }: any) {
         </div>
       </div>
 
-      <div className="container">
+      <div className="container-fluid">
         <main className={styles.height80}>{children}</main>
       </div>
 

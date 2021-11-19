@@ -4,10 +4,9 @@ import Table from "../components/table";
 const ViewProjects = () => {
   return (
     <>
-      <p className="text-light display-3 d-flex justify-content-center">
-        View
-      </p>
-      <Table />
+      <div className="tableOverflowView">
+        <Table mode={"view"} />
+      </div>
     </>
   );
 };

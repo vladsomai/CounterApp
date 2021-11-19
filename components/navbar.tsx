@@ -1,7 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 const Navbar = () => {
+  const { data: session } = useSession();
+
   return (
     <nav className="container d-flex justify-content-between">
       <Image
@@ -16,11 +19,20 @@ const Navbar = () => {
             <a className="btn btn-primary btn-lg fw-bold fs-3">Dashboard</a>
           </Link>
         </li>
-        <li>
-          <Link href="/signin">
-            <a className="btn btn-primary btn-lg fw-bold fs-3">Sign in</a>
-          </Link>
-        </li>
+
+        {session ? (
+          <li>
+            <Link href="" passHref={true}>
+              <button className="btn btn-primary btn-lg fw-bold fs-3" onClick={()=>signOut()}>Sign out</button>
+            </Link>
+          </li>
+        ) : (
+          <li>
+            <Link href="/signin" passHref={true}>
+              <a className="btn btn-primary btn-lg fw-bold fs-3">Sign in</a>
+            </Link>
+          </li>
+        )}
       </ul>
     </nav>
   );
