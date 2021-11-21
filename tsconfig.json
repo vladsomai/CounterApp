@@ -23,7 +23,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "pages/viewprojects.jsx", "pages/signin.jsx", "pages/index.jsx", "pages/editprojects.jsx"  ],
   "exclude": [
     "node_modules"
   ]

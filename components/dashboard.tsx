@@ -1,10 +1,8 @@
 import Card from "../components/card";
 import Link from "next/link";
 import Image from "next/image";
-import { useRef } from "react";
 
 const Dashboard = () => {
-  const welcomePicture = useRef(null);
   return (
     <>
       <div className="d-flex flex-column justify-content-around pt-5">

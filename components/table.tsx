@@ -52,6 +52,12 @@ const ProjectsTable = (props: any) => {
         0,
         loggedUser
       ).then(() => {
+        props.openModalAction({
+            title: "Success!",
+            description: `Fixture with code ${projectToBeReseted.adapter_code} from ${projectToBeReseted.fixture_type} has been reset to 0 contacts!`,
+            pictureUrl: "/undraw_confirmation_re_b6q5.svg",
+            className: "text-center",
+          });
         fetchDataDB();
       });
     }
@@ -75,18 +81,20 @@ const ProjectsTable = (props: any) => {
         0,
         ""
       ).then(() => {
+        props.openModalAction({
+            title: "Success!",
+            description: `Fixture with code ${projectToBeDeleted.adapter_code} from ${projectToBeDeleted.fixture_type} has been deleted!`,
+            pictureUrl: "/undraw_confirmation_re_b6q5.svg",
+            className: "text-center",
+          });
         fetchDataDB();
       });
     }
   };
- 
-  const handleInsertButton = ()=>{
 
-  }
-
-  const fetchDataDB = () => {
+  const fetchDataDB = async () => {
     console.log("Fetching new data..");
-    fetch("/api/getCounterInfo", {
+    await fetch("/api/getCounterInfo", {
       method: "POST",
       mode: "cors",
       cache: "no-cache",
@@ -105,12 +113,12 @@ const ProjectsTable = (props: any) => {
       .then((result) =>
         result.json().then((resultJson) => {
           if (isMounted.current === true) {
-            setCounterInfoDB(resultJson);
+            setCounterInfoDB(resultJson.message);
             setAPI_Responded(true);
             setEditMode(
-              resultJson.map((item: any) => {
+              resultJson.message.map((item: any) => {
                 return {
-                  entry_id: resultJson.indexOf(item),
+                  entry_id: resultJson.message.indexOf(item),
                   editMode: false,
                 };
               })
@@ -153,7 +161,6 @@ const ProjectsTable = (props: any) => {
       })
         .then((result) => result.json())
         .then((resultJson) => {
-          console.log(JSON.stringify(resultJson));
           resolve(JSON.stringify(resultJson));
         })
         .catch((err) => {
@@ -165,13 +172,12 @@ const ProjectsTable = (props: any) => {
 
   useEffect(() => {
     isMounted.current = true;
-
     fetchDataDB();
 
     return () => {
       isMounted.current = false;
     };
-  }, [setAPI_Responded]);
+  }, [props.triggerFetchProp]);
 
   if (API_Responded) {
     return (
@@ -235,7 +241,7 @@ const ProjectsTable = (props: any) => {
 
                       {EditModeForAllEntries &&
                       !EditModeForAllEntries[counterInfoDB.indexOf(Project)]
-                        .editMode ? (
+                        ?.editMode ? (
                         <button
                           id={counterInfoDB.indexOf(Project) + 1}
                           className="btn btn-primary me-2 mb-1 btn-sm pt-2"

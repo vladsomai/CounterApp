@@ -1,14 +1,21 @@
 import "../styles/globals.scss";
 import "animate.css";
 import { SessionProvider } from "next-auth/react";
-import { UserProvider } from "../components/contexts/index";
+import { Provider } from "react-redux";
+import configureStore from '../components/store/store';
+import {useState} from "react";
 
 function MyApp({ Component, pageProps }: any) {
+    const [showModal, setShowModal] = useState(false);
+
+    const handleModal =()=>{
+
+    }
   return (
     <SessionProvider session={pageProps.session}>
-      <UserProvider>
+      <Provider store={configureStore}>
         <LayoutWrapper Component={Component} pageProps={pageProps} />
-      </UserProvider>
+      </Provider>
     </SessionProvider>
   );
 }

@@ -3,7 +3,8 @@ import Layout from "../components/layout";
 import Image from "next/image";
 
 const Signin = ({ csrfToken }: any) => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+
   const handleSubmit = () => {
     fetch("/api/checkLogin", { method: "POST" })
       .then((result) =>
