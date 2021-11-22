@@ -1,9 +1,27 @@
 import { useSession, signIn, signOut, getCsrfToken } from "next-auth/react";
 import Layout from "../components/layout";
 import Image from "next/image";
+import Modal from "../components/modal";
+import { useRouter } from "next/router";
+import { useRef, useEffect } from "react";
 
 const Signin = ({ csrfToken }: any) => {
   const { data: session, status } = useSession();
+  const { error } = useRouter().query;
+  const modalElement = useRef(null);
+  const router = useRouter();
+
+  const closeModal = () => {
+    if (modalElement.current) {
+      // @ts-ignore: Object is possibly 'null'.
+      modalElement.current.classList?.remove("animate__bounceIn");
+
+      // @ts-ignore: Object is possibly 'null'.
+      modalElement.current.classList?.add("animate__bounceOut");
+    }
+    router.push("/signin");
+
+  };
 
   const handleSubmit = () => {
     fetch("/api/checkLogin", { method: "POST" })
@@ -23,22 +41,12 @@ const Signin = ({ csrfToken }: any) => {
       <>
         <div className="container h-100">
           <div className="d-flex flex-column align-items-center justify-content-around h-100">
-            <div className="bg-success rounded-bottom rounded-pill">
-              <p className="display-4 text-white text-center">
-                Signed in as {loggedUser}
-              </p>
-              <Image
-                src="/undraw_completed_re_cisp.svg"
-                height={250}
-                width={800}
-                alt="Success Picture"
-                priority
-                className="animate__animated animate__bounceIn p-3"
-              ></Image>
-            </div>
-            <p className="display-4 text-white">
-              You can navigate to edit projects
-            </p>
+            <Modal
+              title="Success!"
+              description={`Signed in as ${loggedUser}`}
+              pictureUrl="/undraw_confirmation_re_b6q5.svg"
+              className="text-center bg-success rounded-pill w-75"
+            />
           </div>
         </div>
       </>
@@ -48,14 +56,36 @@ const Signin = ({ csrfToken }: any) => {
       <>
         <div className="container h-100">
           <div className="h-100 d-flex flex-column justify-content-evenly">
-            <div className="d-flex justify-content-between ">
+            <div className="d-flex justify-content-between position-relative">
               <Image
                 src="/undraw_authentication_fsn5.svg"
                 width={620}
                 height={500}
                 priority
                 alt="sign in image"
+                className=""
               ></Image>
+              {error && (
+                <div className="position-absolute top-50 start-50 translate-middle h-100 w-75 pt-5">
+                  <div
+                    ref={modalElement}
+                    className="animate__animated animate__bounceIn bg-danger bringFront rounded-pill m-auto p-5 d-flex flex-column justify-content-center w-75"
+                  >
+                    <Modal
+                      title="Error!"
+                      description="Invalid account!"
+                      pictureUrl="/undraw_cancel_u-1-it.svg"
+                      className="text-center"
+                    />
+                    <button
+                      className="btn btn-primary btn-lg fs-4 w-25 m-auto fw-bold"
+                      onClick={closeModal}
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              )}
               <div className="d-flex align-items-center">
                 <form
                   action="/api/auth/callback/credentials"
