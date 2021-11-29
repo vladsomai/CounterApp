@@ -3,62 +3,20 @@ import { useRef } from "react";
 
 const AddNewProject = (props: any) => {
   const { data: session, status } = useSession();
-  const newProjectFrom = useRef(null);
 
-  const handleInsertButtonTest = (e: any) => {
+  const handleInsertButton = (e: any) => {
+    e.preventDefault();
+
     const user: string = String(session?.user?.email || session?.user?.name);
-
-    let errorDescription = "";
-
-    // @ts-ignore: Object is possibly 'null'.
-    if (newProjectFrom.current["project_name"].value === "")
-      errorDescription = "Project name is empty, please fill it!";
-
-    // @ts-ignore: Object is possibly 'null'.
-    if (newProjectFrom.current["adapter_code"].value === "")
-      errorDescription = "Adapter code is empty, please fill it!";
-
-    // @ts-ignore: Object is possibly 'null'.
-    if (newProjectFrom.current["fixture_type"].value === "")
-      errorDescription = "Fixture type is empty, please fill it!";
-
-    // @ts-ignore: Object is possibly 'null'.
-    if (newProjectFrom.current["owner_email"].value === "")
-      errorDescription = "Owner email is empty, please fill it!";
-
-    // @ts-ignore: Object is possibly 'null'.
-    if (newProjectFrom.current["contacts_limit"].value === "")
-      errorDescription = "Limit is empty, please fill it!";
-
-    // @ts-ignore: Object is possibly 'null'.
-    if (newProjectFrom.current["warning_at"].value === "")
-      errorDescription = "Warning is empty, please fill it!";
-
-    if (!(errorDescription === "")) {
-      props.openModalAction({
-        title: "Error!",
-        description: errorDescription,
-        pictureUrl: "/undraw_cancel_u-1-it.svg",
-        className: "text-center",
-      });
-      return;
-    }
 
     makeDatabaseAction(
       "insertProject",
-      // @ts-ignore: Object is possibly 'null'.
-      newProjectFrom.current["project_name"].value,
-      // @ts-ignore: Object is possibly 'null'.
-      newProjectFrom.current["adapter_code"].value,
-      // @ts-ignore: Object is possibly 'null'.
-      newProjectFrom.current["fixture_type"].value,
-      // @ts-ignore: Object is possibly 'null'.
-      newProjectFrom.current["owner_email"].value,
-      // @ts-ignore: Object is possibly 'null'.
-      newProjectFrom.current["contacts_limit"].value,
-      // @ts-ignore: Object is possibly 'null'.
-      newProjectFrom.current["warning_at"].value,
-      // @ts-ignore: Object is possibly 'null'.
+      String(e.target.project_name.value),
+      parseInt(e.target.adapter_code.value),
+      String(e.target.fixture_type.value),
+      String(e.target.owner_email.value),
+      parseInt(e.target.contacts_limit.value),
+      parseInt(e.target.warning_at.value),
       user
     )
       .then((result: any) => result.json())
@@ -82,32 +40,12 @@ const AddNewProject = (props: any) => {
               pictureUrl: "/undraw_confirmation_re_b6q5.svg",
               className: "text-center",
             });
-            // @ts-ignore: Object is possibly 'null'.
-            newProjectFrom.current.reset();
+            e.target.reset();
           }
         }
       })
       .catch((err) => {
         console.log("fetch err ", err);
-      });
-  };
-
-  const handleInsertButton = (e: any) => {
-    const user: string = String(session?.user?.email || session?.user?.name);
-
-    makeDatabaseAction(
-      "insertProject",
-      String(e.target.project_name.value),
-      parseInt(e.target.adapter_code.value),
-      String(e.target.fixture_type.value),
-      String(e.target.owner_email.value),
-      parseInt(e.target.contacts_limit.value),
-      parseInt(e.target.warning_at.value),
-      user
-    )
-      .then((result: any) => result.json())
-      .then((resultJson) => {
-        console.log(resultJson);
       });
   };
 
@@ -120,10 +58,9 @@ const AddNewProject = (props: any) => {
           </p>
         </div>
         <form
-          ref={newProjectFrom}
           className="d-flex align-items-center pt-2"
           method="post"
-          // onSubmit={handleInsertButton}
+          onSubmit={handleInsertButton}
         >
           <div className="row">
             <input
@@ -175,8 +112,7 @@ const AddNewProject = (props: any) => {
               required
             ></input>
             <button
-              type="button"
-              onClick={handleInsertButtonTest}
+              type="submit"
               className="btn btn-primary fw-bold text-nowrap col"
             >
               Create!

@@ -8,8 +8,13 @@ const ProjectsTable = (props: any) => {
   const [connectionTimedOut, setConnectionTimedOut] = useState<any>(false);
   const isMounted = useRef(false);
   const { data: session, status } = useSession();
+  let classForEdit = "";
 
   const [EditModeForAllEntries, setEditMode] = useState<any>();
+
+  //state for highlighting each project(notReached(0) - normal, warning(1) - yellow, limit(2) - red)
+  const [highlightProject, setHighlightProject] = useState<any>([]);
+
   const handleEditButton = (e: any) => {
     setEditMode(
       EditModeForAllEntries.map((item: any) => {
@@ -20,7 +25,7 @@ const ProjectsTable = (props: any) => {
       })
     );
   };
-  const handleSaveButton = (e: any) => {
+  const handleSaveButton = async (e: any) => {
     setEditMode(
       EditModeForAllEntries.map((item: any) => {
         if (item.entry_id === parseInt(e.target.id) - 1) {
@@ -29,6 +34,111 @@ const ProjectsTable = (props: any) => {
         return item;
       })
     );
+
+    let ownerEmailFromEdit = document.getElementById(
+      `${e.target.id - 1}_owner_email`
+    );
+    let contactsLimitFromEdit = document.getElementById(
+      `${e.target.id - 1}_contacts_limit`
+    );
+    let warningAtFromEdit = document.getElementById(
+      `${e.target.id - 1}_warning_at`
+    );
+
+    let updateOwner = false;
+    let updateContactsLimit = false;
+    let updateWarning = false;
+
+    // @ts-ignore: Object is possibly 'null'.
+    if (ownerEmailFromEdit.value != "") updateOwner = true;
+
+    // @ts-ignore: Object is possibly 'null'.
+    if (contactsLimitFromEdit.value != "") updateContactsLimit = true;
+
+    // @ts-ignore: Object is possibly 'null'.
+    if (warningAtFromEdit.value != "") updateWarning = true;
+
+    const indexOfEntryToBeSaved = e.target.id - 1;
+    const projectToBeSaved = counterInfoDB[indexOfEntryToBeSaved];
+    const loggedUser: string = String(
+      session?.user?.email || session?.user?.name
+    );
+    let updateOwnerOK = false;
+    let updateContactsLimitAndWarningOK = false;
+
+    if (updateOwner || updateContactsLimit || updateWarning) {
+      if (
+        confirm(
+          `Are you sure you want to save the modifications for ${projectToBeSaved.project_name} ?`
+        )
+      ) {
+        if (updateOwner) {
+          await makeDatabaseAction(
+            "updateOwner",
+            "",
+            projectToBeSaved.adapter_code,
+            projectToBeSaved.fixture_type,
+            // @ts-ignore: Object is possibly 'null'.
+            ownerEmailFromEdit.value,
+            0,
+            0,
+            loggedUser
+          )
+            .then((res) => JSON.parse(String(res)))
+            .then((resJSON) => {
+              if (parseInt(resJSON.message.affectedRows) === 1)
+                updateOwnerOK = true;
+              else updateOwnerOK = false;
+            });
+        }
+
+        if (updateContactsLimit && updateWarning) {
+          await makeDatabaseAction(
+            "updateContactsLimitAndWarning",
+            "",
+            projectToBeSaved.adapter_code,
+            projectToBeSaved.fixture_type,
+            "",
+            // @ts-ignore: Object is possibly 'null'.
+            contactsLimitFromEdit.value,
+            // @ts-ignore: Object is possibly 'null'.
+            warningAtFromEdit.value,
+            loggedUser
+          )
+            .then((res) => JSON.parse(String(res)))
+            .then((resJSON) => {
+              if (resJSON.message.affectedRows === 1)
+                updateContactsLimitAndWarningOK = true;
+              else updateContactsLimitAndWarningOK = false;
+            });
+        }
+      }
+      if (updateContactsLimit ? !updateWarning : updateWarning) {
+        props.openModalAction({
+          title: "Error!",
+          description:
+            "You must fill in both limit and warning fields, limit must be greater than warning!",
+          pictureUrl: "/undraw_cancel_u-1-it.svg",
+          className: "text-center",
+        });
+        return;
+      }
+
+      if (updateOwnerOK || updateContactsLimitAndWarningOK) {
+        props.openModalAction({
+          title: "Success!",
+          description: `Fixture with code ${
+            projectToBeSaved.adapter_code
+          } from ${projectToBeSaved.fixture_type} has been modified for
+        ${updateOwnerOK ? "Owner email" : ""}
+        ${updateContactsLimitAndWarningOK ? " Contacts limit and Warning " : ""}
+        !`,
+          pictureUrl: "/undraw_confirmation_re_b6q5.svg",
+          className: "text-center",
+        });
+      }
+    }
+    return;
   };
 
   const handleResetButton = (e: any) => {
@@ -53,11 +163,11 @@ const ProjectsTable = (props: any) => {
         loggedUser
       ).then(() => {
         props.openModalAction({
-            title: "Success!",
-            description: `Fixture with code ${projectToBeReseted.adapter_code} from ${projectToBeReseted.fixture_type} has been reset to 0 contacts!`,
-            pictureUrl: "/undraw_confirmation_re_b6q5.svg",
-            className: "text-center",
-          });
+          title: "Success!",
+          description: `Fixture with code ${projectToBeReseted.adapter_code} from ${projectToBeReseted.fixture_type} has been reset to 0 contacts!`,
+          pictureUrl: "/undraw_confirmation_re_b6q5.svg",
+          className: "text-center",
+        });
         fetchDataDB();
       });
     }
@@ -82,14 +192,33 @@ const ProjectsTable = (props: any) => {
         ""
       ).then(() => {
         props.openModalAction({
-            title: "Success!",
-            description: `Fixture with code ${projectToBeDeleted.adapter_code} from ${projectToBeDeleted.fixture_type} has been deleted!`,
-            pictureUrl: "/undraw_confirmation_re_b6q5.svg",
-            className: "text-center",
-          });
+          title: "Success!",
+          description: `Fixture with code ${projectToBeDeleted.adapter_code} from ${projectToBeDeleted.fixture_type} has been deleted!`,
+          pictureUrl: "/undraw_confirmation_re_b6q5.svg",
+          className: "text-center",
+        });
         fetchDataDB();
       });
     }
+  };
+
+  const getHighlightType = (counterInfoArray: any) => {
+    let highlightTypeTemp: string = "";
+
+    return counterInfoArray.map((item: any) => {
+      if (item.contacts > item.contacts_limit) {
+        highlightTypeTemp = "bg-danger";
+      } else if (item.contacts > item.warning_at) {
+        highlightTypeTemp = "bg-warning";
+      } else {
+        highlightTypeTemp = "";
+      }
+
+      return {
+        entry_id: counterInfoArray.indexOf(item),
+        highlightTypeClass: highlightTypeTemp,
+      };
+    });
   };
 
   const fetchDataDB = async () => {
@@ -112,6 +241,8 @@ const ProjectsTable = (props: any) => {
     })
       .then((result) =>
         result.json().then((resultJson) => {
+          if (resultJson.message.code === "ER_ACCESS_DENIED_ERROR")
+            throw "Cannot connect to DB";
           if (isMounted.current === true) {
             setCounterInfoDB(resultJson.message);
             setAPI_Responded(true);
@@ -123,12 +254,13 @@ const ProjectsTable = (props: any) => {
                 };
               })
             );
+            setHighlightProject(getHighlightType(resultJson.message));
             console.log("Data fetched successfully!");
           }
         })
       )
       .catch((err) => {
-        console.log(err.message);
+        console.log(err);
         if (isMounted.current === true) setConnectionTimedOut(true);
       });
   };
@@ -181,8 +313,8 @@ const ProjectsTable = (props: any) => {
 
   if (API_Responded) {
     return (
-      <div className="table-responsive mx-5 my-2">
-        <table className="table table-sm table-striped table-hover mt-5 table-secondary fw-bold border-dark table-bordered text-center align-middle">
+      <div className="table-responsive mx-2 my-2">
+        <table className="table table-sm mt-5 table-secondary fw-bold border-dark table-bordered text-center align-middle">
           <thead>
             <tr className="fs-5">
               {!(props.mode === "view") ? (
@@ -194,8 +326,8 @@ const ProjectsTable = (props: any) => {
               <th className="bg-primary align-middle">Fixture type</th>
               <th className="bg-primary align-middle col-1">Owner email</th>
               <th className="bg-primary align-middle col-1">Contacts</th>
-              <th className="bg-primary align-middle">Limit</th>
-              <th className="bg-primary align-middle">Warning</th>
+              <th className="bg-primary align-middle col-1">Limit</th>
+              <th className="bg-primary align-middle col-1">Warning</th>
               <th className="bg-primary align-middle">Resets</th>
               <th className="bg-primary align-middle">Modified by</th>
               <th className="bg-primary align-middle">Last update</th>
@@ -210,7 +342,7 @@ const ProjectsTable = (props: any) => {
                       <button
                         onClick={handleResetButton}
                         id={counterInfoDB.indexOf(Project) + 1}
-                        className="btn btn-secondary me-2 mb-1 btn-sm pt-2"
+                        className="btn btn-secondary me-2 mb-1 btn-sm pt-2 menubuttons"
                         title="Reset"
                       >
                         <Image
@@ -224,7 +356,7 @@ const ProjectsTable = (props: any) => {
                       </button>
                       <button
                         onClick={handleDeleteButton}
-                        className="btn btn-danger me-2 mb-1 btn-sm pt-2"
+                        className="btn btn-danger me-2 mb-1 btn-sm pt-2 menubuttons"
                         title="Delete"
                         id={counterInfoDB.indexOf(Project) + 1}
                       >
@@ -244,7 +376,7 @@ const ProjectsTable = (props: any) => {
                         ?.editMode ? (
                         <button
                           id={counterInfoDB.indexOf(Project) + 1}
-                          className="btn btn-primary me-2 mb-1 btn-sm pt-2"
+                          className="btn btn-primary me-2 mb-1 btn-sm pt-2 menubuttons"
                           onClick={handleEditButton}
                           title="Edit"
                         >
@@ -262,7 +394,7 @@ const ProjectsTable = (props: any) => {
                         <button
                           onClick={handleSaveButton}
                           id={counterInfoDB.indexOf(Project) + 1}
-                          className="btn btn-success me-2 mb-1 btn-sm pt-2"
+                          className="btn btn-success me-2 mb-1 btn-sm pt-2 menubuttons"
                           title="Save"
                         >
                           <Image
@@ -278,18 +410,135 @@ const ProjectsTable = (props: any) => {
                       )}
                     </td>
                   ) : null}
-                  <td>{counterInfoDB.indexOf(Project) + 1}</td>
-                  <td>{Project.project_name}</td>
-                  <td className="">{Project.adapter_code}</td>
-                  <td>{Project.fixture_type}</td>
-                  <td>{Project.owner_email}</td>
-                  <td>{Project.contacts}</td>
-                  <td>{Project.contacts_limit}</td>
-                  <td>{Project.warning_at}</td>
-                  <td>{Project.resets}</td>
-                  <td>{Project.modified_by}</td>
+
+                  <td
+                    className={
+                      highlightProject[counterInfoDB.indexOf(Project)]
+                        ?.highlightTypeClass
+                    }
+                  >
+                    {" "}
+                    {counterInfoDB.indexOf(Project) + 1}
+                  </td>
+                  <td
+                    className={
+                      highlightProject[counterInfoDB.indexOf(Project)]
+                        ?.highlightTypeClass
+                    }
+                  >
+                    {Project.project_name}
+                  </td>
+                  <td
+                    className={
+                      highlightProject[counterInfoDB.indexOf(Project)]
+                        ?.highlightTypeClass
+                    }
+                  >
+                    {Project.adapter_code}
+                  </td>
+                  <td
+                    className={
+                      highlightProject[counterInfoDB.indexOf(Project)]
+                        ?.highlightTypeClass
+                    }
+                  >
+                    {Project.fixture_type}
+                  </td>
+                  <td
+                    className={
+                      highlightProject[counterInfoDB.indexOf(Project)]
+                        ?.highlightTypeClass
+                    }
+                  >
+                    {EditModeForAllEntries &&
+                    !EditModeForAllEntries[counterInfoDB.indexOf(Project)]
+                      ?.editMode ? (
+                      Project.owner_email
+                    ) : (
+                      <input
+                        id={`${counterInfoDB.indexOf(Project)}_owner_email`}
+                        name="owner_email_edit"
+                        type="email"
+                        className="form-control-sm fw-bolder w-100"
+                        placeholder="Owner email"
+                        aria-label="Owner"
+                      ></input>
+                    )}
+                  </td>
+                  <td
+                    className={
+                      highlightProject[counterInfoDB.indexOf(Project)]
+                        ?.highlightTypeClass
+                    }
+                  >
+                    {Project.contacts}
+                  </td>
+                  <td
+                    className={
+                      highlightProject[counterInfoDB.indexOf(Project)]
+                        ?.highlightTypeClass
+                    }
+                  >
+                    {EditModeForAllEntries &&
+                    !EditModeForAllEntries[counterInfoDB.indexOf(Project)]
+                      ?.editMode ? (
+                      Project.contacts_limit
+                    ) : (
+                      <input
+                        id={`${counterInfoDB.indexOf(Project)}_contacts_limit`}
+                        name="contacts_limit_edit"
+                        type="number"
+                        className="form-control-sm fw-bolder w-75"
+                        placeholder="Limit"
+                        aria-label="Limit"
+                      ></input>
+                    )}
+                  </td>
+                  <td
+                    className={
+                      highlightProject[counterInfoDB.indexOf(Project)]
+                        ?.highlightTypeClass
+                    }
+                  >
+                    {EditModeForAllEntries &&
+                    !EditModeForAllEntries[counterInfoDB.indexOf(Project)]
+                      ?.editMode ? (
+                      Project.warning_at
+                    ) : (
+                      <input
+                        id={`${counterInfoDB.indexOf(Project)}_warning_at`}
+                        name="warning_at_edit"
+                        type="number"
+                        className="form-control-sm fw-bolder w-75"
+                        placeholder="Warning"
+                        aria-label="Warning"
+                        required
+                      ></input>
+                    )}
+                  </td>
+                  <td
+                    className={
+                      highlightProject[counterInfoDB.indexOf(Project)]
+                        ?.highlightTypeClass
+                    }
+                  >
+                    {Project.resets}
+                  </td>
+                  <td
+                    className={
+                      highlightProject[counterInfoDB.indexOf(Project)]
+                        ?.highlightTypeClass
+                    }
+                  >
+                    {Project.modified_by}
+                  </td>
                   {
-                    <td>
+                    <td
+                      className={
+                        highlightProject[counterInfoDB.indexOf(Project)]
+                          ?.highlightTypeClass
+                      }
+                    >
                       {new Date(Project.last_update).getFullYear()}-
                       {new Date(Project.last_update).getMonth()}-
                       {new Date(Project.last_update).getDate()} &nbsp;

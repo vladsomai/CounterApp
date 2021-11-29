@@ -24,12 +24,20 @@ const EditProjects = () => {
     if (modalElement.current) {
       if (parameters.title === "Error!") {
         // @ts-ignore: Object is possibly 'null'.
-        modalElement.current.classList.remove("bg-success");
+        modalElement.current.classList.remove(
+          "bg-danger",
+          "bg-success",
+          "bg-warning"
+        );
         // @ts-ignore: Object is possibly 'null'.
         modalElement.current.classList.add("bg-danger");
       } else if (parameters.title === "Success!") {
         // @ts-ignore: Object is possibly 'null'.
-        modalElement.current.classList.remove("bg-danger");
+        modalElement.current.classList.remove(
+          "bg-danger",
+          "bg-success",
+          "bg-warning"
+        );
         // @ts-ignore: Object is possibly 'null'.
         modalElement.current.classList.add("bg-success");
       }
@@ -56,7 +64,6 @@ const EditProjects = () => {
     }
   };
 
-  useEffect(() => {}, []);
   if (status === "authenticated") {
     return (
       <>

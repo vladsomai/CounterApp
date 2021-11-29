@@ -8,6 +8,7 @@ export default function Layout({ session, children }: any) {
     <>
       <Head>
         <title>Line Counter</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta
           content="Counter app used for tracking fixture contacts"
           name="Counter app"

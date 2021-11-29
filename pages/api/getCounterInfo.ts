@@ -59,6 +59,16 @@ export default async function handler(
       sqlCommand = `call deleteProject(${reqJSON.adapter_code}, "${reqJSON.fixture_type}");`;
       break;
 
+    case "updateOwner":
+      console.log("Client asks to update owner email");
+      sqlCommand = `call updateEmail(${reqJSON.adapter_code}, "${reqJSON.fixture_type}", "${reqJSON.owner_email}", "${reqJSON.modified_by}");`;
+      break;
+
+    case "updateContactsLimitAndWarning":
+      console.log("Client asks to update contacts limit and warning");
+      sqlCommand = `call updateLimitWarning(${reqJSON.adapter_code}, "${reqJSON.fixture_type}", ${reqJSON.contacts_limit},${reqJSON.warning_at} ,"${reqJSON.modified_by}");`;
+      break;
+
     default:
       console.log("Client asks for an unknown commad");
       sqlCommand = "";
@@ -71,6 +81,7 @@ export default async function handler(
         resolve(res.status(200).json({ message: responseFromDB, status: 200 }));
       })
       .catch((err: any) => {
+        console.log(err);
         resolve(res.status(500).json({ message: err, status: 500 }));
       });
   });

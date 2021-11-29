@@ -7,17 +7,18 @@ const Navbar = () => {
 
 
   return (
-    <nav className="container d-flex justify-content-between">
+    <nav className="container d-flex justify-content-md-around ">
       <Image
         src="/ContiPic.PNG"
         width={300}
         height={90}
         alt="continentalPicture"
+        className="d-none d-md-block"
       ></Image>
-      <ul className="list-unstyled display-6 d-flex justify-content-around mt-3">
+      <ul className="list-unstyled display-6 d-flex mt-3">
         <li className="me-5">
           <Link href="/">
-            <a className="btn btn-primary btn-lg fw-bold fs-3">Dashboard</a>
+            <button className="btn btn-primary btn-lg fw-bold fs-3">Dashboard</button>
           </Link>
         </li>
 
@@ -30,7 +31,7 @@ const Navbar = () => {
         ) : (
           <li>
             <Link href="/signin" passHref={true}>
-              <a className="btn btn-primary btn-lg fw-bold fs-3">Sign in</a>
+              <button className="btn btn-primary btn-lg fw-bold fs-3">Sign in</button>
             </Link>
           </li>
         )}

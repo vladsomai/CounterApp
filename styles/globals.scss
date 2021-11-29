@@ -1,44 +1,73 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Quicksand&display=swap");
 
-$primary: #FFA500;
+$primary: #ffa500;
 $secondary: #0051c3;
+$warning:#FFFF00;
 
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
+@import "animate.css";
 
-html,body{
-    background-image: url("../public/Background.webp");
-    background-size: cover;
-    font-family: 'Quicksand', sans-serif;
+html,
+body {
+  background-image: url("../public/Background.webp");
+  background-size: cover;
+  font-family: "Quicksand", sans-serif;
 }
 
-.tableOverflowEdit{
-    overflow-y: auto;
-    height: 80%;
-    max-width: 100%;
+.tableOverflowEdit {
+  overflow-y: auto;
+  height: 80%;
+  max-width: 100%;
 }
-.tableOverflowView{
-    overflow-y: auto;
-    height: 100%;
+.tableOverflowView {
+  overflow-y: auto;
+  height: 100%;
 }
 
 div::-webkit-scrollbar {
-    width: 1em;
-    height:10px;
+  width: 1em;
+  height: 10px;
 }
- 
+
 div::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,0.3);
-    box-shadow: inset 0 0 3px rgba(0,0,0,0.3);
+  -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
 }
- 
+
 div::-webkit-scrollbar-thumb {
   background-color: #1c2231;
   outline: 1px solid #0051c3;
 }
 
-.bringFront{
-    z-index: 1000;
+.bringFront {
+  z-index: 1000;
 }
-.sendBack{
-    z-index: 900;
+.sendBack {
+  z-index: 900;
+}
+
+.menubuttons{
+
+    transition: all 0.15s ease-out;
+}
+
+
+.menubuttons:hover{
+    transform: scale(1.3, 1.3);
+    transition: all 0.15s ease-in;
+}
+
+button {
+  transition: all 0.15s ease-out;
+}
+button:hover {
+  transform: scale(1.03, 1.03);
+  transition: all 0.15s ease-in;
+}
+
+tr {
+  transition: all 0.15s ease-out;
+}
+.edit-tr {
+    outline: 3px solid #ffa500;
 }
