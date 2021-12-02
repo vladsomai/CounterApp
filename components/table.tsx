@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 
@@ -221,7 +221,7 @@ const ProjectsTable = (props: any) => {
     });
   };
 
-  const fetchDataDB = async () => {
+  const fetchDataDB = useCallback( async () => {
     console.log("Fetching new data..");
     await fetch("/api/getCounterInfo", {
       method: "POST",
@@ -263,7 +263,7 @@ const ProjectsTable = (props: any) => {
         console.log(err);
         if (isMounted.current === true) setConnectionTimedOut(true);
       });
-  };
+  },[]);
   const makeDatabaseAction = (
     actionParam: string,
     project_nameParam: string,
@@ -309,11 +309,11 @@ const ProjectsTable = (props: any) => {
     return () => {
       isMounted.current = false;
     };
-  }, [props.triggerFetchProp]);
+  }, [props.triggerFetchProp, fetchDataDB]);
 
   if (API_Responded) {
     return (
-      <div className="table-responsive mx-2 my-2">
+      <div className="table-responsive mx-4">
         <table className="table table-sm mt-5 table-secondary fw-bold border-dark table-bordered text-center align-middle">
           <thead>
             <tr className="fs-5">

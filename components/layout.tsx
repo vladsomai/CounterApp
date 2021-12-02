@@ -21,9 +21,7 @@ export default function Layout({ session, children }: any) {
         </div>
       </div>
 
-      <div className="container-fluid">
-        <main className={styles.height80}>{children}</main>
-      </div>
+      <main className={styles.height80}>{children}</main>
 
       <div className={styles.height10}>
         <Footer />
