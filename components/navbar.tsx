@@ -8,7 +8,7 @@ const Navbar = () => {
   return (
     <nav className="" role="navigation">
       <div className="container d-md-flex justify-content-between">
-        <Link href="/" passHref={false}>
+        <Link href="/" passHref={true}>
           <Image
             src="/ContiPic.PNG"
             width={300}
