@@ -57,13 +57,6 @@ div::-webkit-scrollbar-thumb {
   outline: 1px solid #0051c3;
 }
 
-.bringFront {
-  z-index: 1000;
-}
-.sendBack {
-  z-index: 900;
-}
-
 .menubuttons {
   transition: all 0.15s ease-out;
 }

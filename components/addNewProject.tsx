@@ -52,72 +52,70 @@ const AddNewProject = (props: any) => {
   return (
     <>
       <div className="cointainer d-flex flex-column justify-content-center align-items-center">
-        <div className="d-flex justify-content-around w-50">
+        <div className="d-flex justify-content-around w-auto">
           <p className="display-6 text-light text-center">
             Create a new project
           </p>
         </div>
         <form
-          className="d-flex align-items-center pt-2"
+          className="d-flex flex-column flex-md-row"
           method="post"
           onSubmit={handleInsertButton}
         >
-          <div className="row">
-            <input
-              name="project_name"
-              type="text"
-              className="form-control fs-6 fw-bolder me-2 col"
-              placeholder="Project name"
-              aria-label="Project"
-              required
-            ></input>
-            <input
-              name="adapter_code"
-              type="number"
-              className="form-control fs-6 fw-bolder me-2 col"
-              placeholder="Adapter code"
-              aria-label="Adapter"
-              required
-            ></input>
-            <input
-              name="fixture_type"
-              type="text"
-              className="form-control fs-6 fw-bolder me-2 col"
-              placeholder="Fixture type"
-              aria-label="Fixture type"
-              required
-            ></input>
-            <input
-              name="owner_email"
-              type="email"
-              className="form-control fs-6 fw-bolder me-2 col"
-              placeholder="Owner email"
-              aria-label="Owner"
-              required
-            ></input>
-            <input
-              name="contacts_limit"
-              type="number"
-              className="form-control fs-6 fw-bolder me-2 col"
-              placeholder="Limit"
-              aria-label="Limit"
-              required
-            ></input>
-            <input
-              name="warning_at"
-              type="number"
-              className="form-control fs-6 fw-bolder me-2 col"
-              placeholder="Warning"
-              aria-label="Warning"
-              required
-            ></input>
-            <button
-              type="submit"
-              className="btn btn-primary fw-bold text-nowrap col"
-            >
-              Create!
-            </button>
-          </div>
+          <input
+            name="project_name"
+            type="text"
+            className="form-control fs-6 fw-bolder me-2 col mb-3"
+            placeholder="Project name"
+            aria-label="Project"
+            required
+          ></input>
+          <input
+            name="adapter_code"
+            type="number"
+            className="form-control fs-6 fw-bolder me-2 col mb-3"
+            placeholder="Adapter code"
+            aria-label="Adapter"
+            required
+          ></input>
+          <input
+            name="fixture_type"
+            type="text"
+            className="form-control fs-6 fw-bolder me-2 col mb-3"
+            placeholder="Fixture type"
+            aria-label="Fixture type"
+            required
+          ></input>
+          <input
+            name="owner_email"
+            type="email"
+            className="form-control fs-6 fw-bolder me-2 col mb-3"
+            placeholder="Owner email"
+            aria-label="Owner"
+            required
+          ></input>
+          <input
+            name="contacts_limit"
+            type="number"
+            className="form-control fs-6 fw-bolder me-2 col mb-3"
+            placeholder="Limit"
+            aria-label="Limit"
+            required
+          ></input>
+          <input
+            name="warning_at"
+            type="number"
+            className="form-control fs-6 fw-bolder me-2 col mb-3"
+            placeholder="Warning"
+            aria-label="Warning"
+            required
+          ></input>
+          <button
+            type="submit"
+            className="btn btn-primary fw-bold text-nowrap col mb-3"
+          >
+            Create!
+          </button>
         </form>
       </div>
     </>

@@ -124,6 +124,15 @@ const ProjectsTable = (props: any) => {
         return;
       }
 
+      if (!updateContactsLimitAndWarningOK) {
+        props.openModalAction({
+          title: "Error!",
+          description: `The Limit must be greater than the Warning!`,
+          pictureUrl: "/undraw_cancel_u-1-it.svg",
+          className: "text-center",
+        });
+      }
+
       if (updateOwnerOK || updateContactsLimitAndWarningOK) {
         props.openModalAction({
           title: "Success!",
@@ -221,7 +230,7 @@ const ProjectsTable = (props: any) => {
     });
   };
 
-  const fetchDataDB = useCallback( async () => {
+  const fetchDataDB = useCallback(async () => {
     console.log("Fetching new data..");
     await fetch("/api/getCounterInfo", {
       method: "POST",
@@ -263,7 +272,7 @@ const ProjectsTable = (props: any) => {
         console.log(err);
         if (isMounted.current === true) setConnectionTimedOut(true);
       });
-  },[]);
+  }, []);
   const makeDatabaseAction = (
     actionParam: string,
     project_nameParam: string,

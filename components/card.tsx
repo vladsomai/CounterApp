@@ -21,6 +21,7 @@ const Card = ({
         height={pictureHeight}
         width={pictureWidth}
         alt="card"
+        className="img-fluid"
         priority
       ></Image>
     </>

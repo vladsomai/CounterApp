@@ -67,11 +67,11 @@ const EditProjects = () => {
   if (status === "authenticated") {
     return (
       <>
-        <div className="position-relative">
-          <div className="position-absolute top-50 start-50 translate-middle h-100 w-75 pt-5">
+        <div className="">
+          <div className="position-absolute start-50 top-50 translate-middle w-75 pt-5">
             <div
+              className="animate__animated   d-none rounded-pill m-auto p-5 d-flex flex-column justify-content-center w-75"
               ref={modalElement}
-              className="animate__animated d-none rounded-pill m-auto p-5 d-flex flex-column justify-content-center w-75"
             >
               <Modal
                 title={modalProps.title}
@@ -80,7 +80,7 @@ const EditProjects = () => {
                 className={modalProps.className}
               />
               <button
-                className="btn btn-primary btn-lg fs-4 w-25 m-auto fw-bold"
+                className="btn btn-primary fs-4 w-25 m-auto fw-bold"
                 onClick={closeModal}
               >
                 Close

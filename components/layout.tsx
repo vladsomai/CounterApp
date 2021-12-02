@@ -15,7 +15,7 @@ export default function Layout({ session, children }: any) {
         />
         <link rel="shortcut icon" href="/images/favicon.ico" />
       </Head>
-      <div className={styles.height10}>
+      <div className="position-fixed w-100">
         <div className="bg-primary">
           <Navbar />
         </div>
@@ -23,7 +23,7 @@ export default function Layout({ session, children }: any) {
 
       <main className={styles.height80}>{children}</main>
 
-      <div className={styles.height10}>
+      <div className="position-fixed bottom-0 w-100 bg-dark">
         <Footer />
       </div>
     </>

@@ -9,13 +9,11 @@ export interface ModalProps {
 }
 
 const Modal = (props: ModalProps) => {
-  const modalElement = useRef(null);
 
   return (
     <>
       <div
         className={props.className}
-        ref={modalElement}
       >
         <h1 className="text-light display-5">{props.title}</h1>
         <Image
@@ -23,6 +21,7 @@ const Modal = (props: ModalProps) => {
           height={200}
           width={200}
           alt="modal image"
+          className="img-fluid"
           priority
         ></Image>
         <p className="text-light display-6">{props.description}</p>
