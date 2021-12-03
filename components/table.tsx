@@ -329,17 +329,17 @@ const ProjectsTable = (props: any) => {
               {!(props.mode === "view") ? (
                 <th className="bg-primary align-middle">Menu</th>
               ) : null}
-              <th className="bg-primary align-middle">#</th>
-              <th className="bg-primary align-middle">Project name</th>
-              <th className="bg-primary align-middle col-1">Adapter code</th>
-              <th className="bg-primary align-middle">Fixture type</th>
-              <th className="bg-primary align-middle col-1">Owner email</th>
+              <th className="bg-primary align-middle col">#</th>
+              <th className="bg-primary align-middle col">Project name</th>
+              <th className="bg-primary align-middle col">Adapter code</th>
+              <th className="bg-primary align-middle col">Fixture type</th>
+              <th className="bg-primary align-middle col-2">Owner email</th>
               <th className="bg-primary align-middle col-1">Contacts</th>
               <th className="bg-primary align-middle col-1">Limit</th>
               <th className="bg-primary align-middle col-1">Warning</th>
-              <th className="bg-primary align-middle">Resets</th>
-              <th className="bg-primary align-middle">Modified by</th>
-              <th className="bg-primary align-middle">Last update</th>
+              <th className="bg-primary align-middle col">Resets</th>
+              <th className="bg-primary align-middle col-2">Modified by</th>
+              <th className="bg-primary align-middle col-1">Last update</th>
             </tr>
           </thead>
           <tbody>

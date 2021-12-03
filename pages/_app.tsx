@@ -3,6 +3,7 @@ import { SessionProvider } from "next-auth/react";
 import { Provider } from "react-redux";
 import configureStore from '../components/store/store';
 
+
 function MyApp({ Component, pageProps }: any) {
 
   return (

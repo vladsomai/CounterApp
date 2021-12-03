@@ -5,7 +5,7 @@ import Image from "next/image";
 const Dashboard = () => {
   return (
     <>
-      <div className="d-flex flex-column justify-content-center pt-5 h-100">
+      <div className="d-flex flex-column justify-content-center pt-5 fullScreen">
         <div className="d-flex justify-content-center">
           <div className="bg-dark rounded-bottom rounded-pill">
             <p className="display-6 text-light text-center">
@@ -17,7 +17,7 @@ const Dashboard = () => {
               width={800}
               alt="Welcome Picture"
               priority
-            //   className="animate__animated animate__tada"
+              //   className="animate__animated animate__tada"
             ></Image>
           </div>
         </div>

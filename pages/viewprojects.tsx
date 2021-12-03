@@ -4,7 +4,7 @@ import Table from "../components/table";
 const ViewProjects = () => {
   return (
     <>
-      <div className="tableOverflowView">
+      <div className="tableOverflowView fullScreen">
         <Table mode={"view"} />
       </div>
     </>

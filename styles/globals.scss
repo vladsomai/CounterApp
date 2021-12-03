@@ -1,9 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Quicksand&display=swap");
+// @import url("https://fonts.googleapis.com/css2?family=Quicksand&display=swap");
 
 $primary: #ffa500;
 $secondary: #0051c3;
 $warning: #ffff00;
 
+$font-family-base: "Quicksand", sans-serif;
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
 @import "animate.css";
 
@@ -79,4 +80,8 @@ tr {
 }
 .edit-tr {
   outline: 3px solid #ffa500;
+}
+
+.fullScreen {
+  height: 80vh;
 }

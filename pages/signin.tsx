@@ -20,7 +20,6 @@ const Signin = ({ csrfToken }: any) => {
       modalElement.current.classList?.add("animate__bounceOut");
     }
     router.push("/signin");
-
   };
 
   const handleSubmit = () => {
@@ -39,7 +38,7 @@ const Signin = ({ csrfToken }: any) => {
   if (session) {
     return (
       <>
-        <div className="container h-100">
+        <div className="container fullScreen">
           <div className="d-flex flex-column align-items-center justify-content-around h-100">
             <Modal
               title="Success!"
@@ -54,9 +53,9 @@ const Signin = ({ csrfToken }: any) => {
   } else
     return (
       <>
-        <div className="container h-100">
+        <div className="container fullScreen pt-5 ">
           <div className="h-100 d-flex flex-column justify-content-evenly">
-            <div className="d-flex justify-content-between position-relative">
+            <div className="d-flex flex-column flex-md-row justify-content-between align-content-center position-relative">
               <Image
                 src="/undraw_authentication_fsn5.svg"
                 width={620}
@@ -78,7 +77,7 @@ const Signin = ({ csrfToken }: any) => {
                       className="text-center"
                     />
                     <button
-                      className="btn btn-primary btn-lg fs-4 w-25 m-auto fw-bold"
+                      className="btn btn-primary fs-4 w-25 m-auto fw-bold"
                       onClick={closeModal}
                     >
                       Close
@@ -86,7 +85,7 @@ const Signin = ({ csrfToken }: any) => {
                   </div>
                 </div>
               )}
-              <div className="d-flex align-items-center">
+              <div className="d-flex align-items-center justify-content-center">
                 <form
                   action="/api/auth/callback/credentials"
                   className="d-flex flex-column align-items-center mt-3"
@@ -97,7 +96,6 @@ const Signin = ({ csrfToken }: any) => {
                     type="hidden"
                     defaultValue={csrfToken}
                   />
-
                   <input
                     name="email"
                     type="email"

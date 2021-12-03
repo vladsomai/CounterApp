@@ -1,4 +1,4 @@
-import Head from "next/head";
+import Head  from "next/head";
 import Navbar from "./navbar";
 import Footer from "./footer";
 import styles from "./styles/layout.module.scss";
@@ -14,7 +14,13 @@ export default function Layout({ session, children }: any) {
           name="Counter app"
         />
         <link rel="shortcut icon" href="/images/favicon.ico" />
+
+        <link
+          href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap"
+          rel="stylesheet"
+        ></link>
       </Head>
+
       <div className="position-fixed w-100">
         <div className="bg-primary">
           <Navbar />
