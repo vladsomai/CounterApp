@@ -80,5 +80,15 @@ tr {
 }
 
 .fullScreen {
-  height: 80vh;
+  height: 70vh;
+}
+
+.blurBg {
+//   height: 100vh;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.paddingModal{
+    margin-top: 7%;
 }

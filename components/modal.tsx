@@ -15,7 +15,7 @@ const Modal = (props: ModalProps) => {
       <div
         className={props.className}
       >
-        <h1 className="text-light display-5">{props.title}</h1>
+        <p className="text-light fs-2">{props.title}</p>
         <Image
           src={props.pictureUrl}
           height={200}
@@ -24,7 +24,7 @@ const Modal = (props: ModalProps) => {
           className="img-fluid"
           priority
         ></Image>
-        <p className="text-light display-6">{props.description}</p>
+        <p className="text-light fs-3">{props.description}</p>
       </div>
     </>
   );

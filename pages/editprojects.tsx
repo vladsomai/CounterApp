@@ -14,6 +14,8 @@ const EditProjects = () => {
   const [triggerFetch, setTriggerFetch] = useState(false);
 
   const modalElement = useRef(null);
+  const parentModalElement = useRef(null);
+
   const [modalProps, setModalProps] = useState<ModalProps>({
     title: "",
     description: "",
@@ -22,7 +24,7 @@ const EditProjects = () => {
   });
 
   const openModal = (parameters: ModalProps) => {
-    if (modalElement.current) {
+    if (modalElement.current && parentModalElement.current) {
       if (parameters.title === "Error!") {
         // @ts-ignore: Object is possibly 'null'.
         modalElement.current.classList.remove(
@@ -44,6 +46,8 @@ const EditProjects = () => {
       }
 
       // @ts-ignore: Object is possibly 'null'.
+      parentModalElement.current.classList.remove("d-none");
+      // @ts-ignore: Object is possibly 'null'.
       modalElement.current.classList.remove("animate__bounceOut", "d-none");
 
       // @ts-ignore: Object is possibly 'null'.
@@ -56,12 +60,18 @@ const EditProjects = () => {
   const closeModal = () => {
     setTriggerFetch(false);
 
-    if (modalElement.current) {
+    if (modalElement.current && parentModalElement.current) {
       // @ts-ignore: Object is possibly 'null'.
       modalElement.current.classList.remove("animate__bounceIn");
 
       // @ts-ignore: Object is possibly 'null'.
       modalElement.current.classList.add("animate__bounceOut");
+      setTimeout(() => {
+        // @ts-ignore: Object is possibly 'null'.
+        modalElement.current.classList.add("d-none");
+        // @ts-ignore: Object is possibly 'null'.
+        parentModalElement.current.classList.add("d-none");
+      }, 650);
     }
   };
 
@@ -71,10 +81,19 @@ const EditProjects = () => {
         <Head>
           <title>Edit projects</title>
         </Head>
-        <div className="">
-          <div className="position-absolute start-50 top-50 translate-middle w-75 pt-5">
+
+        <div className="tableOverflowEdit">
+          <Table triggerFetchProp={triggerFetch} openModalAction={openModal} />
+        </div>
+
+        <div className="pt-3" id="addNewProjectDiv">
+          <AddNewProject openModalAction={openModal} />
+        </div>
+
+        <div className="d-none" ref={parentModalElement}>
+          <div className="position-fixed start-50 top-50 translate-middle w-100 h-100 pt-5 blurBg">
             <div
-              className="animate__animated   d-none rounded-pill m-auto p-5 d-flex flex-column justify-content-center w-75"
+              className="animate__animated d-none rounded-pill mx-auto p-5 d-flex flex-column justify-content-center w-50 paddingModal"
               ref={modalElement}
             >
               <Modal
@@ -84,19 +103,13 @@ const EditProjects = () => {
                 className={modalProps.className}
               />
               <button
-                className="btn btn-primary fs-4 w-25 m-auto fw-bold"
+                className="btn btn-primary fs-3 m-auto fw-bold"
                 onClick={closeModal}
               >
                 Close
               </button>
             </div>
           </div>
-        </div>
-        <div className="tableOverflowEdit">
-          <Table triggerFetchProp={triggerFetch} openModalAction={openModal} />
-        </div>
-        <div className="pt-3" id="addNewProjectDiv">
-          <AddNewProject openModalAction={openModal} />
         </div>
       </>
     );
