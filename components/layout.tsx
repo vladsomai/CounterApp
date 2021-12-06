@@ -1,4 +1,4 @@
-import Head  from "next/head";
+import Head from "next/head";
 import Navbar from "./navbar";
 import Footer from "./footer";
 import styles from "./styles/layout.module.scss";
@@ -8,17 +8,6 @@ export default function Layout({ session, children }: any) {
     <>
       <Head>
         <title>Line Counter</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta
-          content="Counter app used for tracking fixture contacts"
-          name="Counter app"
-        />
-        <link rel="shortcut icon" href="/images/favicon.ico" />
-
-        <link
-          href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap"
-          rel="stylesheet"
-        ></link>
       </Head>
 
       <div className="position-fixed w-100">

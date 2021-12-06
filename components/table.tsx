@@ -327,7 +327,7 @@ const ProjectsTable = (props: any) => {
           <thead>
             <tr className="fs-5">
               {!(props.mode === "view") ? (
-                <th className="bg-primary align-middle">Menu</th>
+                <th className="bg-primary align-middle col-1">Menu</th>
               ) : null}
               <th className="bg-primary align-middle col">#</th>
               <th className="bg-primary align-middle col">Project name</th>

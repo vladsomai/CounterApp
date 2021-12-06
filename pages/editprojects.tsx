@@ -1,3 +1,4 @@
+import Head from "next/head";
 import Layout from "../components/layout";
 import Table from "../components/table";
 import { useSession } from "next-auth/react";
@@ -67,6 +68,9 @@ const EditProjects = () => {
   if (status === "authenticated") {
     return (
       <>
+        <Head>
+          <title>Edit projects</title>
+        </Head>
         <div className="">
           <div className="position-absolute start-50 top-50 translate-middle w-75 pt-5">
             <div
@@ -98,20 +102,25 @@ const EditProjects = () => {
     );
   } else if (status === "loading")
     return (
-      <div className="d-flex flex-column align-items-center justify-content-center h-100">
-        <div className="d-flex justify-content-center">
-          <div
-            className="spinner-grow text-primary"
-            style={{ width: "10rem", height: "10rem" }}
-            role="status"
-          >
-            <span className=""></span>
+      <>
+        <Head>
+          <title>Loading...</title>
+        </Head>
+        <div className="d-flex flex-column align-items-center justify-content-center h-100">
+          <div className="d-flex justify-content-center">
+            <div
+              className="spinner-grow text-primary"
+              style={{ width: "10rem", height: "10rem" }}
+              role="status"
+            >
+              <span className=""></span>
+            </div>
+          </div>
+          <div className="d-flex justify-content-center p-5">
+            <p className="text-white display-5">Loading data...</p>
           </div>
         </div>
-        <div className="d-flex justify-content-center p-5">
-          <p className="text-white display-5">Loading data...</p>
-        </div>
-      </div>
+      </>
     );
   else {
     try {

@@ -4,6 +4,7 @@ import Image from "next/image";
 import Modal from "../components/modal";
 import { useRouter } from "next/router";
 import { useRef, useEffect } from "react";
+import Head from "next/head";
 
 const Signin = ({ csrfToken }: any) => {
   const { data: session, status } = useSession();
@@ -38,6 +39,9 @@ const Signin = ({ csrfToken }: any) => {
   if (session) {
     return (
       <>
+        <Head>
+          <title>Signin</title>
+        </Head>
         <div className="container fullScreen">
           <div className="d-flex flex-column align-items-center justify-content-around h-100">
             <Modal
@@ -53,6 +57,9 @@ const Signin = ({ csrfToken }: any) => {
   } else
     return (
       <>
+        <Head>
+          <title>Signin</title>
+        </Head>
         <div className="container fullScreen pt-5 ">
           <div className="h-100 d-flex flex-column justify-content-evenly">
             <div className="d-flex flex-column flex-md-row justify-content-between align-content-center position-relative">
