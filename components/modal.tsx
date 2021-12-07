@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
 
 export interface ModalProps {
   title: string;
@@ -9,12 +8,9 @@ export interface ModalProps {
 }
 
 const Modal = (props: ModalProps) => {
-
   return (
     <>
-      <div
-        className={props.className}
-      >
+      <div className={props.className}>
         <p className="text-light fs-2">{props.title}</p>
         <Image
           src={props.pictureUrl}

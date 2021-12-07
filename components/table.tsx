@@ -8,7 +8,6 @@ const ProjectsTable = (props: any) => {
   const [connectionTimedOut, setConnectionTimedOut] = useState<any>(false);
   const isMounted = useRef(false);
   const { data: session, status } = useSession();
-  let classForEdit = "";
 
   const [EditModeForAllEntries, setEditMode] = useState<any>();
 
@@ -325,7 +324,7 @@ const ProjectsTable = (props: any) => {
       <div className="table-responsive mx-4">
         <table className="table table-sm mt-5 table-secondary fw-bold border-dark table-bordered text-center align-middle">
           <thead>
-            <tr className="fs-5">
+            <tr className="fs-6">
               {!(props.mode === "view") ? (
                 <th className="bg-primary align-middle col-1">Menu</th>
               ) : null}

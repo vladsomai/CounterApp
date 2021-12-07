@@ -20,7 +20,6 @@ body {
 
 .tableOverflowView {
   overflow-y: auto;
-  height: 100%;
 }
 
 body::-webkit-scrollbar {
@@ -79,16 +78,23 @@ tr {
   outline: 3px solid #ffa500;
 }
 
-.fullScreen {
-  height: 70vh;
-}
-
 .blurBg {
-//   height: 100vh;
+  //   height: 100vh;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
 
-.paddingModal{
-    margin-top: 7%;
+.paddingModal {
+  margin-top: 7%;
+}
+
+.fullScreen {
+  padding-top: 120px;
+  padding-bottom: 100px;
+  height: 100vh;
+}
+
+.padingTopBottom{
+    padding-top: 120px;
+    padding-bottom: 100px;
 }

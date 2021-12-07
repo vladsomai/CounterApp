@@ -1,6 +1,5 @@
 import Layout from "../components/layout";
 import Image from "next/image";
-import Dashboard from "../components/dashboard";
 import Head from "next/head";
 
 const Error = () => {
@@ -9,8 +8,8 @@ const Error = () => {
       <Head>
         <title>Error</title>
       </Head>
-      <div className="d-flex justify-content-center align-content-center text-light pt-5 fullScreen">
-        <div className="">
+      <div className="d-flex justify-content-center text-light fullScreen">
+        <div className="d-flex flex-column justify-content-center h-75">
           <Image
             src="/undraw_questions_re_1fy7.svg"
             width={620}

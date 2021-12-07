@@ -1,5 +1,4 @@
 import { useSession } from "next-auth/react";
-import { useRef } from "react";
 
 const AddNewProject = (props: any) => {
   const { data: session, status } = useSession();

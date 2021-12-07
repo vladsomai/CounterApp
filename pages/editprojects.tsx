@@ -4,7 +4,7 @@ import Table from "../components/table";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import AddNewProject from "../components/addNewProject";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import Modal, { ModalProps } from "../components/modal";
 
 const EditProjects = () => {
@@ -82,32 +82,37 @@ const EditProjects = () => {
           <title>Edit projects</title>
         </Head>
 
-        <div className="tableOverflowEdit">
-          <Table triggerFetchProp={triggerFetch} openModalAction={openModal} />
-        </div>
+        <div className="padingTopBottom">
+          <div className="tableOverflowEdit">
+            <Table
+              triggerFetchProp={triggerFetch}
+              openModalAction={openModal}
+            />
+          </div>
 
-        <div className="pt-3" id="addNewProjectDiv">
-          <AddNewProject openModalAction={openModal} />
-        </div>
+          <div className="pt-3" id="addNewProjectDiv">
+            <AddNewProject openModalAction={openModal} />
+          </div>
 
-        <div className="d-none" ref={parentModalElement}>
-          <div className="position-fixed start-50 top-50 translate-middle w-100 h-100 pt-5 blurBg">
-            <div
-              className="animate__animated d-none rounded-pill mx-auto p-5 d-flex flex-column justify-content-center w-50 paddingModal"
-              ref={modalElement}
-            >
-              <Modal
-                title={modalProps.title}
-                description={modalProps.description}
-                pictureUrl={modalProps.pictureUrl}
-                className={modalProps.className}
-              />
-              <button
-                className="btn btn-primary fs-3 m-auto fw-bold"
-                onClick={closeModal}
+          <div className="d-none" ref={parentModalElement}>
+            <div className="position-fixed start-50 top-50 translate-middle w-100 h-100 pt-5 blurBg">
+              <div
+                className="animate__animated d-none rounded-pill mx-auto p-5 d-flex flex-column justify-content-center w-50 paddingModal"
+                ref={modalElement}
               >
-                Close
-              </button>
+                <Modal
+                  title={modalProps.title}
+                  description={modalProps.description}
+                  pictureUrl={modalProps.pictureUrl}
+                  className={modalProps.className}
+                />
+                <button
+                  className="btn btn-primary fs-3 m-auto fw-bold"
+                  onClick={closeModal}
+                >
+                  Close
+                </button>
+              </div>
             </div>
           </div>
         </div>
