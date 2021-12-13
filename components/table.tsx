@@ -249,11 +249,15 @@ const ProjectsTable = (props: any) => {
     })
       .then((result) =>
         result.json().then((resultJson) => {
-          if (resultJson.message.code === "ER_ACCESS_DENIED_ERROR")
+          if (
+            resultJson.message.code === "ER_ACCESS_DENIED_ERROR" ||
+            resultJson.message.code === "ECONNREFUSED"
+          )
             throw "Cannot connect to DB";
           if (isMounted.current === true) {
             setCounterInfoDB(resultJson.message);
             setAPI_Responded(true);
+
             setEditMode(
               resultJson.message.map((item: any) => {
                 return {
