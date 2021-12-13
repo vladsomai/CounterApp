@@ -36,7 +36,7 @@ export default NextAuth({
   ],
   pages: {
     signIn: "/signin",
-    error: "/signin"
+    error: "/signin",
   },
   secret: "Sy21b2!G*&JY!GYGaknlngkdsbsi!NUI#GVUYT!^&Vy",
   callbacks: {
@@ -44,7 +44,8 @@ export default NextAuth({
       return true;
     },
     async redirect({ url, baseUrl }) {
-      return "/signin";
+      const redURL = baseUrl + "/signin";
+      return redURL;
     },
     async session({ session, token, user }) {
       return session;

@@ -8,26 +8,26 @@ const Navbar = () => {
 
   return (
     <nav className="" role="navigation">
-      <div className="container d-md-flex justify-content-between align-items-center">
+      <div className="container d-flex justify-content-around align-items-center">
         {!session ? (
           <Link href="/" passHref>
-            <a className="d-none d-md-inline btn">
+            <a className="btn">
               <Image
                 src="/ContiPic.PNG"
-                width={300}
-                height={80}
+                width={200}
+                height={60}
                 alt="continentalPicture"
-                className="img-fluid"
+                className="img-fluid w-50"
               ></Image>
             </a>
           </Link>
         ) : (
           <Link href="/editprojects" passHref>
-            <a className="d-none d-md-inline btn">
+            <a className="btn">
               <Image
                 src="/ContiPic.PNG"
-                width={300}
-                height={80}
+                width={200}
+                height={60}
                 alt="continentalPicture"
                 className="img-fluid"
               ></Image>
@@ -37,10 +37,10 @@ const Navbar = () => {
 
         <ul className="list-unstyled display-6 d-flex pt-3 pb-4 pb-md-0 justify-content-around align-items-center">
           {session ? (
-            <li className="nav-item">
+            <li className="nav-item pt-3 pt-md-0">
               <Link href="" passHref={true}>
                 <button
-                  className="btn btn-primary fw-bold fs-3 "
+                  className="btn btn-primary fw-bold fs-3"
                   onClick={() => signOut()}
                 >
                   Sign out
@@ -48,7 +48,7 @@ const Navbar = () => {
               </Link>
             </li>
           ) : (
-            <li className="nav-item">
+            <li className="nav-item pt-3 pt-md-0">
               <Link href="/signin" passHref={true}>
                 <button className="btn btn-primary fw-bold fs-3">
                   Sign in

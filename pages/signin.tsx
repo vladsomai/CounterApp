@@ -1,4 +1,4 @@
-import { useSession, getCsrfToken } from "next-auth/react";
+import { useSession, getCsrfToken, signIn } from "next-auth/react";
 import Layout from "../components/layout";
 import Image from "next/image";
 import Modal, { ModalProps } from "../components/modal";
@@ -30,10 +30,12 @@ const Signin = ({ csrfToken }: any) => {
       // @ts-ignore: Object is possibly 'null'.
       modalElement.current.classList.add("animate__bounceOut");
       setTimeout(() => {
-        // @ts-ignore: Object is possibly 'null'.
-        modalElement.current.classList.add("d-none");
-        // @ts-ignore: Object is possibly 'null'.
-        parentModalElement.current.classList.add("d-none");
+        if (modalElement.current && parentModalElement.current) {
+          // @ts-ignore: Object is possibly 'null'.
+          modalElement.current.classList.add("d-none");
+          // @ts-ignore: Object is possibly 'null'.
+          parentModalElement.current.classList.add("d-none");
+        }
       }, 650);
     }
     router.push("/signin");
@@ -71,20 +73,37 @@ const Signin = ({ csrfToken }: any) => {
     }
     setModalProps(parameters);
   };
-
-  useEffect(() => {
-    if (error) {
-      setSigninError(true);
-      openModal({
-        title: "Error!",
-        description: "Invalid account!",
-        pictureUrl: "/undraw_cancel_u-1-it.svg",
-        className: "text-center",
+  const submitSignin = (e: any) => {
+    e.preventDefault();
+    signIn("credentials", {
+      redirect: false,
+      email: e.target.email.value.toString(),
+      password: e.target.password.value.toString(),
+    })
+      .then((res: any) => {
+        if (res?.error === "Invalid account") {
+          setSigninError(true);
+          openModal({
+            title: "Error!",
+            description: "Invalid account!",
+            pictureUrl: "/undraw_cancel_u-1-it.svg",
+            className: "text-center",
+          });
+        } else {
+          setSigninError(false);
+        }
+      })
+      .catch((err) => {
+        setSigninError(true);
+        console.log(err)
+        openModal({
+          title: "Error!",
+          description: "Something went wrong, please contact your administrator!",
+          pictureUrl: "/undraw_cancel_u-1-it.svg",
+          className: "text-center",
+        });
       });
-    } else {
-      setSigninError(true);
-    }
-  }, [error]);
+  };
 
   if (session) {
     try {
@@ -111,7 +130,7 @@ const Signin = ({ csrfToken }: any) => {
 
               <div className="d-flex align-items-center justify-content-center">
                 <form
-                  action={"/api/auth/callback/credentials"}
+                  onSubmit={submitSignin}
                   className="d-flex flex-column align-items-center mt-3"
                   method="post"
                 >
@@ -179,12 +198,3 @@ export default Signin;
 Signin.getLayout = function getLayout(page: any) {
   return <Layout>{page}</Layout>;
 };
-
-// This is the recommended way for Next.js 9.3 or newer
-export async function getServerSideProps(context: any) {
-  return {
-    props: {
-      csrfToken: await getCsrfToken(context),
-    },
-  };
-}
