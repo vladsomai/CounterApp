@@ -11,7 +11,7 @@ const Navbar = () => {
       <div className="container d-flex justify-content-around align-items-center">
         {!session ? (
           <Link href="/" passHref>
-            <a className="btn">
+            <a className="btn scaleEffect">
               <Image
                 src="/ContiPic.PNG"
                 width={200}
@@ -23,7 +23,7 @@ const Navbar = () => {
           </Link>
         ) : (
           <Link href="/editprojects" passHref>
-            <a className="btn">
+            <a className="btn scaleEffect">
               <Image
                 src="/ContiPic.PNG"
                 width={200}
@@ -40,7 +40,7 @@ const Navbar = () => {
             <li className="nav-item pt-3 pt-md-0">
               <Link href="" passHref={true}>
                 <button
-                  className="btn btn-primary fw-bold fs-3"
+                  className="btn btn-primary fw-bold fs-3 scaleEffect"
                   onClick={() => signOut()}
                 >
                   Sign out
@@ -50,7 +50,7 @@ const Navbar = () => {
           ) : (
             <li className="nav-item pt-3 pt-md-0">
               <Link href="/signin" passHref={true}>
-                <button className="btn btn-primary fw-bold fs-3">
+                <button className="btn btn-primary fw-bold fs-3 scaleEffect">
                   Sign in
                 </button>
               </Link>

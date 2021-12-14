@@ -111,7 +111,7 @@ const AddNewProject = (props: any) => {
           ></input>
           <button
             type="submit"
-            className="btn btn-primary fw-bold text-nowrap col mb-3"
+            className="btn btn-primary fw-bold text-nowrap col mb-3 scaleEffect"
           >
             Create!
           </button>
