@@ -107,7 +107,7 @@ const EditProjects = () => {
                   className={modalProps.className}
                 />
                 <button
-                  className="btn btn-primary fs-3 m-auto fw-bold"
+                  className="btn btn-primary fs-3 m-auto fw-bold scaleEffect"
                   onClick={closeModal}
                 >
                   Close

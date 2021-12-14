@@ -5,9 +5,17 @@ import Image from "next/image";
 const ProjectsTable = (props: any) => {
   const [counterInfoDB, setCounterInfoDB] = useState<any>([]);
   const [API_Responded, setAPI_Responded] = useState<any>(false);
+  const [projectNameFilter, setProjectNameFilter] = useState<any>("");
+  const [ownerEmailFilter, setOwnerEmailFilter] = useState<any>("");
+  const [fixtureTypeFilter, setFixtureTypeFilter] = useState<any>("");
   const [connectionTimedOut, setConnectionTimedOut] = useState<any>(false);
   const isMounted = useRef(false);
+  const inputFilterProjectName = useRef(null);
+  const inputFilterOwnerEmail = useRef(null);
+  const inputFilterFixtureType = useRef(null);
+
   const { data: session, status } = useSession();
+  let filterValue = "";
 
   const [EditModeForAllEntries, setEditMode] = useState<any>();
 
@@ -314,292 +322,380 @@ const ProjectsTable = (props: any) => {
     });
   };
 
+  const checkInputValue = (e: any) => {
+    e.preventDefault();
+
+    // @ts-ignore: Object is possibly 'null'.
+    setProjectNameFilter(inputFilterProjectName.current.value);
+    // @ts-ignore: Object is possibly 'null'.
+    setOwnerEmailFilter(inputFilterOwnerEmail.current.value);
+    // @ts-ignore: Object is possibly 'null'.
+    setFixtureTypeFilter(inputFilterFixtureType.current.value);
+  };
+
   useEffect(() => {
     isMounted.current = true;
     fetchDataDB();
-
     return () => {
       isMounted.current = false;
     };
-  }, [props.triggerFetchProp, fetchDataDB]);
+  }, [props.triggerFetchProp, fetchDataDB, projectNameFilter]);
 
   if (API_Responded) {
     return (
-      <div className="table-responsive mx-4">
-        <table className="table table-sm mt-5 table-secondary fw-bold border-dark table-bordered text-center align-middle">
-          <thead>
-            <tr className="fs-6">
-              {!(props.mode === "view") ? (
-                <th className="bg-primary align-middle col-1">Menu</th>
-              ) : null}
-              <th className="bg-primary align-middle col">#</th>
-              <th className="bg-primary align-middle col">Project name</th>
-              <th className="bg-primary align-middle col">Adapter code</th>
-              <th className="bg-primary align-middle col">Fixture type</th>
-              <th className="bg-primary align-middle col-2">Owner email</th>
-              <th className="bg-primary align-middle col-1">Contacts</th>
-              <th className="bg-primary align-middle col-1">Limit</th>
-              <th className="bg-primary align-middle col-1">Warning</th>
-              <th className="bg-primary align-middle col">Resets</th>
-              <th className="bg-primary align-middle col-2">Modified by</th>
-              <th className="bg-primary align-middle col-1">Last update</th>
-            </tr>
-          </thead>
-          <tbody>
-            {counterInfoDB.map((Project: any) => {
-              return (
-                <tr key={counterInfoDB.indexOf(Project)}>
-                  {!(props.mode === "view") ? (
-                    <td>
-                      <button
-                        onClick={handleResetButton}
-                        id={counterInfoDB.indexOf(Project) + 1}
-                        className="btn btn-secondary me-2 mb-1 btn-sm pt-2 menubuttons"
-                        title="Reset"
-                      >
-                        <Image
-                          id={counterInfoDB.indexOf(Project) + 1}
-                          src="/reset.svg"
-                          width={20}
-                          height={20}
-                          alt="Reset"
-                          priority
-                        ></Image>
-                      </button>
-                      <button
-                        onClick={handleDeleteButton}
-                        className="btn btn-danger me-2 mb-1 btn-sm pt-2 menubuttons"
-                        title="Delete"
-                        id={counterInfoDB.indexOf(Project) + 1}
-                      >
-                        <Image
-                          id={counterInfoDB.indexOf(Project) + 1}
-                          src="/delete.svg"
-                          width={20}
-                          height={20}
-                          alt="Delete"
-                          className=""
-                          priority
-                        ></Image>
-                      </button>
+      <>
+        <div className="table-responsive mx-4">
+          <table className="table table-sm mt-5 table-secondary fw-bold border-dark table-bordered text-center align-middle">
+            <thead>
+              <tr className="fs-6">
+                {!(props.mode === "view") ? (
+                  <th className="bg-primary align-middle col-1">Menu</th>
+                ) : null}
+                <th className="bg-primary align-middle col">#</th>
+                <th className="bg-primary align-middle col">Project name</th>
+                <th className="bg-primary align-middle col">Adapter code</th>
+                <th className="bg-primary align-middle col">Fixture type</th>
+                <th className="bg-primary align-middle col-2">Owner email</th>
+                <th className="bg-primary align-middle col-1">Contacts</th>
+                <th className="bg-primary align-middle col-1">Limit</th>
+                <th className="bg-primary align-middle col-1">Warning</th>
+                <th className="bg-primary align-middle col">Resets</th>
+                <th className="bg-primary align-middle col-2">Modified by</th>
+                <th className="bg-primary align-middle col-1">Last update</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="">
+                {!(props.mode === "view") ? (
+                  <td className="bg-primary"></td>
+                ) : null}
+                <td className="bg-primary p-0 m-0">
+                  <button
+                    className="btn btn-primary menubuttons"
+                    type="button"
+                    onClick={checkInputValue}
+                  >
+                    <Image
+                      src="/funnel-fill.svg"
+                      width={!(props.mode === "view") ? 50 : 25}
+                      height={!(props.mode === "view") ? 50 : 25}
+                      alt="filterPic"
+                      className="img-fluid"
+                    ></Image>
+                  </button>
+                </td>
 
-                      {EditModeForAllEntries &&
-                      !EditModeForAllEntries[counterInfoDB.indexOf(Project)]
-                        ?.editMode ? (
-                        <button
-                          id={counterInfoDB.indexOf(Project) + 1}
-                          className="btn btn-primary me-2 mb-1 btn-sm pt-2 menubuttons"
-                          onClick={handleEditButton}
-                          title="Edit"
-                        >
-                          <Image
-                            id={counterInfoDB.indexOf(Project) + 1}
-                            src="/edit.svg"
-                            width={20}
-                            height={20}
-                            alt="Edit"
-                            className=""
-                            priority
-                          ></Image>
-                        </button>
-                      ) : (
-                        <button
-                          onClick={handleSaveButton}
-                          id={counterInfoDB.indexOf(Project) + 1}
-                          className="btn btn-success me-2 mb-1 btn-sm pt-2 menubuttons"
-                          title="Save"
-                        >
-                          <Image
-                            id={counterInfoDB.indexOf(Project) + 1}
-                            src="/save.svg"
-                            width={20}
-                            height={20}
-                            alt="Save"
-                            className=""
-                            priority
-                          ></Image>
-                        </button>
-                      )}
-                    </td>
-                  ) : null}
+                <td className="bg-primary px-1">
+                  <input
+                    ref={inputFilterProjectName}
+                    name="filterInputProjectName"
+                    type="text"
+                    className="form-control fw-bolder"
+                    placeholder="Filter"
+                    aria-label="Project"
+                  ></input>
+                </td>
+                <td className="bg-primary px-1"></td>
+                <td className="bg-primary">
+                  <input
+                    ref={inputFilterFixtureType}
+                    name="inputFilterFixtureType"
+                    type="text"
+                    className="form-control fw-bolder"
+                    placeholder="Filter"
+                    aria-label="Fixture type"
+                  ></input>
+                </td>
+                <td className="bg-primary px-1">
+                  <input
+                    ref={inputFilterOwnerEmail}
+                    name="filterInputOwner"
+                    type="text"
+                    className="form-control fw-bolder"
+                    placeholder="Filter"
+                    aria-label="Project"
+                  ></input>
+                </td>
+                <td className="bg-primary px-1"></td>
+                <td className="bg-primary px-1"></td>
+                <td className="bg-primary px-1"></td>
+                <td className="bg-primary px-1"></td>
+                <td className="bg-primary px-1"></td>
+                <td className="bg-primary px-1"></td>
+              </tr>
 
-                  <td
-                    className={
-                      highlightProject[counterInfoDB.indexOf(Project)]
-                        ?.highlightTypeClass
-                    }
-                  >
-                    {" "}
-                    {counterInfoDB.indexOf(Project) + 1}
-                  </td>
-                  <td
-                    className={
-                      highlightProject[counterInfoDB.indexOf(Project)]
-                        ?.highlightTypeClass
-                    }
-                  >
-                    {Project.project_name}
-                  </td>
-                  <td
-                    className={
-                      highlightProject[counterInfoDB.indexOf(Project)]
-                        ?.highlightTypeClass
-                    }
-                  >
-                    {Project.adapter_code}
-                  </td>
-                  <td
-                    className={
-                      highlightProject[counterInfoDB.indexOf(Project)]
-                        ?.highlightTypeClass
-                    }
-                  >
-                    {Project.fixture_type}
-                  </td>
-                  <td
-                    className={
-                      highlightProject[counterInfoDB.indexOf(Project)]
-                        ?.highlightTypeClass
-                    }
-                  >
-                    {EditModeForAllEntries &&
-                    !EditModeForAllEntries[counterInfoDB.indexOf(Project)]
-                      ?.editMode ? (
-                      Project.owner_email
-                    ) : (
-                      <input
-                        id={`${counterInfoDB.indexOf(Project)}_owner_email`}
-                        name="owner_email_edit"
-                        type="email"
-                        className="form-control-sm fw-bolder w-100"
-                        placeholder="Owner email"
-                        aria-label="Owner"
-                      ></input>
-                    )}
-                  </td>
-                  <td
-                    className={
-                      highlightProject[counterInfoDB.indexOf(Project)]
-                        ?.highlightTypeClass
-                    }
-                  >
-                    {Project.contacts}
-                  </td>
-                  <td
-                    className={
-                      highlightProject[counterInfoDB.indexOf(Project)]
-                        ?.highlightTypeClass
-                    }
-                  >
-                    {EditModeForAllEntries &&
-                    !EditModeForAllEntries[counterInfoDB.indexOf(Project)]
-                      ?.editMode ? (
-                      Project.contacts_limit
-                    ) : (
-                      <input
-                        id={`${counterInfoDB.indexOf(Project)}_contacts_limit`}
-                        name="contacts_limit_edit"
-                        type="number"
-                        className="form-control-sm fw-bolder w-75"
-                        placeholder="Limit"
-                        aria-label="Limit"
-                      ></input>
-                    )}
-                  </td>
-                  <td
-                    className={
-                      highlightProject[counterInfoDB.indexOf(Project)]
-                        ?.highlightTypeClass
-                    }
-                  >
-                    {EditModeForAllEntries &&
-                    !EditModeForAllEntries[counterInfoDB.indexOf(Project)]
-                      ?.editMode ? (
-                      Project.warning_at
-                    ) : (
-                      <input
-                        id={`${counterInfoDB.indexOf(Project)}_warning_at`}
-                        name="warning_at_edit"
-                        type="number"
-                        className="form-control-sm fw-bolder w-75"
-                        placeholder="Warning"
-                        aria-label="Warning"
-                        required
-                      ></input>
-                    )}
-                  </td>
-                  <td
-                    className={
-                      highlightProject[counterInfoDB.indexOf(Project)]
-                        ?.highlightTypeClass
-                    }
-                  >
-                    {Project.resets}
-                  </td>
-                  <td
-                    className={
-                      highlightProject[counterInfoDB.indexOf(Project)]
-                        ?.highlightTypeClass
-                    }
-                  >
-                    {Project.modified_by}
-                  </td>
-                  {
-                    <td
-                      className={
-                        highlightProject[counterInfoDB.indexOf(Project)]
-                          ?.highlightTypeClass
+              {counterInfoDB.map((Project: any) => {
+                if (
+                  Project.project_name
+                    .toLowerCase()
+                    .includes(projectNameFilter.toLowerCase()) &&
+                  Project.owner_email
+                    .toLowerCase()
+                    .includes(ownerEmailFilter.toLowerCase()) &&
+                  Project.fixture_type
+                    .toLowerCase()
+                    .includes(fixtureTypeFilter.toLowerCase())
+                )
+                  return (
+                    <tr key={counterInfoDB.indexOf(Project)}>
+                      {!(props.mode === "view") ? (
+                        <td>
+                          <button
+                            onClick={handleResetButton}
+                            id={counterInfoDB.indexOf(Project) + 1}
+                            className="btn btn-secondary me-2 mb-1 btn-sm pt-2 menubuttons"
+                            title="Reset"
+                          >
+                            <Image
+                              id={counterInfoDB.indexOf(Project) + 1}
+                              src="/reset.svg"
+                              width={20}
+                              height={20}
+                              alt="Reset"
+                              priority
+                            ></Image>
+                          </button>
+                          <button
+                            onClick={handleDeleteButton}
+                            className="btn btn-danger me-2 mb-1 btn-sm pt-2 menubuttons"
+                            title="Delete"
+                            id={counterInfoDB.indexOf(Project) + 1}
+                          >
+                            <Image
+                              id={counterInfoDB.indexOf(Project) + 1}
+                              src="/delete.svg"
+                              width={20}
+                              height={20}
+                              alt="Delete"
+                              className=""
+                              priority
+                            ></Image>
+                          </button>
+
+                          {EditModeForAllEntries &&
+                          !EditModeForAllEntries[counterInfoDB.indexOf(Project)]
+                            ?.editMode ? (
+                            <button
+                              id={counterInfoDB.indexOf(Project) + 1}
+                              className="btn btn-primary me-2 mb-1 btn-sm pt-2 menubuttons"
+                              onClick={handleEditButton}
+                              title="Edit"
+                            >
+                              <Image
+                                id={counterInfoDB.indexOf(Project) + 1}
+                                src="/edit.svg"
+                                width={20}
+                                height={20}
+                                alt="Edit"
+                                className=""
+                                priority
+                              ></Image>
+                            </button>
+                          ) : (
+                            <button
+                              onClick={handleSaveButton}
+                              id={counterInfoDB.indexOf(Project) + 1}
+                              className="btn btn-success me-2 mb-1 btn-sm pt-2 menubuttons"
+                              title="Save"
+                            >
+                              <Image
+                                id={counterInfoDB.indexOf(Project) + 1}
+                                src="/save.svg"
+                                width={20}
+                                height={20}
+                                alt="Save"
+                                className=""
+                                priority
+                              ></Image>
+                            </button>
+                          )}
+                        </td>
+                      ) : null}
+
+                      <td
+                        className={
+                          highlightProject[counterInfoDB.indexOf(Project)]
+                            ?.highlightTypeClass
+                        }
+                      >
+                        {" "}
+                        {counterInfoDB.indexOf(Project) + 1}
+                      </td>
+                      <td
+                        className={
+                          highlightProject[counterInfoDB.indexOf(Project)]
+                            ?.highlightTypeClass
+                        }
+                      >
+                        {Project.project_name}
+                      </td>
+                      <td
+                        className={
+                          highlightProject[counterInfoDB.indexOf(Project)]
+                            ?.highlightTypeClass
+                        }
+                      >
+                        {Project.adapter_code}
+                      </td>
+                      <td
+                        className={
+                          highlightProject[counterInfoDB.indexOf(Project)]
+                            ?.highlightTypeClass
+                        }
+                      >
+                        {Project.fixture_type}
+                      </td>
+                      <td
+                        className={
+                          highlightProject[counterInfoDB.indexOf(Project)]
+                            ?.highlightTypeClass
+                        }
+                      >
+                        {EditModeForAllEntries &&
+                        !EditModeForAllEntries[counterInfoDB.indexOf(Project)]
+                          ?.editMode ? (
+                          Project.owner_email
+                        ) : (
+                          <input
+                            id={`${counterInfoDB.indexOf(Project)}_owner_email`}
+                            name="owner_email_edit"
+                            type="email"
+                            className="form-control fw-bolder w-100"
+                            placeholder="Owner email"
+                            aria-label="Owner"
+                          ></input>
+                        )}
+                      </td>
+                      <td
+                        className={
+                          highlightProject[counterInfoDB.indexOf(Project)]
+                            ?.highlightTypeClass
+                        }
+                      >
+                        {Project.contacts}
+                      </td>
+                      <td
+                        className={
+                          highlightProject[counterInfoDB.indexOf(Project)]
+                            ?.highlightTypeClass
+                        }
+                      >
+                        {EditModeForAllEntries &&
+                        !EditModeForAllEntries[counterInfoDB.indexOf(Project)]
+                          ?.editMode ? (
+                          Project.contacts_limit
+                        ) : (
+                          <input
+                            id={`${counterInfoDB.indexOf(
+                              Project
+                            )}_contacts_limit`}
+                            name="contacts_limit_edit"
+                            type="number"
+                            className="form-control fw-bolder m-auto"
+                            placeholder="Limit"
+                            aria-label="Limit"
+                          ></input>
+                        )}
+                      </td>
+                      <td
+                        className={
+                          highlightProject[counterInfoDB.indexOf(Project)]
+                            ?.highlightTypeClass
+                        }
+                      >
+                        {EditModeForAllEntries &&
+                        !EditModeForAllEntries[counterInfoDB.indexOf(Project)]
+                          ?.editMode ? (
+                          Project.warning_at
+                        ) : (
+                          <input
+                            id={`${counterInfoDB.indexOf(Project)}_warning_at`}
+                            name="warning_at_edit"
+                            type="number"
+                            className="form-control fw-bolder m-auto"
+                            placeholder="Warning"
+                            aria-label="Warning"
+                            required
+                          ></input>
+                        )}
+                      </td>
+                      <td
+                        className={
+                          highlightProject[counterInfoDB.indexOf(Project)]
+                            ?.highlightTypeClass
+                        }
+                      >
+                        {Project.resets}
+                      </td>
+                      <td
+                        className={
+                          highlightProject[counterInfoDB.indexOf(Project)]
+                            ?.highlightTypeClass
+                        }
+                      >
+                        {Project.modified_by}
+                      </td>
+                      {
+                        <td
+                          className={
+                            highlightProject[counterInfoDB.indexOf(Project)]
+                              ?.highlightTypeClass
+                          }
+                        >
+                          {new Date(Project.last_update).getFullYear()}-
+                          {new Date(Project.last_update).getMonth()}-
+                          {new Date(Project.last_update).getDate()} &nbsp;
+                          {new Date(Project.last_update).getHours()}:
+                          {String(
+                            new Date(Project.last_update).getMinutes()
+                          ).padStart(2, "0")}
+                          :{new Date(Project.last_update).getSeconds()}
+                        </td>
                       }
-                    >
-                      {new Date(Project.last_update).getFullYear()}-
-                      {new Date(Project.last_update).getMonth()}-
-                      {new Date(Project.last_update).getDate()} &nbsp;
-                      {new Date(Project.last_update).getHours()}:
-                      {String(
-                        new Date(Project.last_update).getMinutes()
-                      ).padStart(2, "0")}
-                      :{new Date(Project.last_update).getSeconds()}
-                    </td>
-                  }
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+                    </tr>
+                  );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </>
     );
   } else if (connectionTimedOut) {
     return (
-      <div className="d-flex flex-column align-items-center justify-content-center h-100">
-        <Image
-          src="/undraw_questions_re_1fy7.svg"
-          height={250}
-          width={800}
-          alt="Error Picture"
-          priority
-          className="animate__animated animate__bounceIn"
-        ></Image>
-        <p className="text-danger display-3 text-center p-5">
-          Database did not respond, please contact your administrator!
-        </p>
-      </div>
+      <>
+        <div className="d-flex flex-column align-items-center justify-content-center h-100">
+          <Image
+            src="/undraw_questions_re_1fy7.svg"
+            height={250}
+            width={800}
+            alt="Error Picture"
+            priority
+            className="animate__animated animate__bounceIn"
+          ></Image>
+          <p className="text-danger display-3 text-center p-5">
+            Database did not respond, please contact your administrator!
+          </p>
+        </div>
+      </>
     );
   } else
     return (
-      <div className="d-flex flex-column align-items-center justify-content-center h-100">
-        <div className="d-flex justify-content-center">
-          <div
-            className="spinner-grow text-primary"
-            style={{ width: "10rem", height: "10rem" }}
-            role="status"
-          >
-            <span className=""></span>
+      <>
+        <div className="d-flex flex-column align-items-center justify-content-center h-100">
+          <div className="d-flex justify-content-center">
+            <div
+              className="spinner-grow text-primary"
+              style={{ width: "10rem", height: "10rem" }}
+              role="status"
+            >
+              <span className=""></span>
+            </div>
+          </div>
+          <div className="d-flex justify-content-center p-5">
+            <p className="text-white display-5">Loading data...</p>
           </div>
         </div>
-        <div className="d-flex justify-content-center p-5">
-          <p className="text-white display-5">Loading data...</p>
-        </div>
-      </div>
+      </>
     );
 };
 

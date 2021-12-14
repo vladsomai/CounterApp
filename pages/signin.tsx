@@ -157,7 +157,7 @@ const Signin = ({ csrfToken }: any) => {
                   ></input>
                   <button
                     type="submit"
-                    className="btn btn-primary fw-bold fs-2"
+                    className="btn btn-primary fw-bold fs-2 scaleEffect"
                   >
                     Sign in
                   </button>
@@ -179,7 +179,7 @@ const Signin = ({ csrfToken }: any) => {
                     className={modalProps.className}
                   />
                   <button
-                    className="btn btn-primary fs-3 m-auto fw-bold"
+                    className="btn btn-primary fs-3 m-auto fw-bold scaleEffect"
                     onClick={closeModal}
                   >
                     Close
