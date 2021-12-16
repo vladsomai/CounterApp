@@ -12,6 +12,7 @@ const ProjectsTable = (props: any) => {
   const isMounted = useRef(false);
   const inputFilterProjectName = useRef(null);
   const inputFilterOwnerEmail = useRef(null);
+  const inputFilterValue = useRef(null);
   const inputFilterFixtureType = useRef(null);
 
   const { data: session, status } = useSession();
@@ -324,13 +325,26 @@ const ProjectsTable = (props: any) => {
 
   const checkInputValue = (e: any) => {
     e.preventDefault();
+    setProjectNameFilter("");
+    setFixtureTypeFilter("");
+    setOwnerEmailFilter("");
+    const searchBy: string = e.target[0].value;
+    if (searchBy === "SearchBy") return;
+    const value = e.target[1].value;
 
-    // @ts-ignore: Object is possibly 'null'.
-    setProjectNameFilter(inputFilterProjectName.current.value);
-    // @ts-ignore: Object is possibly 'null'.
-    setOwnerEmailFilter(inputFilterOwnerEmail.current.value);
-    // @ts-ignore: Object is possibly 'null'.
-    setFixtureTypeFilter(inputFilterFixtureType.current.value);
+    switch (searchBy) {
+      case "SearchBy":
+        return;
+      case "ProjectName":
+        setProjectNameFilter(value);
+        return;
+      case "FixtureType":
+        setFixtureTypeFilter(value);
+        return;
+      case "OwnerEmail":
+        setOwnerEmailFilter(value);
+        return;
+    }
   };
 
   useEffect(() => {
@@ -344,8 +358,52 @@ const ProjectsTable = (props: any) => {
   if (API_Responded) {
     return (
       <>
+        <form
+          onSubmit={checkInputValue}
+          className="d-flex flex-column flex-md-row mx-4 my-4 justify-content-start bg-grey align-items-center p-3 rounded shadowEffect border border-2  "
+        >
+          <select
+            className="form-select fw-bolder w-auto mx-2 my-2"
+            aria-label="Default select example"
+          >
+            <option className="fw-bolder" value="SearchBy">
+              Search by
+            </option>
+            <option className="fw-bolder" value="ProjectName">
+              Project name
+            </option>
+            <option className="fw-bolder" value="FixtureType">
+              Fixture type
+            </option>
+            <option className="fw-bolder" value="OwnerEmail">
+              Owner email
+            </option>
+          </select>
+
+          <input
+            ref={inputFilterValue}
+            name="inputFilterValue"
+            type="text"
+            className="form-control fw-bolder w-auto mx-2 my-2"
+            placeholder="Value"
+            aria-label="Filter"
+          ></input>
+          <button
+            className="btn btn-primary scaleEffect fs-6 fw-bolder w-auto "
+            type="submit"
+          >
+            Search
+            <Image
+              src="/search.svg"
+              width={20}
+              height={20}
+              alt="filterPic"
+              className="img-fluid pt-2 ms-1"
+            ></Image>
+          </button>
+        </form>
         <div className="table-responsive mx-4">
-          <table className="table table-sm mt-5 table-secondary fw-bold border-dark table-bordered text-center align-middle">
+          <table className="table table-sm table-secondary fw-bold border-dark table-bordered text-center align-middle">
             <thead>
               <tr className="fs-6">
                 {!(props.mode === "view") ? (
@@ -365,65 +423,6 @@ const ProjectsTable = (props: any) => {
               </tr>
             </thead>
             <tbody>
-              <tr className="">
-                {!(props.mode === "view") ? (
-                  <td className="bg-primary"></td>
-                ) : null}
-                <td className="bg-primary p-0 m-0">
-                  <button
-                    className="btn btn-primary menubuttons"
-                    type="button"
-                    onClick={checkInputValue}
-                  >
-                    <Image
-                      src="/funnel-fill.svg"
-                      width={!(props.mode === "view") ? 50 : 25}
-                      height={!(props.mode === "view") ? 50 : 25}
-                      alt="filterPic"
-                      className="img-fluid"
-                    ></Image>
-                  </button>
-                </td>
-
-                <td className="bg-primary px-1">
-                  <input
-                    ref={inputFilterProjectName}
-                    name="filterInputProjectName"
-                    type="text"
-                    className="form-control fw-bolder"
-                    placeholder="Filter"
-                    aria-label="Project"
-                  ></input>
-                </td>
-                <td className="bg-primary px-1"></td>
-                <td className="bg-primary">
-                  <input
-                    ref={inputFilterFixtureType}
-                    name="inputFilterFixtureType"
-                    type="text"
-                    className="form-control fw-bolder"
-                    placeholder="Filter"
-                    aria-label="Fixture type"
-                  ></input>
-                </td>
-                <td className="bg-primary px-1">
-                  <input
-                    ref={inputFilterOwnerEmail}
-                    name="filterInputOwner"
-                    type="text"
-                    className="form-control fw-bolder"
-                    placeholder="Filter"
-                    aria-label="Project"
-                  ></input>
-                </td>
-                <td className="bg-primary px-1"></td>
-                <td className="bg-primary px-1"></td>
-                <td className="bg-primary px-1"></td>
-                <td className="bg-primary px-1"></td>
-                <td className="bg-primary px-1"></td>
-                <td className="bg-primary px-1"></td>
-              </tr>
-
               {counterInfoDB.map((Project: any) => {
                 if (
                   Project.project_name

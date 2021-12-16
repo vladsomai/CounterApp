@@ -14,6 +14,7 @@ const EditProjects = () => {
   const [triggerFetch, setTriggerFetch] = useState(false);
 
   const modalElement = useRef(null);
+  const closeModalBtn = useRef(null);
   const parentModalElement = useRef(null);
 
   const [modalProps, setModalProps] = useState<ModalProps>({
@@ -55,6 +56,8 @@ const EditProjects = () => {
     }
     setTriggerFetch(true);
     setModalProps(parameters);
+    // @ts-ignore: Object is possibly 'null'.
+    closeModalBtn.current.focus();
   };
 
   const closeModal = () => {
@@ -107,6 +110,7 @@ const EditProjects = () => {
                   className={modalProps.className}
                 />
                 <button
+                  ref={closeModalBtn}
                   className="btn btn-primary fs-3 m-auto fw-bold scaleEffect"
                   onClick={closeModal}
                 >

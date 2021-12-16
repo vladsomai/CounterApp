@@ -89,3 +89,11 @@ div::-webkit-scrollbar-thumb {
 .scaleEffect:hover{
     transform: scale(1.05, 1.05);
 }
+.shadowEffect{
+    box-shadow: 2px 2px 5px #DDD;
+}
+
+.bg-grey{
+background-color: #ccdcf3;
+
+}

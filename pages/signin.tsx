@@ -11,6 +11,8 @@ const Signin = ({ csrfToken }: any) => {
   const { data: session, status } = useSession();
   const { error } = useRouter().query;
   const modalElement = useRef(null);
+  const closeModalBtn = useRef(null);
+
   const router = useRouter();
   const parentModalElement = useRef(null);
   const [modalProps, setModalProps] = useState<ModalProps>({
@@ -72,6 +74,8 @@ const Signin = ({ csrfToken }: any) => {
       modalElement.current.classList.add("animate__bounceIn");
     }
     setModalProps(parameters);
+    // @ts-ignore: Object is possibly 'null'.
+    closeModalBtn.current.focus();
   };
   const submitSignin = (e: any) => {
     e.preventDefault();
@@ -95,10 +99,11 @@ const Signin = ({ csrfToken }: any) => {
       })
       .catch((err) => {
         setSigninError(true);
-        console.log(err)
+        console.log(err);
         openModal({
           title: "Error!",
-          description: "Something went wrong, please contact your administrator!",
+          description:
+            "Something went wrong, please contact your administrator!",
           pictureUrl: "/undraw_cancel_u-1-it.svg",
           className: "text-center",
         });
@@ -179,6 +184,7 @@ const Signin = ({ csrfToken }: any) => {
                     className={modalProps.className}
                   />
                   <button
+                    ref={closeModalBtn}
                     className="btn btn-primary fs-3 m-auto fw-bold scaleEffect"
                     onClick={closeModal}
                   >
