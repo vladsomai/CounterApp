@@ -1,17 +1,16 @@
-import Head from "next/head";
 import Layout from "../components/layout";
-import Table from "../components/table";
+import Head from "next/head";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import AddNewProject from "../components/addNewProject";
-import { useRef, useState } from "react";
+import { useState, useRef } from "react";
 import Modal, { ModalProps } from "../components/modal";
+import Image from "next/image";
+import Link from "next/link";
 
-const EditProjects = () => {
+const CreateProject = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
-
-  const [triggerFetch, setTriggerFetch] = useState(false);
 
   const modalElement = useRef(null);
   const closeModalBtn = useRef(null);
@@ -54,15 +53,12 @@ const EditProjects = () => {
       // @ts-ignore: Object is possibly 'null'.
       modalElement.current.classList.add("animate__bounceIn");
     }
-    setTriggerFetch(true);
     setModalProps(parameters);
     // @ts-ignore: Object is possibly 'null'.
     closeModalBtn.current.focus();
   };
 
   const closeModal = () => {
-    setTriggerFetch(false);
-
     if (modalElement.current && parentModalElement.current) {
       // @ts-ignore: Object is possibly 'null'.
       modalElement.current.classList.remove("animate__bounceIn");
@@ -77,20 +73,26 @@ const EditProjects = () => {
       }, 650);
     }
   };
-
   if (status === "authenticated") {
     return (
       <>
         <Head>
-          <title>Edit projects</title>
+          <title>Create project</title>
         </Head>
 
-        <div className="padingTopBottom">
-          <div className="tableOverflowEdit">
-            <Table
-              triggerFetchProp={triggerFetch}
-              openModalAction={openModal}
-            />
+          <div className="padingTopBottom ">
+            <div className="bg-light w-50 rounded-pill text-center mb-5 m-auto">
+              <Image
+                src="/create_project.svg"
+                width={520}
+                height={400}
+                priority
+                alt="createProject"
+                className=""
+              ></Image>
+            </div>
+
+            <AddNewProject openModalAction={openModal} />
           </div>
 
           <div className="d-none" ref={parentModalElement}>
@@ -105,14 +107,21 @@ const EditProjects = () => {
                   pictureUrl={modalProps.pictureUrl}
                   className={modalProps.className}
                 />
-                <button
-                  ref={closeModalBtn}
-                  className="btn btn-primary fs-3 m-auto fw-bold scaleEffect"
-                  onClick={closeModal}
-                >
-                  Close
-                </button>
-              </div>
+
+                <div className="d-flex flex-column justify-content-around">
+                  <button
+                    ref={closeModalBtn}
+                    className="btn btn-danger fs-3 m-auto fw-bold scaleEffect"
+                    onClick={closeModal}
+                  >
+                    Close
+                  </button>
+                  <Link href="/" passHref={true}>
+                    <button className="btn btn-info fs-3 m-auto fw-bold scaleEffect mt-3">
+                      Navigate to project view
+                    </button>
+                  </Link>
+                </div>
             </div>
           </div>
         </div>
@@ -148,8 +157,8 @@ const EditProjects = () => {
   }
 };
 
-export default EditProjects;
+export default CreateProject;
 
-EditProjects.getLayout = function getLayout(page: any) {
+CreateProject.getLayout = function getLayout(page: any) {
   return <Layout>{page}</Layout>;
 };

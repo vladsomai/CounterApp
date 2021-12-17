@@ -35,18 +35,26 @@ const Navbar = () => {
           </Link>
         )}
 
-        <ul className="list-unstyled display-6 d-flex pt-3 pb-4 pb-md-0 justify-content-around align-items-center">
+        <ul className="list-unstyled display-6 d-flex pt-3 pb-4 pb-md-0 justify-align-content-between align-items-center">
           {session ? (
-            <li className="nav-item pt-3 pt-md-0">
-              <Link href="" passHref={true}>
-                <button
-                  className="btn btn-primary fw-bold fs-3 scaleEffect"
-                  onClick={() => signOut()}
-                >
-                  Sign out
-                </button>
-              </Link>
-            </li>
+            <>
+              <li className="nav-item pt-3 pt-md-0">
+                <Link href="/createproject" passHref={true}>
+                  <button
+                    className="btn btn-primary fw-bold fs-3 scaleEffect me-5"
+                  >
+                    Create project
+                  </button>
+                </Link>
+              </li>
+              <li className="nav-item pt-3 pt-md-0">
+                <Link href="" passHref={true}>
+                  <button className="btn btn-primary fw-bold fs-3 scaleEffect" onClick={()=>{signOut()}}>
+                    Sign out
+                  </button>
+                </Link>
+              </li>
+            </>
           ) : (
             <li className="nav-item pt-3 pt-md-0">
               <Link href="/signin" passHref={true}>

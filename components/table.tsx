@@ -10,13 +10,9 @@ const ProjectsTable = (props: any) => {
   const [fixtureTypeFilter, setFixtureTypeFilter] = useState<any>("");
   const [connectionTimedOut, setConnectionTimedOut] = useState<any>(false);
   const isMounted = useRef(false);
-  const inputFilterProjectName = useRef(null);
-  const inputFilterOwnerEmail = useRef(null);
   const inputFilterValue = useRef(null);
-  const inputFilterFixtureType = useRef(null);
 
   const { data: session, status } = useSession();
-  let filterValue = "";
 
   const [EditModeForAllEntries, setEditMode] = useState<any>();
 
@@ -150,7 +146,7 @@ const ProjectsTable = (props: any) => {
         ${updateOwnerOK ? "Owner email" : ""}
         ${updateContactsLimitAndWarningOK ? " Contacts limit and Warning " : ""}
         !`,
-          pictureUrl: "/undraw_confirmation_re_b6q5.svg",
+          pictureUrl: "/confirm_OK.svg",
           className: "text-center",
         });
       }
@@ -182,7 +178,7 @@ const ProjectsTable = (props: any) => {
         props.openModalAction({
           title: "Success!",
           description: `Fixture with code ${projectToBeReseted.adapter_code} from ${projectToBeReseted.fixture_type} has been reset to 0 contacts!`,
-          pictureUrl: "/undraw_confirmation_re_b6q5.svg",
+          pictureUrl: "/confirm_OK.svg",
           className: "text-center",
         });
         fetchDataDB();
@@ -211,7 +207,7 @@ const ProjectsTable = (props: any) => {
         props.openModalAction({
           title: "Success!",
           description: `Fixture with code ${projectToBeDeleted.adapter_code} from ${projectToBeDeleted.fixture_type} has been deleted!`,
-          pictureUrl: "/undraw_confirmation_re_b6q5.svg",
+          pictureUrl: "/confirm_OK.svg",
           className: "text-center",
         });
         fetchDataDB();
@@ -384,8 +380,8 @@ const ProjectsTable = (props: any) => {
             ref={inputFilterValue}
             name="inputFilterValue"
             type="text"
-            className="form-control fw-bolder w-auto mx-2 my-2"
-            placeholder="Value"
+            className="form-control fw-bolder w-25 mx-2 my-2"
+            placeholder="What are you looking for?"
             aria-label="Filter"
           ></input>
           <button

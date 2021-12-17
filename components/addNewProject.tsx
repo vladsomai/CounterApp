@@ -36,7 +36,7 @@ const AddNewProject = (props: any) => {
             props.openModalAction({
               title: "Success!",
               description: "Project has been successfully created!",
-              pictureUrl: "/undraw_confirmation_re_b6q5.svg",
+              pictureUrl: "/confirm_OK.svg",
               className: "text-center",
             });
             e.target.reset();
@@ -50,21 +50,16 @@ const AddNewProject = (props: any) => {
 
   return (
     <>
-      <div className="cointainer d-flex flex-column justify-content-center align-items-center">
-        <div className="d-flex justify-content-around w-auto">
-          <p className="display-6 text-light text-center">
-            Create a new project
-          </p>
-        </div>
+      <div className="container text-center ">
         <form
-          className="d-flex flex-column flex-md-row"
+          className="d-flex flex-column w-50 m-auto justify-content-center align-items-center"
           method="post"
           onSubmit={handleInsertButton}
         >
           <input
             name="project_name"
             type="text"
-            className="form-control fs-6 fw-bolder me-2 col mb-3"
+            className="form-control fs-6 fw-bolder col mb-3"
             placeholder="Project name"
             aria-label="Project"
             required
@@ -72,7 +67,7 @@ const AddNewProject = (props: any) => {
           <input
             name="adapter_code"
             type="number"
-            className="form-control fs-6 fw-bolder me-2 col mb-3"
+            className="form-control fs-6 fw-bolder col mb-3"
             placeholder="Adapter code"
             aria-label="Adapter"
             required
@@ -80,7 +75,7 @@ const AddNewProject = (props: any) => {
           <input
             name="fixture_type"
             type="text"
-            className="form-control fs-6 fw-bolder me-2 col mb-3"
+            className="form-control fs-6 fw-bolder col mb-3"
             placeholder="Fixture type"
             aria-label="Fixture type"
             required
@@ -88,7 +83,7 @@ const AddNewProject = (props: any) => {
           <input
             name="owner_email"
             type="email"
-            className="form-control fs-6 fw-bolder me-2 col mb-3"
+            className="form-control fs-6 fw-boldercol mb-3"
             placeholder="Owner email"
             aria-label="Owner"
             required
@@ -96,7 +91,7 @@ const AddNewProject = (props: any) => {
           <input
             name="contacts_limit"
             type="number"
-            className="form-control fs-6 fw-bolder me-2 col mb-3"
+            className="form-control fs-6 fw-bolder col mb-3"
             placeholder="Limit"
             aria-label="Limit"
             required
@@ -104,7 +99,7 @@ const AddNewProject = (props: any) => {
           <input
             name="warning_at"
             type="number"
-            className="form-control fs-6 fw-bolder me-2 col mb-3"
+            className="form-control fs-6 fw-bolder col mb-3"
             placeholder="Warning"
             aria-label="Warning"
             required
