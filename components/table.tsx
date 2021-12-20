@@ -399,7 +399,7 @@ const ProjectsTable = (props: any) => {
           </button>
         </form>
         <div className="table-responsive mx-4">
-          <table className="table table-sm table-secondary fw-bold border-dark table-bordered text-center align-middle">
+          <table className="table table-sm table-secondary fw-bold border-light table-bordered text-center align-middle table-hover">
             <thead>
               <tr className="fs-6">
                 {!(props.mode === "view") ? (

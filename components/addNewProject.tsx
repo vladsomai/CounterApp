@@ -83,7 +83,7 @@ const AddNewProject = (props: any) => {
           <input
             name="owner_email"
             type="email"
-            className="form-control fs-6 fw-boldercol mb-3"
+            className="form-control fs-6 fw-bolder col mb-3"
             placeholder="Owner email"
             aria-label="Owner"
             required

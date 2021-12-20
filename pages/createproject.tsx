@@ -80,8 +80,8 @@ const CreateProject = () => {
           <title>Create project</title>
         </Head>
 
-          <div className="padingTopBottom ">
-            <div className="bg-light w-50 rounded-pill text-center mb-5 m-auto">
+          <div className="padingTopBottom my-4">
+            <div className="bg-light w-25 rounded text-center mb-5 m-auto">
               <Image
                 src="/create_project.svg"
                 width={520}
