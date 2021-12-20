@@ -354,7 +354,7 @@ const ProjectsTable = (props: any) => {
     return () => {
       isMounted.current = false;
     };
-  }, [props.triggerFetchProp, projectNameFilter]);
+  }, [props.triggerFetchProp, fetchDataDB, projectNameFilter]);
 
   if (API_Responded) {
     return (

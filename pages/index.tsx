@@ -10,25 +10,27 @@ const Home = () => {
   const router = useRouter();
   const [triggerFetch, setTriggerFetch] = useState(false);
 
+  //Set a fetch interval for new data - used for reloading data in production screen
+  useEffect(() => {
+    let intervalID = setInterval(() => {
+      if (triggerFetch) {
+        setTriggerFetch(false);
+      } else {
+        setTriggerFetch(true);
+      }
+    }, 10000);
+
+    return () => {
+      clearInterval(intervalID);
+    };
+  }, [triggerFetch]);
+
   if (session) {
     try {
       router.push("/signin");
     } catch (err) {}
     return null;
   }
-
-  //Set a fetch interval for new data - used for reloading data in production screen
-  useEffect(() => {
-    let intervalID = setInterval(() => {
-      setTriggerFetch(true);
-      setTriggerFetch(false);
-    }, 10000);
-
-    return () => {
-      clearInterval(intervalID);
-    };
-  }, []);
-
   return (
     <>
       <Head>
