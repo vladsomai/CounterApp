@@ -59,7 +59,7 @@ const AddNewProject = (props: any) => {
           <input
             name="project_name"
             type="text"
-            className="form-control fs-6 fw-bolder col mb-3"
+            className="form-control fs-5 fw-bolder col mb-3"
             placeholder="Project name"
             aria-label="Project"
             required
@@ -67,7 +67,7 @@ const AddNewProject = (props: any) => {
           <input
             name="adapter_code"
             type="number"
-            className="form-control fs-6 fw-bolder col mb-3"
+            className="form-control fs-5 fw-bolder col mb-3"
             placeholder="Adapter code"
             aria-label="Adapter"
             required
@@ -75,7 +75,7 @@ const AddNewProject = (props: any) => {
           <input
             name="fixture_type"
             type="text"
-            className="form-control fs-6 fw-bolder col mb-3"
+            className="form-control fs-5 fw-bolder col mb-3"
             placeholder="Fixture type"
             aria-label="Fixture type"
             required
@@ -83,7 +83,7 @@ const AddNewProject = (props: any) => {
           <input
             name="owner_email"
             type="email"
-            className="form-control fs-6 fw-bolder col mb-3"
+            className="form-control fs-5 fw-bolder col mb-3"
             placeholder="Owner email"
             aria-label="Owner"
             required
@@ -91,7 +91,7 @@ const AddNewProject = (props: any) => {
           <input
             name="contacts_limit"
             type="number"
-            className="form-control fs-6 fw-bolder col mb-3"
+            className="form-control fs-5 fw-bolder col mb-3"
             placeholder="Limit"
             aria-label="Limit"
             required
@@ -99,14 +99,14 @@ const AddNewProject = (props: any) => {
           <input
             name="warning_at"
             type="number"
-            className="form-control fs-6 fw-bolder col mb-3"
+            className="form-control fs-5 fw-bolder col mb-3"
             placeholder="Warning"
             aria-label="Warning"
             required
           ></input>
           <button
             type="submit"
-            className="btn btn-primary fw-bold text-nowrap col mb-3 scaleEffect"
+            className="btn btn-primary fs-4 fw-bold text-nowrap col mb-3 scaleEffect"
           >
             Create!
           </button>

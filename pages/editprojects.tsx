@@ -3,8 +3,7 @@ import Layout from "../components/layout";
 import Table from "../components/table";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import AddNewProject from "../components/addNewProject";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Modal, { ModalProps } from "../components/modal";
 
 const EditProjects = () => {

@@ -260,7 +260,11 @@ const ProjectsTable = (props: any) => {
           )
             throw "Cannot connect to DB";
           if (isMounted.current === true) {
-            setCounterInfoDB(resultJson.message);
+            //sort the array based on contacts
+            let sortedInfo = resultJson.message.sort((a: any, b: any) => {
+              return b.contacts - a.contacts;
+            });
+            setCounterInfoDB(sortedInfo);
             setAPI_Responded(true);
 
             setEditMode(
@@ -346,10 +350,11 @@ const ProjectsTable = (props: any) => {
   useEffect(() => {
     isMounted.current = true;
     fetchDataDB();
+
     return () => {
       isMounted.current = false;
     };
-  }, [props.triggerFetchProp, fetchDataDB, projectNameFilter]);
+  }, [props.triggerFetchProp, projectNameFilter]);
 
   if (API_Responded) {
     return (
