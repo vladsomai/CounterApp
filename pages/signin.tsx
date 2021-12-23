@@ -121,7 +121,7 @@ const Signin = ({ csrfToken }: any) => {
         <Head>
           <title>Signin</title>
         </Head>
-        <div className="fullScreen d-flex flex-column justify-content-center container">
+        <div className="screen-100 paddingTopBottomSignin d-flex flex-column justify-content-center container">
           <div className="d-flex flex-column justify-content-evenly">
             <div className="d-flex flex-column flex-md-row justify-content-between align-content-center position-relative">
               <Image

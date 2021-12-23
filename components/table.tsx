@@ -11,6 +11,8 @@ const ProjectsTable = (props: any) => {
   const [connectionTimedOut, setConnectionTimedOut] = useState<any>(false);
   const isMounted = useRef(false);
   const inputFilterValue = useRef(null);
+  const buttonHeight = 20;
+  const buttonWidth = 20;
 
   const { data: session, status } = useSession();
 
@@ -185,6 +187,15 @@ const ProjectsTable = (props: any) => {
       });
     }
   };
+  const handleInfoButton = (e: any) => {
+    props.openModalAction({
+      title: "Project description",
+      description: `Work in progress...`,
+      pictureUrl: "/confirm_OK.svg",
+      className: "text-center",
+    });
+  };
+
   const handleDeleteButton = (e: any) => {
     const indexOfEntryToBeDeleted = e.target.id - 1;
     const projectToBeDeleted = counterInfoDB[indexOfEntryToBeDeleted];
@@ -404,7 +415,7 @@ const ProjectsTable = (props: any) => {
           </button>
         </form>
         <div className="table-responsive mx-4">
-          <table className="table table-sm table-secondary fw-bold border-light table-bordered text-center align-middle table-hover">
+          <table className="table table-sm table-secondary fontSmall fw-bold border-light table-bordered text-center align-middle table-hover">
             <thead>
               <tr className="fs-6">
                 {!(props.mode === "view") ? (
@@ -449,8 +460,8 @@ const ProjectsTable = (props: any) => {
                             <Image
                               id={counterInfoDB.indexOf(Project) + 1}
                               src="/reset.svg"
-                              width={20}
-                              height={20}
+                              width={buttonWidth}
+                              height={buttonHeight}
                               alt="Reset"
                               priority
                             ></Image>
@@ -464,9 +475,25 @@ const ProjectsTable = (props: any) => {
                             <Image
                               id={counterInfoDB.indexOf(Project) + 1}
                               src="/delete.svg"
-                              width={20}
-                              height={20}
+                              width={buttonWidth}
+                              height={buttonHeight}
                               alt="Delete"
+                              className=""
+                              priority
+                            ></Image>
+                          </button>
+                          <button
+                            onClick={handleInfoButton}
+                            className="btn btn-info me-2 mb-1 btn-sm pt-2 menubuttons"
+                            title="Info"
+                            id={counterInfoDB.indexOf(Project) + 1}
+                          >
+                            <Image
+                              id={counterInfoDB.indexOf(Project) + 1}
+                              src="/file-earmark-text.svg"
+                              width={buttonWidth}
+                              height={buttonHeight}
+                              alt="Info"
                               className=""
                               priority
                             ></Image>
@@ -484,8 +511,8 @@ const ProjectsTable = (props: any) => {
                               <Image
                                 id={counterInfoDB.indexOf(Project) + 1}
                                 src="/edit.svg"
-                                width={20}
-                                height={20}
+                                width={buttonWidth}
+                                height={buttonHeight}
                                 alt="Edit"
                                 className=""
                                 priority
@@ -501,8 +528,8 @@ const ProjectsTable = (props: any) => {
                               <Image
                                 id={counterInfoDB.indexOf(Project) + 1}
                                 src="/save.svg"
-                                width={20}
-                                height={20}
+                                width={buttonWidth}
+                                height={buttonHeight}
                                 alt="Save"
                                 className=""
                                 priority
@@ -649,7 +676,7 @@ const ProjectsTable = (props: any) => {
                           {String(
                             new Date(Project.last_update).getMinutes()
                           ).padStart(2, "0")}
-                          :{new Date(Project.last_update).getSeconds()}
+                          {/* :{new Date(Project.last_update).getSeconds()} */}
                         </td>
                       }
                     </tr>
@@ -663,7 +690,7 @@ const ProjectsTable = (props: any) => {
   } else if (connectionTimedOut) {
     return (
       <>
-        <div className="d-flex flex-column align-items-center justify-content-center h-100">
+        <div className="d-flex flex-column align-items-center justify-content-center screen-80 ">
           <Image
             src="/undraw_questions_re_1fy7.svg"
             height={250}
@@ -681,7 +708,7 @@ const ProjectsTable = (props: any) => {
   } else
     return (
       <>
-        <div className="d-flex flex-column align-items-center justify-content-center h-100">
+        <div className="d-flex flex-column align-items-center justify-content-center screen-100 paddingTopBottom">
           <div className="d-flex justify-content-center">
             <div
               className="spinner-grow text-primary"
@@ -695,6 +722,7 @@ const ProjectsTable = (props: any) => {
             <p className="text-white display-5">Loading data...</p>
           </div>
         </div>
+
       </>
     );
 };

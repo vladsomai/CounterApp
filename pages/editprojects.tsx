@@ -30,7 +30,8 @@ const EditProjects = () => {
         modalElement.current.classList.remove(
           "bg-danger",
           "bg-success",
-          "bg-warning"
+          "bg-warning",
+          "bg-info"
         );
         // @ts-ignore: Object is possibly 'null'.
         modalElement.current.classList.add("bg-danger");
@@ -39,12 +40,22 @@ const EditProjects = () => {
         modalElement.current.classList.remove(
           "bg-danger",
           "bg-success",
-          "bg-warning"
+          "bg-warning",
+          "bg-info"
         );
         // @ts-ignore: Object is possibly 'null'.
         modalElement.current.classList.add("bg-success");
+      } else if (parameters.title === "Project description") {
+        // @ts-ignore: Object is possibly 'null'.
+        modalElement.current.classList.remove(
+          "bg-danger",
+          "bg-success",
+          "bg-warning",
+          "bg-info"
+        );
+        // @ts-ignore: Object is possibly 'null'.
+        modalElement.current.classList.add("bg-info");
       }
-
       // @ts-ignore: Object is possibly 'null'.
       parentModalElement.current.classList.remove("d-none");
       // @ts-ignore: Object is possibly 'null'.
@@ -84,8 +95,8 @@ const EditProjects = () => {
           <title>Edit projects</title>
         </Head>
 
-        <div className="padingTopBottom">
-          <div className="tableOverflowEdit">
+        <div className="">
+          <div className="paddingTopBottom">
             <Table
               triggerFetchProp={triggerFetch}
               openModalAction={openModal}
@@ -123,7 +134,8 @@ const EditProjects = () => {
         <Head>
           <title>Loading...</title>
         </Head>
-        <div className="d-flex flex-column align-items-center justify-content-center h-100">
+
+        <div className="d-flex flex-column align-items-center justify-content-center screen-100 paddingTopBottom">
           <div className="d-flex justify-content-center">
             <div
               className="spinner-grow text-primary"

@@ -37,7 +37,7 @@ const Home = () => {
         <title>View projects</title>
       </Head>
 
-      <div className="tableOverflowView fullScreen">
+      <div className="paddingTopBottom">
         <Table triggerFetchProp={triggerFetch} mode={"view"} />
       </div>
     </>

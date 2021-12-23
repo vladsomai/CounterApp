@@ -1,7 +1,13 @@
 import { useSession } from "next-auth/react";
+import {useEffect, useRef, useState} from "react";
+import Image from "next/image";
 
 const AddNewProject = (props: any) => {
   const { data: session, status } = useSession();
+  const isMounted = useRef(false);
+  const [connectionTimedOut, setConnectionTimedOut] = useState<any>(false);
+
+
 
   const handleInsertButton = (e: any) => {
     e.preventDefault();
@@ -21,10 +27,17 @@ const AddNewProject = (props: any) => {
       .then((result: any) => result.json())
       .then((resultJSON: any) => {
         if (resultJSON.status === 500) {
-          resultJSON.message.includes("constraint")
-            ? (resultJSON.message =
-                "Please insert the limit higher than the warning!")
-            : null;
+          if (
+            resultJSON.message.code === "ER_ACCESS_DENIED_ERROR" ||
+            resultJSON.message.code === "ECONNREFUSED"
+          )
+            throw "Cannot connect to DB";
+          if (resultJSON.message?.includes("constraint")) {
+            resultJSON.message =
+              "Please insert the limit higher than the warning!";
+          }
+          console.log(resultJSON.message);
+
           props.openModalAction({
             title: "Error!",
             description: resultJSON.message,
@@ -44,15 +57,43 @@ const AddNewProject = (props: any) => {
         }
       })
       .catch((err) => {
-        console.log("fetch err ", err);
+        console.log(err);
+        if (isMounted.current === true) setConnectionTimedOut(true);
       });
   };
+  useEffect(()=>{
+    isMounted.current = true;
 
-  return (
+    return(()=>{
+       isMounted.current = false;
+    })
+  },[])
+
+  if(connectionTimedOut)
+  {
+    return(
+      <>
+        <div className="d-flex flex-column align-items-center justify-content-center screen-80 ">
+          <Image
+            src="/undraw_questions_re_1fy7.svg"
+            height={250}
+            width={800}
+            alt="Error Picture"
+            priority
+            className="animate__animated animate__bounceIn"
+          ></Image>
+          <p className="text-danger display-3 text-center p-5">
+            Database did not respond, please contact your administrator!
+          </p>
+        </div>
+      </>
+    );
+  }
+  else return (
     <>
-      <div className="container text-center ">
+      <div className="container text-center w-50 ">
         <form
-          className="d-flex flex-column w-50 m-auto justify-content-center align-items-center"
+          className="d-flex flex-column justify-content-center align-items-center"
           method="post"
           onSubmit={handleInsertButton}
         >
