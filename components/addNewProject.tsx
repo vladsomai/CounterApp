@@ -1,13 +1,11 @@
 import { useSession } from "next-auth/react";
-import {useEffect, useRef, useState} from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 const AddNewProject = (props: any) => {
   const { data: session, status } = useSession();
   const isMounted = useRef(false);
   const [connectionTimedOut, setConnectionTimedOut] = useState<any>(false);
-
-
 
   const handleInsertButton = (e: any) => {
     e.preventDefault();
@@ -61,17 +59,16 @@ const AddNewProject = (props: any) => {
         if (isMounted.current === true) setConnectionTimedOut(true);
       });
   };
-  useEffect(()=>{
+  useEffect(() => {
     isMounted.current = true;
 
-    return(()=>{
-       isMounted.current = false;
-    })
-  },[])
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
 
-  if(connectionTimedOut)
-  {
-    return(
+  if (connectionTimedOut) {
+    return (
       <>
         <div className="d-flex flex-column align-items-center justify-content-center screen-80 ">
           <Image
@@ -88,73 +85,73 @@ const AddNewProject = (props: any) => {
         </div>
       </>
     );
-  }
-  else return (
-    <>
-      <div className="container text-center w-50 ">
-        <form
-          className="d-flex flex-column justify-content-center align-items-center"
-          method="post"
-          onSubmit={handleInsertButton}
-        >
-          <input
-            name="project_name"
-            type="text"
-            className="form-control fs-5 fw-bolder col mb-3"
-            placeholder="Project name"
-            aria-label="Project"
-            required
-          ></input>
-          <input
-            name="adapter_code"
-            type="number"
-            className="form-control fs-5 fw-bolder col mb-3"
-            placeholder="Adapter code"
-            aria-label="Adapter"
-            required
-          ></input>
-          <input
-            name="fixture_type"
-            type="text"
-            className="form-control fs-5 fw-bolder col mb-3"
-            placeholder="Fixture type"
-            aria-label="Fixture type"
-            required
-          ></input>
-          <input
-            name="owner_email"
-            type="email"
-            className="form-control fs-5 fw-bolder col mb-3"
-            placeholder="Owner email"
-            aria-label="Owner"
-            required
-          ></input>
-          <input
-            name="contacts_limit"
-            type="number"
-            className="form-control fs-5 fw-bolder col mb-3"
-            placeholder="Limit"
-            aria-label="Limit"
-            required
-          ></input>
-          <input
-            name="warning_at"
-            type="number"
-            className="form-control fs-5 fw-bolder col mb-3"
-            placeholder="Warning"
-            aria-label="Warning"
-            required
-          ></input>
-          <button
-            type="submit"
-            className="btn btn-primary fs-4 fw-bold text-nowrap col mb-3 scaleEffect"
+  } else
+    return (
+      <>
+        <div className="container text-center w-50 ">
+          <form
+            className="d-flex flex-column justify-content-center align-items-center"
+            method="post"
+            onSubmit={handleInsertButton}
           >
-            Create!
-          </button>
-        </form>
-      </div>
-    </>
-  );
+            <input
+              name="project_name"
+              type="text"
+              className="form-control fs-5 fw-bolder col mb-3"
+              placeholder="Project name"
+              aria-label="Project"
+              required
+            ></input>
+            <input
+              name="adapter_code"
+              type="number"
+              className="form-control fs-5 fw-bolder col mb-3"
+              placeholder="Adapter code"
+              aria-label="Adapter"
+              required
+            ></input>
+            <input
+              name="fixture_type"
+              type="text"
+              className="form-control fs-5 fw-bolder col mb-3"
+              placeholder="Fixture type"
+              aria-label="Fixture type"
+              required
+            ></input>
+            <input
+              name="owner_email"
+              type="email"
+              className="form-control fs-5 fw-bolder col mb-3"
+              placeholder="Owner email"
+              aria-label="Owner"
+              required
+            ></input>
+            <input
+              name="contacts_limit"
+              type="number"
+              className="form-control fs-5 fw-bolder col mb-3"
+              placeholder="Limit"
+              aria-label="Limit"
+              required
+            ></input>
+            <input
+              name="warning_at"
+              type="number"
+              className="form-control fs-5 fw-bolder col mb-3"
+              placeholder="Warning"
+              aria-label="Warning"
+              required
+            ></input>
+            <button
+              type="submit"
+              className="btn btn-primary fs-4 fw-bold text-nowrap col mb-3 scaleEffect"
+            >
+              Create!
+            </button>
+          </form>
+        </div>
+      </>
+    );
 };
 export default AddNewProject;
 

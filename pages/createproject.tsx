@@ -79,49 +79,46 @@ const CreateProject = () => {
         <Head>
           <title>Create project</title>
         </Head>
-
-          <div className="container d-flex flex-row-reverse align-items-center justify-content-around screen-100 w-100 paddingTopBottom">
-            <div className="bg-light rounded d-none d-md-block">
-              <Image
-                src="/create_project.svg"
-                width={520}
-                height={400}
-                priority
-                alt="createProject"
-                className=""
-              ></Image>
-            </div>
-
+        <div className="d-flex justify-content-center align-items-center position-relative top-0 start-0 w-100 screen-100 bg-light paddingTopBottom m-auto">
+          <Image
+            src="/create_project.svg"
+            width={window.innerWidth/3}
+            height={window.innerHeight/3}
+            priority
+            alt="createProject"
+            className=""
+          ></Image>
+          <div className="w-50">
             <AddNewProject openModalAction={openModal} />
           </div>
+        </div>
+        <div className="d-none" ref={parentModalElement}>
+          <div className="position-fixed start-50 top-50 translate-middle w-100 h-100 pt-5 blurBg">
+            <div
+              className="animate__animated d-none rounded-pill mx-auto p-5 d-flex flex-column justify-content-center w-50 paddingModal"
+              ref={modalElement}
+            >
+              <Modal
+                title={modalProps.title}
+                description={modalProps.description}
+                pictureUrl={modalProps.pictureUrl}
+                className={modalProps.className}
+              />
 
-          <div className="d-none" ref={parentModalElement}>
-            <div className="position-fixed start-50 top-50 translate-middle w-100 h-100 pt-5 blurBg">
-              <div
-                className="animate__animated d-none rounded-pill mx-auto p-5 d-flex flex-column justify-content-center w-50 paddingModal"
-                ref={modalElement}
-              >
-                <Modal
-                  title={modalProps.title}
-                  description={modalProps.description}
-                  pictureUrl={modalProps.pictureUrl}
-                  className={modalProps.className}
-                />
-
-                <div className="d-flex flex-column justify-content-around">
-                  <button
-                    ref={closeModalBtn}
-                    className="btn btn-danger fs-3 m-auto fw-bold scaleEffect"
-                    onClick={closeModal}
-                  >
-                    Close
+              <div className="d-flex flex-column justify-content-around">
+                <button
+                  ref={closeModalBtn}
+                  className="btn btn-danger fs-3 m-auto fw-bold scaleEffect"
+                  onClick={closeModal}
+                >
+                  Close
+                </button>
+                <Link href="/" passHref={true}>
+                  <button className="btn btn-info fs-3 m-auto fw-bold scaleEffect mt-3">
+                    Navigate to project view
                   </button>
-                  <Link href="/" passHref={true}>
-                    <button className="btn btn-info fs-3 m-auto fw-bold scaleEffect mt-3">
-                      Navigate to project view
-                    </button>
-                  </Link>
-                </div>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
