@@ -79,7 +79,7 @@ const CreateProject = () => {
         <Head>
           <title>Create project</title>
         </Head>
-        <div className="d-flex justify-content-center align-items-center position-relative top-0 start-0 w-100 screen-100 bg-light paddingTopBottom m-auto">
+        <div className="d-flex flex-column justify-content-center align-items-center position-relative top-0 start-0 w-100 screen-100 bg-light paddingTopBottom m-auto">
           <Image
             src="/create_project.svg"
             width={window.innerWidth/3}
@@ -88,7 +88,7 @@ const CreateProject = () => {
             alt="createProject"
             className=""
           ></Image>
-          <div className="w-50">
+          <div className="w-50 mt-5">
             <AddNewProject openModalAction={openModal} />
           </div>
         </div>
