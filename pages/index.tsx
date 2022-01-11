@@ -27,7 +27,7 @@ const Home = () => {
 
   if (session) {
     try {
-      router.push("/signin");
+      router.push("/editprojects");
     } catch (err) {}
     return null;
   }
