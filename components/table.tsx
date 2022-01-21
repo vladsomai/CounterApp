@@ -670,7 +670,7 @@ const ProjectsTable = (props: any) => {
                           }
                         >
                           {new Date(Project.last_update).getFullYear()}-
-                          {new Date(Project.last_update).getMonth()}-
+                          {new Date(Project.last_update).getMonth()+1}-
                           {new Date(Project.last_update).getDate()} &nbsp;
                           {new Date(Project.last_update).getHours()}:
                           {String(
