@@ -23,20 +23,26 @@ body::-webkit-scrollbar-track {
   box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
 }
 
+body::-webkit-scrollbar-track-piece {
+  -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
+  background-color: #555;
+}
 body::-webkit-scrollbar-thumb {
   border-radius: 15px;
-  background-color: #1c2231;
+  background-color: #333;
   outline: 1px solid #0051c3;
 }
 
 div::-webkit-scrollbar {
   width: 10px;
-  height: 5px;
+  height: 10px;
 }
 
 div::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
   box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
+  background-color: #555;
 }
 
 div::-webkit-scrollbar-thumb {
@@ -73,15 +79,15 @@ div::-webkit-scrollbar-thumb {
 }
 
 .paddingTopBottomSignin {
-    padding-top: 7%;
-    padding-bottom: 3%;
+  padding-top: 7%;
+  padding-bottom: 3%;
+}
+
+@media screen and (max-width: 600px) {
+  .paddingTopBottomSignin {
+    padding-top: 25%;
   }
-  
-  @media screen and (max-width: 600px) {
-    .paddingTopBottomSignin {
-      padding-top: 25%;
-    }
-  }
+}
 
 @media screen and (max-width: 600px) {
   .fontSmall {
@@ -108,4 +114,8 @@ div::-webkit-scrollbar-thumb {
 
 .bg-grey {
   background-color: #ccdcf3;
+}
+
+footer{
+    font-size: .8rem;
 }

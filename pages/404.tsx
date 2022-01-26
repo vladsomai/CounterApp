@@ -8,7 +8,7 @@ const Error = () => {
       <Head>
         <title>Error</title>
       </Head>
-      <div className="d-flex justify-content-center text-light screen-100">
+      <div className="d-flex justify-content-center text-light screen-100 paddingTopBottom">
         <div className="d-flex flex-column justify-content-center h-75">
           <Image
             src="/undraw_questions_re_1fy7.svg"
