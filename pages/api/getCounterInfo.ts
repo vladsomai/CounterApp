@@ -41,7 +41,7 @@ export default async function handler(
   switch (reqJSON.action) {
     case "getProjects":
       console.log("Client asks for data");
-      sqlCommand = "select * from projects";
+      sqlCommand = "select * from Projects";
       break;
 
     case "insertProject":
