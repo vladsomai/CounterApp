@@ -4,11 +4,11 @@ import Image from "next/image";
 
 const ProjectsTable = (props: any) => {
   const [counterInfoDB, setCounterInfoDB] = useState<any>([]);
-  const [API_Responded, setAPI_Responded] = useState<any>(false);
-  const [projectNameFilter, setProjectNameFilter] = useState<any>("");
-  const [ownerEmailFilter, setOwnerEmailFilter] = useState<any>("");
-  const [fixtureTypeFilter, setFixtureTypeFilter] = useState<any>("");
-  const [connectionTimedOut, setConnectionTimedOut] = useState<any>(false);
+  const [API_Responded, setAPI_Responded] = useState<boolean>(false);
+  const [projectNameFilter, setProjectNameFilter] = useState<string>("");
+  const [ownerEmailFilter, setOwnerEmailFilter] = useState<string>("");
+  const [fixtureTypeFilter, setFixtureTypeFilter] = useState<string>("");
+  const [connectionTimedOut, setConnectionTimedOut] = useState<boolean>(false);
   const isMounted = useRef(false);
   const inputFilterValue = useRef(null);
   const buttonHeight = 20;
