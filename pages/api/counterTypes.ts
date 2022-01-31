@@ -11,6 +11,7 @@ export interface Project
     resets: number,
     modified_by: string,
     last_update: Date,
+    tp_description: tp_description
 }
 
 export interface tp_description

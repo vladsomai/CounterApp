@@ -14,10 +14,10 @@ const Navbar = () => {
             <a className="btn scaleEffect">
               <Image
                 src="/ContiPic.PNG"
-                width={200}
-                height={60}
+                width={150}
+                height={50}
                 alt="continentalPicture"
-                className="img-fluid w-50"
+                className="img-fluid"
               ></Image>
             </a>
           </Link>
@@ -26,8 +26,8 @@ const Navbar = () => {
             <a className="btn scaleEffect">
               <Image
                 src="/ContiPic.PNG"
-                width={200}
-                height={60}
+                width={150}
+                height={50}
                 alt="continentalPicture"
                 className="img-fluid"
               ></Image>
@@ -35,13 +35,13 @@ const Navbar = () => {
           </Link>
         )}
 
-        <ul className="list-unstyled display-6 d-flex pt-3 pb-4 pb-md-0 justify-align-content-between align-items-center">
+        <ul className="list-unstyled display-6 d-flex pt-1 pb-4 pb-md-0 justify-align-content-between align-items-center">
           {session ? (
             <>
               <li className="nav-item pt-3 pt-md-0">
                 <Link href="/createproject" passHref={true}>
                   <button
-                    className="btn btn-primary fw-bold fs-3 scaleEffect me-5"
+                    className="btn btn-primary fw-bold fs-5 scaleEffect me-5"
                   >
                     Create project
                   </button>
@@ -49,7 +49,7 @@ const Navbar = () => {
               </li>
               <li className="nav-item pt-3 pt-md-0">
                 <Link href="" passHref={true}>
-                  <button className="btn btn-primary fw-bold fs-3 scaleEffect" onClick={()=>{signOut()}}>
+                  <button className="btn btn-primary fw-bold fs-5 scaleEffect" onClick={()=>{signOut()}}>
                     Sign out
                   </button>
                 </Link>
@@ -58,7 +58,7 @@ const Navbar = () => {
           ) : (
             <li className="nav-item pt-3 pt-md-0">
               <Link href="/signin" passHref={true}>
-                <button className="btn btn-primary fw-bold fs-3 scaleEffect">
+                <button className="btn btn-primary fw-bold fs-5 scaleEffect">
                   Sign in
                 </button>
               </Link>

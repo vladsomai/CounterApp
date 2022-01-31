@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 const ProjectsTable = (props: any) => {
   const [counterInfoDB, setCounterInfoDB] = useState<any>([]);
@@ -11,6 +12,8 @@ const ProjectsTable = (props: any) => {
   const [connectionTimedOut, setConnectionTimedOut] = useState<boolean>(false);
   const isMounted = useRef(false);
   const inputFilterValue = useRef(null);
+  const router = useRouter();
+
   const buttonHeight = 20;
   const buttonWidth = 20;
 
@@ -188,6 +191,12 @@ const ProjectsTable = (props: any) => {
     }
   };
   const handleInfoButton = (e: any) => {
+    const indexOfEntryToBeShown = e.target.id - 1;
+    const projectToBeShown = counterInfoDB[indexOfEntryToBeShown];
+    try {
+      router.push(`/project/${projectToBeShown}`);
+    } catch (err) {}
+
     props.openModalAction({
       title: "Project description",
       description: `Work in progress...`,
@@ -419,7 +428,7 @@ const ProjectsTable = (props: any) => {
             <thead>
               <tr className="fs-6">
                 {!(props.mode === "view") ? (
-                  <th className="bg-primary align-middle col-1">Menu</th>
+                  <th className="bg-primary align-middle col-xxl-2">Menu</th>
                 ) : null}
                 <th className="bg-primary align-middle col">#</th>
                 <th className="bg-primary align-middle col">Project name</th>
@@ -482,7 +491,7 @@ const ProjectsTable = (props: any) => {
                               priority
                             ></Image>
                           </button>
-                          {/* <button
+                          <button
                             onClick={handleInfoButton}
                             className="btn btn-info me-2 mb-1 btn-sm pt-2 menubuttons"
                             title="Info"
@@ -497,7 +506,7 @@ const ProjectsTable = (props: any) => {
                               className=""
                               priority
                             ></Image>
-                          </button> */}
+                          </button>
 
                           {EditModeForAllEntries &&
                           !EditModeForAllEntries[counterInfoDB.indexOf(Project)]
@@ -670,7 +679,7 @@ const ProjectsTable = (props: any) => {
                           }
                         >
                           {new Date(Project.last_update).getFullYear()}-
-                          {new Date(Project.last_update).getMonth()+1}-
+                          {new Date(Project.last_update).getMonth() + 1}-
                           {new Date(Project.last_update).getDate()} &nbsp;
                           {new Date(Project.last_update).getHours()}:
                           {String(
@@ -722,7 +731,6 @@ const ProjectsTable = (props: any) => {
             <p className="text-white display-5">Loading data...</p>
           </div>
         </div>
-
       </>
     );
 };
