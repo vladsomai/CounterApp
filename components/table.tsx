@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 const ProjectsTable = (props: any) => {
@@ -84,6 +85,7 @@ const ProjectsTable = (props: any) => {
         if (updateOwner) {
           await makeDatabaseAction(
             "updateOwner",
+            0,
             "",
             projectToBeSaved.adapter_code,
             projectToBeSaved.fixture_type,
@@ -104,6 +106,7 @@ const ProjectsTable = (props: any) => {
         if (updateContactsLimit && updateWarning) {
           await makeDatabaseAction(
             "updateContactsLimitAndWarning",
+            0,
             "",
             projectToBeSaved.adapter_code,
             projectToBeSaved.fixture_type,
@@ -172,6 +175,7 @@ const ProjectsTable = (props: any) => {
     ) {
       makeDatabaseAction(
         "resetCounter",
+        0,
         "",
         projectToBeReseted.adapter_code,
         projectToBeReseted.fixture_type,
@@ -192,17 +196,10 @@ const ProjectsTable = (props: any) => {
   };
   const handleInfoButton = (e: any) => {
     const indexOfEntryToBeShown = e.target.id - 1;
-    const projectToBeShown = counterInfoDB[indexOfEntryToBeShown];
+    const projectIDToBeShown = counterInfoDB[indexOfEntryToBeShown].entry_id;
     try {
-      router.push(`/project/${projectToBeShown}`);
+      router.push(`/project/${projectIDToBeShown}`);
     } catch (err) {}
-
-    props.openModalAction({
-      title: "Project description",
-      description: `Work in progress...`,
-      pictureUrl: "/confirm_OK.svg",
-      className: "text-center",
-    });
   };
 
   const handleDeleteButton = (e: any) => {
@@ -216,6 +213,7 @@ const ProjectsTable = (props: any) => {
     ) {
       makeDatabaseAction(
         "deleteProject",
+        0,
         "",
         projectToBeDeleted.adapter_code,
         projectToBeDeleted.fixture_type,
@@ -305,43 +303,6 @@ const ProjectsTable = (props: any) => {
         if (isMounted.current === true) setConnectionTimedOut(true);
       });
   }, []);
-  const makeDatabaseAction = (
-    actionParam: string,
-    project_nameParam: string,
-    adapter_codeParam: number,
-    fixture_typeParam: string,
-    owner_emailParam: string,
-    contacts_limitParam: number,
-    warning_atParam: number,
-    modified_byParam: string
-  ) => {
-    return new Promise((resolve, reject) => {
-      fetch("/api/getCounterInfo", {
-        method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "omit",
-        body: JSON.stringify({
-          action: actionParam,
-          project_name: project_nameParam,
-          adapter_code: adapter_codeParam,
-          fixture_type: fixture_typeParam,
-          owner_email: owner_emailParam,
-          contacts_limit: contacts_limitParam,
-          warning_at: warning_atParam,
-          modified_by: modified_byParam,
-        }),
-      })
-        .then((result) => result.json())
-        .then((resultJson) => {
-          resolve(JSON.stringify(resultJson));
-        })
-        .catch((err) => {
-          console.log(err.message);
-          reject(err.message);
-        });
-    });
-  };
 
   const checkInputValue = (e: any) => {
     e.preventDefault();
@@ -733,6 +694,46 @@ const ProjectsTable = (props: any) => {
         </div>
       </>
     );
+};
+
+export const makeDatabaseAction = (
+  actionParam: string,
+  entry_idParam: number,
+  project_nameParam: string,
+  adapter_codeParam: number,
+  fixture_typeParam: string,
+  owner_emailParam: string,
+  contacts_limitParam: number,
+  warning_atParam: number,
+  modified_byParam: string
+) => {
+  return new Promise((resolve, reject) => {
+    fetch("/api/getCounterInfo", {
+      method: "POST",
+      mode: "cors",
+      cache: "no-cache",
+      credentials: "omit",
+      body: JSON.stringify({
+        action: actionParam,
+        entry_id: entry_idParam,
+        project_name: project_nameParam,
+        adapter_code: adapter_codeParam,
+        fixture_type: fixture_typeParam,
+        owner_email: owner_emailParam,
+        contacts_limit: contacts_limitParam,
+        warning_at: warning_atParam,
+        modified_by: modified_byParam,
+      }),
+    })
+      .then((result) => result.json())
+      .then((resultJson) => {
+        resolve(JSON.stringify(resultJson));
+      })
+      .catch((err) => {
+        console.log(err.message);
+        reject(err.message);
+      });
+  });
 };
 
 export default ProjectsTable;
