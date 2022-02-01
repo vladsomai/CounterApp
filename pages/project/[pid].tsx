@@ -38,20 +38,23 @@ const ProjectPage = () => {
     });
   };
 
-//   if (fetchedProject) {
-//     return (
-//       <>
-//         <Head>
-//           <title>Project&nbsp;{pid}</title>
-//         </Head>
+  if (fetchedProject) {
+    return (
+      <>
+        <Head>
+          <title>Project&nbsp;{pid}</title>
+        </Head>
 
-//         <div className="paddingTopBottom text-white w-100 d-flex justify-content-center">
-//           <p>Entry &nbsp; {fetchedProject.entry_id}</p>
-//         </div>
-//       </>
-//     );
-//   } else {
-    <><h1>LAL</h1></>;
+        <div className="paddingTopBottom text-white w-100 d-flex justify-content-center">
+          <p>Entry &nbsp; {fetchedProject.entry_id}</p>
+        </div>
+      </>
+    );
+  } else {
+    <>
+      <h1>LAL</h1>
+    </>;
+  }
 };
 
 export default ProjectPage;
