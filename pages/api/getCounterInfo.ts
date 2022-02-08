@@ -44,6 +44,11 @@ export default async function handler(
       sqlCommand = "select * from Projects";
       break;
 
+    case "getProjectByID":
+      console.log("Client asks for a project");
+      sqlCommand = `select * from Projects where entry_id=${reqJSON.entry_id}`;
+      break;
+
     case "insertProject":
       console.log("Client asks to insert a project");
       sqlCommand = `call insertProject("${reqJSON.project_name}", ${reqJSON.adapter_code}, "${reqJSON.fixture_type}", "${reqJSON.owner_email}", ${reqJSON.contacts_limit}, ${reqJSON.warning_at}, "${reqJSON.modified_by}");`;

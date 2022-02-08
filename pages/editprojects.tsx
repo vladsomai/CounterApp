@@ -135,7 +135,7 @@ const EditProjects = () => {
           <title>Loading...</title>
         </Head>
 
-        <div className="d-flex flex-column align-items-center justify-content-center screen-100 paddingTopBottom">
+        <div className="d-flex flex-column align-items-center justify-content-center screen-100 ">
           <div className="d-flex justify-content-center">
             <div
               className="spinner-grow text-primary"
@@ -146,7 +146,7 @@ const EditProjects = () => {
             </div>
           </div>
           <div className="d-flex justify-content-center p-5">
-            <p className="text-white display-5">Loading data...</p>
+            <p className="text-white text-center display-5">Loading data...</p>
           </div>
         </div>
       </>

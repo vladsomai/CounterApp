@@ -34,7 +34,7 @@ const Home = () => {
   return (
     <>
       <Head>
-        <title>View projects</title>
+        <title>Fixture Counter</title>
       </Head>
 
       <div className="paddingTopBottom">

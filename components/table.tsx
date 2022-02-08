@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const ProjectsTable = (props: any) => {
   const [counterInfoDB, setCounterInfoDB] = useState<any>([]);
@@ -11,6 +13,8 @@ const ProjectsTable = (props: any) => {
   const [connectionTimedOut, setConnectionTimedOut] = useState<boolean>(false);
   const isMounted = useRef(false);
   const inputFilterValue = useRef(null);
+  const router = useRouter();
+
   const buttonHeight = 20;
   const buttonWidth = 20;
 
@@ -64,6 +68,16 @@ const ProjectsTable = (props: any) => {
     // @ts-ignore: Object is possibly 'null'.
     if (warningAtFromEdit.value != "") updateWarning = true;
 
+    //XOR between contact limit and warning ->
+    if (updateContactsLimit ? !updateWarning : updateWarning) {
+      props.openModalAction({
+        title: "Error!",
+        description: `In case you want to update Limit and Warning, you must fill in both of the fields!`,
+        pictureUrl: "/undraw_cancel_u-1-it.svg",
+        className: "text-center",
+      });
+      return;
+    }
     const indexOfEntryToBeSaved = e.target.id - 1;
     const projectToBeSaved = counterInfoDB[indexOfEntryToBeSaved];
     const loggedUser: string = String(
@@ -81,6 +95,7 @@ const ProjectsTable = (props: any) => {
         if (updateOwner) {
           await makeDatabaseAction(
             "updateOwner",
+            0,
             "",
             projectToBeSaved.adapter_code,
             projectToBeSaved.fixture_type,
@@ -101,6 +116,7 @@ const ProjectsTable = (props: any) => {
         if (updateContactsLimit && updateWarning) {
           await makeDatabaseAction(
             "updateContactsLimitAndWarning",
+            0,
             "",
             projectToBeSaved.adapter_code,
             projectToBeSaved.fixture_type,
@@ -117,26 +133,18 @@ const ProjectsTable = (props: any) => {
                 updateContactsLimitAndWarningOK = true;
               else updateContactsLimitAndWarningOK = false;
             });
-        }
-      }
-      if (updateContactsLimit ? !updateWarning : updateWarning) {
-        props.openModalAction({
-          title: "Error!",
-          description:
-            "You must fill in both limit and warning fields, limit must be greater than warning!",
-          pictureUrl: "/undraw_cancel_u-1-it.svg",
-          className: "text-center",
-        });
-        return;
-      }
 
-      if (!updateContactsLimitAndWarningOK) {
-        props.openModalAction({
-          title: "Error!",
-          description: `The Limit must be greater than the Warning!`,
-          pictureUrl: "/undraw_cancel_u-1-it.svg",
-          className: "text-center",
-        });
+          //in case user entered both warning and limit but the database did not update the info-> send error
+          if (!updateContactsLimitAndWarningOK) {
+            props.openModalAction({
+              title: "Error!",
+              description: `The Limit must be greater than the Warning!`,
+              pictureUrl: "/undraw_cancel_u-1-it.svg",
+              className: "text-center",
+            });
+            return;
+          }
+        }
       }
 
       if (updateOwnerOK || updateContactsLimitAndWarningOK) {
@@ -153,7 +161,6 @@ const ProjectsTable = (props: any) => {
         });
       }
     }
-    return;
   };
 
   const handleResetButton = (e: any) => {
@@ -169,6 +176,7 @@ const ProjectsTable = (props: any) => {
     ) {
       makeDatabaseAction(
         "resetCounter",
+        0,
         "",
         projectToBeReseted.adapter_code,
         projectToBeReseted.fixture_type,
@@ -188,12 +196,11 @@ const ProjectsTable = (props: any) => {
     }
   };
   const handleInfoButton = (e: any) => {
-    props.openModalAction({
-      title: "Project description",
-      description: `Work in progress...`,
-      pictureUrl: "/confirm_OK.svg",
-      className: "text-center",
-    });
+    const indexOfEntryToBeShown = e.target.id - 1;
+    const projectIDToBeShown = counterInfoDB[indexOfEntryToBeShown].entry_id;
+    try {
+      router.push(`/project/${projectIDToBeShown}`);
+    } catch (err) {}
   };
 
   const handleDeleteButton = (e: any) => {
@@ -207,6 +214,7 @@ const ProjectsTable = (props: any) => {
     ) {
       makeDatabaseAction(
         "deleteProject",
+        0,
         "",
         projectToBeDeleted.adapter_code,
         projectToBeDeleted.fixture_type,
@@ -296,43 +304,6 @@ const ProjectsTable = (props: any) => {
         if (isMounted.current === true) setConnectionTimedOut(true);
       });
   }, []);
-  const makeDatabaseAction = (
-    actionParam: string,
-    project_nameParam: string,
-    adapter_codeParam: number,
-    fixture_typeParam: string,
-    owner_emailParam: string,
-    contacts_limitParam: number,
-    warning_atParam: number,
-    modified_byParam: string
-  ) => {
-    return new Promise((resolve, reject) => {
-      fetch("/api/getCounterInfo", {
-        method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "omit",
-        body: JSON.stringify({
-          action: actionParam,
-          project_name: project_nameParam,
-          adapter_code: adapter_codeParam,
-          fixture_type: fixture_typeParam,
-          owner_email: owner_emailParam,
-          contacts_limit: contacts_limitParam,
-          warning_at: warning_atParam,
-          modified_by: modified_byParam,
-        }),
-      })
-        .then((result) => result.json())
-        .then((resultJson) => {
-          resolve(JSON.stringify(resultJson));
-        })
-        .catch((err) => {
-          console.log(err.message);
-          reject(err.message);
-        });
-    });
-  };
 
   const checkInputValue = (e: any) => {
     e.preventDefault();
@@ -396,12 +367,12 @@ const ProjectsTable = (props: any) => {
             ref={inputFilterValue}
             name="inputFilterValue"
             type="text"
-            className="form-control fw-bolder w-25 mx-2 my-2"
+            className="form-control fw-bolder mx-2 my-2 searchBarWidth"
             placeholder="What are you looking for?"
             aria-label="Filter"
           ></input>
           <button
-            className="btn btn-primary scaleEffect fs-6 fw-bolder w-auto "
+            className="btn btn-primary scaleEffect fs-6 fw-bolder w-auto mx-2 my-2"
             type="submit"
           >
             Search
@@ -419,7 +390,7 @@ const ProjectsTable = (props: any) => {
             <thead>
               <tr className="fs-6">
                 {!(props.mode === "view") ? (
-                  <th className="bg-primary align-middle col-1">Menu</th>
+                  <th className="bg-primary align-middle col-xxl-2">Menu</th>
                 ) : null}
                 <th className="bg-primary align-middle col">#</th>
                 <th className="bg-primary align-middle col">Project name</th>
@@ -482,7 +453,7 @@ const ProjectsTable = (props: any) => {
                               priority
                             ></Image>
                           </button>
-                          {/* <button
+                          <button
                             onClick={handleInfoButton}
                             className="btn btn-info me-2 mb-1 btn-sm pt-2 menubuttons"
                             title="Info"
@@ -497,7 +468,7 @@ const ProjectsTable = (props: any) => {
                               className=""
                               priority
                             ></Image>
-                          </button> */}
+                          </button>
 
                           {EditModeForAllEntries &&
                           !EditModeForAllEntries[counterInfoDB.indexOf(Project)]
@@ -670,7 +641,7 @@ const ProjectsTable = (props: any) => {
                           }
                         >
                           {new Date(Project.last_update).getFullYear()}-
-                          {new Date(Project.last_update).getMonth()+1}-
+                          {new Date(Project.last_update).getMonth() + 1}-
                           {new Date(Project.last_update).getDate()} &nbsp;
                           {new Date(Project.last_update).getHours()}:
                           {String(
@@ -722,9 +693,48 @@ const ProjectsTable = (props: any) => {
             <p className="text-white display-5">Loading data...</p>
           </div>
         </div>
-
       </>
     );
+};
+
+export const makeDatabaseAction = (
+  actionParam: string,
+  entry_idParam: number,
+  project_nameParam: string,
+  adapter_codeParam: number,
+  fixture_typeParam: string,
+  owner_emailParam: string,
+  contacts_limitParam: number,
+  warning_atParam: number,
+  modified_byParam: string
+) => {
+  return new Promise((resolve, reject) => {
+    fetch("/api/getCounterInfo", {
+      method: "POST",
+      mode: "cors",
+      cache: "no-cache",
+      credentials: "omit",
+      body: JSON.stringify({
+        action: actionParam,
+        entry_id: entry_idParam,
+        project_name: project_nameParam,
+        adapter_code: adapter_codeParam,
+        fixture_type: fixture_typeParam,
+        owner_email: owner_emailParam,
+        contacts_limit: contacts_limitParam,
+        warning_at: warning_atParam,
+        modified_by: modified_byParam,
+      }),
+    })
+      .then((result) => result.json())
+      .then((resultJson) => {
+        resolve(JSON.stringify(resultJson));
+      })
+      .catch((err) => {
+        console.log(err.message);
+        reject(err.message);
+      });
+  });
 };
 
 export default ProjectsTable;

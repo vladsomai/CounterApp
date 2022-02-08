@@ -82,13 +82,13 @@ const CreateProject = () => {
         <div className="d-flex flex-column justify-content-center align-items-center position-relative top-0 start-0 w-100 screen-100 bg-light paddingTopBottom m-auto">
           <Image
             src="/create_project.svg"
-            width={window.innerWidth/3}
-            height={window.innerHeight/3}
+            width={window.innerWidth / 2}
+            height={window.innerHeight / 2}
             priority
             alt="createProject"
             className=""
           ></Image>
-          <div className="w-50 mt-5">
+          <div className="w-100">
             <AddNewProject openModalAction={openModal} />
           </div>
         </div>
