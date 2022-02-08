@@ -2,7 +2,6 @@
 #because you cannot start a nodejs app on port 80 without root access
 sudo iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
 
-#start the server:
-sudo npm start > log.txt &
+#start the server using pm2 
 
 
