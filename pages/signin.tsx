@@ -121,7 +121,7 @@ const Signin = ({ csrfToken }: any) => {
         <Head>
           <title>Signin</title>
         </Head>
-        <div className="screen-100 paddingTopBottomSignin d-flex flex-column justify-content-center container">
+        <div className="screen-100 paddingTopBottom d-flex flex-column justify-content-center container">
           <div className="d-flex flex-column justify-content-evenly">
             <div className="d-flex flex-column flex-md-row justify-content-between align-content-center position-relative">
               <Image
@@ -130,7 +130,7 @@ const Signin = ({ csrfToken }: any) => {
                 height={500}
                 priority
                 alt="sign in image"
-                className=""
+                className="m-auto img-fluid"
               ></Image>
 
               <div className="d-flex align-items-center justify-content-center">

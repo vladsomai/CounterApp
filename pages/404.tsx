@@ -9,7 +9,7 @@ const Error = () => {
         <title>Error</title>
       </Head>
       <div className="d-flex justify-content-center text-light screen-100 paddingTopBottom">
-        <div className="d-flex flex-column justify-content-center h-75">
+        <div className="d-flex flex-column justify-content-center h-100">
           <Image
             src="/undraw_questions_re_1fy7.svg"
             width={620}
@@ -18,7 +18,7 @@ const Error = () => {
             alt="sign in image"
             className=""
           ></Image>
-          <h1 className="display-1 text-danger">Page not found</h1>
+          <h1 className="display-1 text-danger">Page not found!</h1>
         </div>
       </div>
     </>

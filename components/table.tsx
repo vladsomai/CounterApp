@@ -68,6 +68,16 @@ const ProjectsTable = (props: any) => {
     // @ts-ignore: Object is possibly 'null'.
     if (warningAtFromEdit.value != "") updateWarning = true;
 
+    //XOR between contact limit and warning ->
+    if (updateContactsLimit ? !updateWarning : updateWarning) {
+      props.openModalAction({
+        title: "Error!",
+        description: `In case you want to update Limit and Warning, you must fill in both of the fields!`,
+        pictureUrl: "/undraw_cancel_u-1-it.svg",
+        className: "text-center",
+      });
+      return;
+    }
     const indexOfEntryToBeSaved = e.target.id - 1;
     const projectToBeSaved = counterInfoDB[indexOfEntryToBeSaved];
     const loggedUser: string = String(
@@ -123,26 +133,18 @@ const ProjectsTable = (props: any) => {
                 updateContactsLimitAndWarningOK = true;
               else updateContactsLimitAndWarningOK = false;
             });
-        }
-      }
-      if (updateContactsLimit ? !updateWarning : updateWarning) {
-        props.openModalAction({
-          title: "Error!",
-          description:
-            "You must fill in both limit and warning fields, limit must be greater than warning!",
-          pictureUrl: "/undraw_cancel_u-1-it.svg",
-          className: "text-center",
-        });
-        return;
-      }
 
-      if (!updateContactsLimitAndWarningOK) {
-        props.openModalAction({
-          title: "Error!",
-          description: `The Limit must be greater than the Warning!`,
-          pictureUrl: "/undraw_cancel_u-1-it.svg",
-          className: "text-center",
-        });
+          //in case user entered both warning and limit but the database did not update the info-> send error
+          if (!updateContactsLimitAndWarningOK) {
+            props.openModalAction({
+              title: "Error!",
+              description: `The Limit must be greater than the Warning!`,
+              pictureUrl: "/undraw_cancel_u-1-it.svg",
+              className: "text-center",
+            });
+            return;
+          }
+        }
       }
 
       if (updateOwnerOK || updateContactsLimitAndWarningOK) {
@@ -159,7 +161,6 @@ const ProjectsTable = (props: any) => {
         });
       }
     }
-    return;
   };
 
   const handleResetButton = (e: any) => {
@@ -366,12 +367,12 @@ const ProjectsTable = (props: any) => {
             ref={inputFilterValue}
             name="inputFilterValue"
             type="text"
-            className="form-control fw-bolder w-25 mx-2 my-2"
+            className="form-control fw-bolder mx-2 my-2 searchBarWidth"
             placeholder="What are you looking for?"
             aria-label="Filter"
           ></input>
           <button
-            className="btn btn-primary scaleEffect fs-6 fw-bolder w-auto "
+            className="btn btn-primary scaleEffect fs-6 fw-bolder w-auto mx-2 my-2"
             type="submit"
           >
             Search
