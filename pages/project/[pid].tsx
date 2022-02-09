@@ -37,9 +37,6 @@ const ProjectPage = () => {
       setAPI_Responded(true);
     });
   };
-  useEffect(() => {
-    fetchProject();
-  }, []);
 
   if (API_Responded) {
     return (

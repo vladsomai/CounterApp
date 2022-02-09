@@ -453,7 +453,10 @@ const ProjectsTable = (props: any) => {
                               priority
                             ></Image>
                           </button>
-                          <button
+
+                          {
+                           //currently disabled
+                          /* <button
                             onClick={handleInfoButton}
                             className="btn btn-info me-2 mb-1 btn-sm pt-2 menubuttons"
                             title="Info"
@@ -468,7 +471,7 @@ const ProjectsTable = (props: any) => {
                               className=""
                               priority
                             ></Image>
-                          </button>
+                          </button> */}
 
                           {EditModeForAllEntries &&
                           !EditModeForAllEntries[counterInfoDB.indexOf(Project)]
