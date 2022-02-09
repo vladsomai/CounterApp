@@ -37,8 +37,11 @@ const ProjectPage = () => {
       setAPI_Responded(true);
     });
   };
+  useEffect(() => {
+    fetchProject();
+  }, []);
 
-  if (fetchedProject) {
+  if (API_Responded) {
     return (
       <>
         <Head>
@@ -46,14 +49,38 @@ const ProjectPage = () => {
         </Head>
 
         <div className="paddingTopBottom text-white w-100 d-flex justify-content-center">
-          <p>Entry &nbsp; {fetchedProject.entry_id}</p>
+          <div className="d-flex flex-column">
+            <p>Entry &nbsp; {fetchedProject?.entry_id}</p>
+            <p>Entry &nbsp; {fetchedProject?.project_name}</p>
+            <p>Entry &nbsp; {fetchedProject?.adapter_code}</p>
+            <p>Entry &nbsp; {fetchedProject?.fixture_type}</p>
+          </div>
         </div>
       </>
     );
   } else {
-    <>
-      <h1>LAL</h1>
-    </>;
+    return (
+      <>
+        <Head>
+          <title>Loading...</title>
+        </Head>
+
+        <div className="d-flex flex-column align-items-center justify-content-center screen-100 ">
+          <div className="d-flex justify-content-center">
+            <div
+              className="spinner-grow text-primary"
+              style={{ width: "10rem", height: "10rem" }}
+              role="status"
+            >
+              <span className=""></span>
+            </div>
+          </div>
+          <div className="d-flex justify-content-center p-5">
+            <p className="text-white text-center display-5">Loading data...</p>
+          </div>
+        </div>
+      </>
+    );
   }
 };
 
