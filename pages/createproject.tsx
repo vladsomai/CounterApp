@@ -93,7 +93,7 @@ const CreateProject = () => {
           </div>
         </div>
         <div className="d-none" ref={parentModalElement}>
-          <div className="position-fixed start-50 top-50 translate-middle w-100 h-100 pt-5 blurBg">
+          <div className="position-fixed start-50 top-50 translate-middle w-100 h-100 blurBg">
             <div
               className="animate__animated d-none rounded-pill mx-auto p-5 d-flex flex-column justify-content-center w-50 paddingModal"
               ref={modalElement}
@@ -113,11 +113,6 @@ const CreateProject = () => {
                 >
                   Close
                 </button>
-                <Link href="/" passHref={true}>
-                  <button className="btn btn-info fs-3 m-auto fw-bold scaleEffect mt-3">
-                    Navigate to project view
-                  </button>
-                </Link>
               </div>
             </div>
           </div>
