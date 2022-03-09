@@ -41,7 +41,7 @@ export default NextAuth({
       return true;
     },
     async redirect({ url, baseUrl }) {
-      const redURL = baseUrl + "/signin";
+      const redURL = baseUrl+':3000' + "/signin";
       return redURL;
     },
     async session({ session, token, user }) {

@@ -3,16 +3,18 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { Project } from "../pages/api/counterTypes";
 
 const ProjectsTable = (props: any) => {
-  const [counterInfoDB, setCounterInfoDB] = useState<any>([]);
   const [API_Responded, setAPI_Responded] = useState<boolean>(false);
+  const [connectionTimedOut, setConnectionTimedOut] = useState<boolean>(false);
+
   const [projectNameFilter, setProjectNameFilter] = useState<string>("");
   const [ownerEmailFilter, setOwnerEmailFilter] = useState<string>("");
   const [fixtureTypeFilter, setFixtureTypeFilter] = useState<string>("");
-  const [connectionTimedOut, setConnectionTimedOut] = useState<boolean>(false);
-  const isMounted = useRef(false);
   const inputFilterValue = useRef(null);
+
+  const isMounted = useRef(false);
   const router = useRouter();
 
   const buttonHeight = 20;
@@ -20,6 +22,7 @@ const ProjectsTable = (props: any) => {
 
   const { data: session, status } = useSession();
 
+  let counterInfoDB: any = useRef([]);
   const [EditModeForAllEntries, setEditMode] = useState<any>();
 
   //state for highlighting each project(notReached(0) - normal, warning(1) - yellow, limit(2) - red)
@@ -44,7 +47,6 @@ const ProjectsTable = (props: any) => {
         return item;
       })
     );
-
     let ownerEmailFromEdit = document.getElementById(
       `${e.target.id - 1}_owner_email`
     );
@@ -79,7 +81,7 @@ const ProjectsTable = (props: any) => {
       return;
     }
     const indexOfEntryToBeSaved = e.target.id - 1;
-    const projectToBeSaved = counterInfoDB[indexOfEntryToBeSaved];
+    const projectToBeSaved = counterInfoDB.current[indexOfEntryToBeSaved];
     const loggedUser: string = String(
       session?.user?.email || session?.user?.name
     );
@@ -165,7 +167,7 @@ const ProjectsTable = (props: any) => {
 
   const handleResetButton = (e: any) => {
     const indexOfEntryToBeReseted = e.target.id - 1;
-    const projectToBeReseted = counterInfoDB[indexOfEntryToBeReseted];
+    const projectToBeReseted = counterInfoDB.current[indexOfEntryToBeReseted];
     const loggedUser: string = String(
       session?.user?.email || session?.user?.name
     );
@@ -197,7 +199,8 @@ const ProjectsTable = (props: any) => {
   };
   const handleInfoButton = (e: any) => {
     const indexOfEntryToBeShown = e.target.id - 1;
-    const projectIDToBeShown = counterInfoDB[indexOfEntryToBeShown].entry_id;
+    const projectIDToBeShown =
+      counterInfoDB.current[indexOfEntryToBeShown].entry_id;
     try {
       router.push(`/project/${projectIDToBeShown}`);
     } catch (err) {}
@@ -205,7 +208,7 @@ const ProjectsTable = (props: any) => {
 
   const handleDeleteButton = (e: any) => {
     const indexOfEntryToBeDeleted = e.target.id - 1;
-    const projectToBeDeleted = counterInfoDB[indexOfEntryToBeDeleted];
+    const projectToBeDeleted = counterInfoDB.current[indexOfEntryToBeDeleted];
 
     if (
       confirm(
@@ -278,14 +281,15 @@ const ProjectsTable = (props: any) => {
             resultJson.message.code === "ECONNREFUSED"
           )
             throw "Cannot connect to DB";
+
           if (isMounted.current === true) {
-            //sort the array based on contacts
+            //sort the array based on no. of contacts
             let sortedInfo = resultJson.message.sort((a: any, b: any) => {
               return b.contacts - a.contacts;
             });
-            setCounterInfoDB(sortedInfo);
-            setAPI_Responded(true);
 
+            counterInfoDB.current = [...sortedInfo];
+            console.log("Data fetched successfully!");
             setEditMode(
               resultJson.message.map((item: any) => {
                 return {
@@ -294,8 +298,8 @@ const ProjectsTable = (props: any) => {
                 };
               })
             );
-            setHighlightProject(getHighlightType(resultJson.message));
-            console.log("Data fetched successfully!");
+            // setHighlightProject(getHighlightType(resultJson.message));
+            setAPI_Responded(true);
           }
         })
       )
@@ -336,9 +340,10 @@ const ProjectsTable = (props: any) => {
     return () => {
       isMounted.current = false;
     };
-  }, [props.triggerFetchProp, fetchDataDB, projectNameFilter]);
+  }, [fetchDataDB]);
 
   if (API_Responded) {
+    console.log("render table");
     return (
       <>
         <form
@@ -406,7 +411,8 @@ const ProjectsTable = (props: any) => {
               </tr>
             </thead>
             <tbody>
-              {counterInfoDB.map((Project: any) => {
+              {counterInfoDB.current.map((Project: any) => {
+                  if(counterInfoDB.current.indexOf(Project) >10)return;
                 if (
                   Project.project_name
                     .toLowerCase()
@@ -419,17 +425,17 @@ const ProjectsTable = (props: any) => {
                     .includes(fixtureTypeFilter.toLowerCase())
                 )
                   return (
-                    <tr key={counterInfoDB.indexOf(Project)}>
+                    <tr key={counterInfoDB.current.indexOf(Project)}>
                       {!(props.mode === "view") ? (
                         <td>
                           <button
                             onClick={handleResetButton}
-                            id={counterInfoDB.indexOf(Project) + 1}
+                            id={counterInfoDB.current.indexOf(Project) + 1}
                             className="btn btn-secondary me-2 mb-1 btn-sm pt-2 menubuttons"
                             title="Reset"
                           >
                             <Image
-                              id={counterInfoDB.indexOf(Project) + 1}
+                              id={counterInfoDB.current.indexOf(Project) + 1}
                               src="/reset.svg"
                               width={buttonWidth}
                               height={buttonHeight}
@@ -441,10 +447,10 @@ const ProjectsTable = (props: any) => {
                             onClick={handleDeleteButton}
                             className="btn btn-danger me-2 mb-1 btn-sm pt-2 menubuttons"
                             title="Delete"
-                            id={counterInfoDB.indexOf(Project) + 1}
+                            id={counterInfoDB.current.indexOf(Project) + 1}
                           >
                             <Image
-                              id={counterInfoDB.indexOf(Project) + 1}
+                              id={counterInfoDB.current.indexOf(Project) + 1}
                               src="/delete.svg"
                               width={buttonWidth}
                               height={buttonHeight}
@@ -455,15 +461,15 @@ const ProjectsTable = (props: any) => {
                           </button>
 
                           {
-                           //currently disabled
-                          /* <button
+                            //currently disabled
+                            /* <button
                             onClick={handleInfoButton}
                             className="btn btn-info me-2 mb-1 btn-sm pt-2 menubuttons"
                             title="Info"
-                            id={counterInfoDB.indexOf(Project) + 1}
+                            id={counterInfoDB.current.indexOf(Project) + 1}
                           >
                             <Image
-                              id={counterInfoDB.indexOf(Project) + 1}
+                              id={counterInfoDB.current.indexOf(Project) + 1}
                               src="/file-earmark-text.svg"
                               width={buttonWidth}
                               height={buttonHeight}
@@ -471,94 +477,110 @@ const ProjectsTable = (props: any) => {
                               className=""
                               priority
                             ></Image>
-                          </button> */}
+                          </button> */
+                          }
 
-                          {EditModeForAllEntries &&
-                          !EditModeForAllEntries[counterInfoDB.indexOf(Project)]
-                            ?.editMode ? (
-                            <button
-                              id={counterInfoDB.indexOf(Project) + 1}
-                              className="btn btn-primary me-2 mb-1 btn-sm pt-2 menubuttons"
-                              onClick={handleEditButton}
-                              title="Edit"
-                            >
-                              <Image
-                                id={counterInfoDB.indexOf(Project) + 1}
-                                src="/edit.svg"
-                                width={buttonWidth}
-                                height={buttonHeight}
-                                alt="Edit"
-                                className=""
-                                priority
-                              ></Image>
-                            </button>
-                          ) : (
-                            <button
-                              onClick={handleSaveButton}
-                              id={counterInfoDB.indexOf(Project) + 1}
-                              className="btn btn-success me-2 mb-1 btn-sm pt-2 menubuttons"
-                              title="Save"
-                            >
-                              <Image
-                                id={counterInfoDB.indexOf(Project) + 1}
-                                src="/save.svg"
-                                width={buttonWidth}
-                                height={buttonHeight}
-                                alt="Save"
-                                className=""
-                                priority
-                              ></Image>
-                            </button>
-                          )}
+                          {
+                            //EditModeForAllEntries &&
+                            !EditModeForAllEntries[
+                              counterInfoDB.current.indexOf(Project)
+                            ]?.editMode ? (
+                              <button
+                                id={counterInfoDB.current.indexOf(Project) + 1}
+                                className="btn btn-primary me-2 mb-1 btn-sm pt-2 menubuttons"
+                                onClick={handleEditButton}
+                                title="Edit"
+                              >
+                                <Image
+                                  id={
+                                    counterInfoDB.current.indexOf(Project) + 1
+                                  }
+                                  src="/edit.svg"
+                                  width={buttonWidth}
+                                  height={buttonHeight}
+                                  alt="Edit"
+                                  className=""
+                                  priority
+                                ></Image>
+                              </button>
+                            ) : (
+                              <button
+                                onClick={handleSaveButton}
+                                id={counterInfoDB.current.indexOf(Project) + 1}
+                                className="btn btn-success me-2 mb-1 btn-sm pt-2 menubuttons"
+                                title="Save"
+                              >
+                                <Image
+                                  id={
+                                    counterInfoDB.current.indexOf(Project) + 1
+                                  }
+                                  src="/save.svg"
+                                  width={buttonWidth}
+                                  height={buttonHeight}
+                                  alt="Save"
+                                  className=""
+                                  priority
+                                ></Image>
+                              </button>
+                            )
+                          }
                         </td>
                       ) : null}
 
                       <td
                         className={
-                          highlightProject[counterInfoDB.indexOf(Project)]
-                            ?.highlightTypeClass
+                          highlightProject[
+                            counterInfoDB.current.indexOf(Project)
+                          ]?.highlightTypeClass
                         }
                       >
                         {" "}
-                        {counterInfoDB.indexOf(Project) + 1}
+                        {counterInfoDB.current.indexOf(Project) + 1}
                       </td>
                       <td
                         className={
-                          highlightProject[counterInfoDB.indexOf(Project)]
-                            ?.highlightTypeClass
+                          highlightProject[
+                            counterInfoDB.current.indexOf(Project)
+                          ]?.highlightTypeClass
                         }
                       >
                         {Project.project_name}
                       </td>
                       <td
                         className={
-                          highlightProject[counterInfoDB.indexOf(Project)]
-                            ?.highlightTypeClass
+                          highlightProject[
+                            counterInfoDB.current.indexOf(Project)
+                          ]?.highlightTypeClass
                         }
                       >
                         {Project.adapter_code}
                       </td>
                       <td
                         className={
-                          highlightProject[counterInfoDB.indexOf(Project)]
-                            ?.highlightTypeClass
+                          highlightProject[
+                            counterInfoDB.current.indexOf(Project)
+                          ]?.highlightTypeClass
                         }
                       >
                         {Project.fixture_type}
                       </td>
                       <td
                         className={
-                          highlightProject[counterInfoDB.indexOf(Project)]
-                            ?.highlightTypeClass
+                          highlightProject[
+                            counterInfoDB.current.indexOf(Project)
+                          ]?.highlightTypeClass
                         }
                       >
                         {EditModeForAllEntries &&
-                        !EditModeForAllEntries[counterInfoDB.indexOf(Project)]
-                          ?.editMode ? (
+                        !EditModeForAllEntries[
+                          counterInfoDB.current.indexOf(Project)
+                        ]?.editMode ? (
                           Project.owner_email
                         ) : (
                           <input
-                            id={`${counterInfoDB.indexOf(Project)}_owner_email`}
+                            id={`${counterInfoDB.current.indexOf(
+                              Project
+                            )}_owner_email`}
                             name="owner_email_edit"
                             type="email"
                             className="form-control fw-bolder w-100"
@@ -569,25 +591,28 @@ const ProjectsTable = (props: any) => {
                       </td>
                       <td
                         className={
-                          highlightProject[counterInfoDB.indexOf(Project)]
-                            ?.highlightTypeClass
+                          highlightProject[
+                            counterInfoDB.current.indexOf(Project)
+                          ]?.highlightTypeClass
                         }
                       >
                         {Project.contacts}
                       </td>
                       <td
                         className={
-                          highlightProject[counterInfoDB.indexOf(Project)]
-                            ?.highlightTypeClass
+                          highlightProject[
+                            counterInfoDB.current.indexOf(Project)
+                          ]?.highlightTypeClass
                         }
                       >
                         {EditModeForAllEntries &&
-                        !EditModeForAllEntries[counterInfoDB.indexOf(Project)]
-                          ?.editMode ? (
+                        !EditModeForAllEntries[
+                          counterInfoDB.current.indexOf(Project)
+                        ]?.editMode ? (
                           Project.contacts_limit
                         ) : (
                           <input
-                            id={`${counterInfoDB.indexOf(
+                            id={`${counterInfoDB.current.indexOf(
                               Project
                             )}_contacts_limit`}
                             name="contacts_limit_edit"
@@ -600,17 +625,21 @@ const ProjectsTable = (props: any) => {
                       </td>
                       <td
                         className={
-                          highlightProject[counterInfoDB.indexOf(Project)]
-                            ?.highlightTypeClass
+                          highlightProject[
+                            counterInfoDB.current.indexOf(Project)
+                          ]?.highlightTypeClass
                         }
                       >
                         {EditModeForAllEntries &&
-                        !EditModeForAllEntries[counterInfoDB.indexOf(Project)]
-                          ?.editMode ? (
+                        !EditModeForAllEntries[
+                          counterInfoDB.current.indexOf(Project)
+                        ]?.editMode ? (
                           Project.warning_at
                         ) : (
                           <input
-                            id={`${counterInfoDB.indexOf(Project)}_warning_at`}
+                            id={`${counterInfoDB.current.indexOf(
+                              Project
+                            )}_warning_at`}
                             name="warning_at_edit"
                             type="number"
                             className="form-control fw-bolder m-auto"
@@ -622,16 +651,18 @@ const ProjectsTable = (props: any) => {
                       </td>
                       <td
                         className={
-                          highlightProject[counterInfoDB.indexOf(Project)]
-                            ?.highlightTypeClass
+                          highlightProject[
+                            counterInfoDB.current.indexOf(Project)
+                          ]?.highlightTypeClass
                         }
                       >
                         {Project.resets}
                       </td>
                       <td
                         className={
-                          highlightProject[counterInfoDB.indexOf(Project)]
-                            ?.highlightTypeClass
+                          highlightProject[
+                            counterInfoDB.current.indexOf(Project)
+                          ]?.highlightTypeClass
                         }
                       >
                         {Project.modified_by}
@@ -639,8 +670,9 @@ const ProjectsTable = (props: any) => {
                       {
                         <td
                           className={
-                            highlightProject[counterInfoDB.indexOf(Project)]
-                              ?.highlightTypeClass
+                            highlightProject[
+                              counterInfoDB.current.indexOf(Project)
+                            ]?.highlightTypeClass
                           }
                         >
                           {new Date(Project.last_update).getFullYear()}-
@@ -679,10 +711,11 @@ const ProjectsTable = (props: any) => {
         </div>
       </>
     );
-  } else
+  } else {
+    console.log("render spinner");
     return (
       <>
-        <div className="d-flex flex-column align-items-center justify-content-center screen-100 paddingTopBottom">
+        <div className="d-flex flex-column align-items-center justify-content-center screen-80 paddingTopBottom">
           <div className="d-flex justify-content-center">
             <div
               className="spinner-grow text-primary"
@@ -698,6 +731,7 @@ const ProjectsTable = (props: any) => {
         </div>
       </>
     );
+  }
 };
 
 export const makeDatabaseAction = (
