@@ -682,7 +682,7 @@ const ProjectsTable = (props: any) => {
   } else
     return (
       <>
-        <div className="d-flex flex-column align-items-center justify-content-center screen-100 paddingTopBottom">
+        <div className="d-flex flex-column align-items-center justify-content-center screen-80 paddingTopBottom">
           <div className="d-flex justify-content-center">
             <div
               className="spinner-grow text-primary"
