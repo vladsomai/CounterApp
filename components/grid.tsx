@@ -4,27 +4,40 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Project } from "../pages/api/counterTypes";
+import { FixedSizeGrid as Grid } from "react-window";
 
-interface projectToBeDisplayed {
-  ProjectList: Project[];
-  assignedPage: number;
-  isActive: boolean;
-}
+const Cell = ({ columnIndex, rowIndex, style }: any) => (
+  <div style={style}>
+    Item {rowIndex},{columnIndex}
+  </div>
+);
+
+const Example = () => (
+  <Grid
+    columnCount={1000}
+    columnWidth={100}
+    height={150}
+    rowCount={1000}
+    rowHeight={35}
+    width={innerWidth/1.03}
+  >
+    {Cell}
+  </Grid>
+);
 
 const ProjectsTable = (props: any) => {
   const counterInfoDB = useRef<Project[]>([]);
   const displayedProjects = useRef<Project[]>([]);
   const pagesCount = useRef<number[]>(new Array());
-  const firstPaint = useRef(true);
-  const isMounted = useRef(false);
-  const inputFilterValue = useRef(null);
-  const router = useRouter();
-
   const [API_Responded, setAPI_Responded] = useState<boolean>(false);
+  const firstPaint = useRef(true);
   const [projectNameFilter, setProjectNameFilter] = useState<string>("");
   const [ownerEmailFilter, setOwnerEmailFilter] = useState<string>("");
   const [fixtureTypeFilter, setFixtureTypeFilter] = useState<string>("");
   const [connectionTimedOut, setConnectionTimedOut] = useState<boolean>(false);
+  const isMounted = useRef(false);
+  const inputFilterValue = useRef(null);
+  const router = useRouter();
 
   const buttonHeight = 20;
   const buttonWidth = 20;
@@ -301,17 +314,16 @@ const ProjectsTable = (props: any) => {
             });
             counterInfoDB.current = sortedInfo;
 
-            displayedProjects.current = displayedProjects.current.slice(0, 20);
-
             if (firstPaint.current) {
               const numberOfPages = Math.ceil(
                 counterInfoDB.current.length / 20
               );
               for (let i = 1; i <= numberOfPages; i++) {
                 pagesCount.current.push(i);
-
               }
               firstPaint.current = false;
+
+              //   displayedProjects.current = [...counterInfoDB];
             }
 
             setAPI_Responded(true);
@@ -371,6 +383,7 @@ const ProjectsTable = (props: any) => {
   if (API_Responded) {
     return (
       <>
+        <Example></Example>;
         <form
           onSubmit={checkInputValue}
           className="d-flex flex-column flex-md-row mx-4 my-4 justify-content-start bg-grey align-items-center p-3 rounded shadowEffect border border-2  "

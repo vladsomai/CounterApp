@@ -18,6 +18,7 @@ const Navbar = () => {
               height={pictureHeight}
               alt="continentalPicture"
               className="img-fluid"
+              priority
             ></Image>
           </a>
         </Link>
