@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 
 const Navbar = () => {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const pictureWidth = 190;
   const pictureHeight = 50;
   return (
