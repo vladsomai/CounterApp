@@ -173,7 +173,6 @@ const ProjectsTable = (props: any) => {
             });
             return;
           }
-          fetchDataDB();
         }
       }
 
@@ -190,6 +189,7 @@ const ProjectsTable = (props: any) => {
           className: "text-center",
         });
       }
+      fetchDataDB();
     }
   };
 
@@ -224,15 +224,15 @@ const ProjectsTable = (props: any) => {
               pictureUrl: "/confirm_OK.svg",
               className: "text-center",
             });
-            fetchDataDB();
           } else {
             props.openModalAction({
               title: "Error!",
-              description: `An error occured when trying to reset the counter, please contact your admin!`,
+              description: `An error occured when trying to reset the counter, check if the project has not been deleted in the meantime!`,
               pictureUrl: "/undraw_cancel_u-1-it.svg",
               className: "text-center",
             });
           }
+          fetchDataDB();
         });
     }
   };
@@ -266,15 +266,15 @@ const ProjectsTable = (props: any) => {
               pictureUrl: "/confirm_OK.svg",
               className: "text-center",
             });
-            fetchDataDB();
           } else {
             props.openModalAction({
               title: "Error!",
-              description: `An error occured when trying to delete the counter, please contact your admin!`,
+              description: `An error occured when trying to delete the project, check if it has not been deleted in the meantime!`,
               pictureUrl: "/undraw_cancel_u-1-it.svg",
               className: "text-center",
             });
           }
+          fetchDataDB();
         });
     }
   };
@@ -371,27 +371,58 @@ const ProjectsTable = (props: any) => {
 
   const checkInputValue = (e: any) => {
     e.preventDefault();
-    setProjectNameFilter("");
-    setFixtureTypeFilter("");
-    setOwnerEmailFilter("");
+
+    let projectNameFilter = "";
+    let ownerEmailFilter = "";
+    let fixtureTypeFilter = "";
+    // setProjectNameFilter("");
+    // setFixtureTypeFilter("");
+    // setOwnerEmailFilter("");
     const searchBy: string = e.target[0].value;
-    if (searchBy === "SearchBy") return;
     const value = e.target[1].value;
 
     switch (searchBy) {
       case "SearchBy":
         return;
       case "ProjectName":
-        setProjectNameFilter(value);
-        return;
+        projectNameFilter = value;
+        break;
       case "FixtureType":
-        setFixtureTypeFilter(value);
-        return;
+        fixtureTypeFilter = value;
+        break;
       case "OwnerEmail":
-        setOwnerEmailFilter(value);
-        return;
+        ownerEmailFilter = value;
+        break;
     }
+
+    if (value === "") {
+      fetchDataDB();
+      return;
+    }
+
+    let searchedProjects: Project[] = new Array();
+    counterInfoDB.map((Project: Project) => {
+      if (
+        (Project.project_name
+          .toLowerCase()
+          .includes(projectNameFilter.toLowerCase()) &&
+          projectNameFilter) ||
+        (Project.owner_email
+          .toLowerCase()
+          .includes(ownerEmailFilter.toLowerCase()) &&
+          ownerEmailFilter) ||
+        (Project.fixture_type
+          .toLowerCase()
+          .includes(fixtureTypeFilter.toLowerCase()) &&
+          fixtureTypeFilter)
+      ) {
+        searchedProjects.push(Project);
+      }
+    });
+    setDisplayedProjects(searchedProjects);
   };
+
+  //   useEffect(() => {}, [displayedProjects]);
 
   useEffect(() => {
     isMounted.current = true;
@@ -443,10 +474,11 @@ const ProjectsTable = (props: any) => {
             Search
             <Image
               src="/search.svg"
-              width={20}
-              height={20}
-              alt="filterPic"
               className="img-fluid pt-2 ms-1"
+              width={buttonWidth}
+              height={buttonHeight}
+              alt="filterPic"
+              priority
             ></Image>
           </button>
         </form>
@@ -472,246 +504,227 @@ const ProjectsTable = (props: any) => {
             </thead>
             <tbody>
               {displayedProjects.map((Project: Project) => {
-                if (
-                  Project.project_name
-                    .toLowerCase()
-                    .includes(projectNameFilter.toLowerCase()) &&
-                  Project.owner_email
-                    .toLowerCase()
-                    .includes(ownerEmailFilter.toLowerCase()) &&
-                  Project.fixture_type
-                    .toLowerCase()
-                    .includes(fixtureTypeFilter.toLowerCase())
-                )
-                  return (
-                    <tr key={counterInfoDB.indexOf(Project)}>
-                      {!(props.mode === "view") ? (
-                        <td>
-                          <button
-                            onClick={handleResetButton}
+                return (
+                  <tr key={counterInfoDB.indexOf(Project)}>
+                    {!(props.mode === "view") ? (
+                      <td>
+                        <button
+                          onClick={handleResetButton}
+                          id={(counterInfoDB.indexOf(Project) + 1).toString()}
+                          className="btn btn-secondary me-2 mb-1 btn-sm pt-2 menubuttons"
+                          title="Reset"
+                        >
+                          <Image
                             id={(counterInfoDB.indexOf(Project) + 1).toString()}
-                            className="btn btn-secondary me-2 mb-1 btn-sm pt-2 menubuttons"
-                            title="Reset"
+                            src="/reset.svg"
+                            width={buttonWidth}
+                            height={buttonHeight}
+                            alt="Reset"
+                            priority
+                          ></Image>
+                        </button>
+                        <button
+                          onClick={handleDeleteButton}
+                          className="btn btn-danger me-2 mb-1 btn-sm pt-2 menubuttons"
+                          title="Delete"
+                          id={(counterInfoDB.indexOf(Project) + 1).toString()}
+                        >
+                          <Image
+                            id={(counterInfoDB.indexOf(Project) + 1).toString()}
+                            src="/delete.svg"
+                            width={buttonWidth}
+                            height={buttonHeight}
+                            alt="Delete"
+                            className=""
+                            priority
+                          ></Image>
+                        </button>
+                        {EditModeForAllEntries &&
+                        !EditModeForAllEntries[counterInfoDB.indexOf(Project)]
+                          ?.editMode ? (
+                          <button
+                            id={(counterInfoDB.indexOf(Project) + 1).toString()}
+                            className="btn btn-primary me-2 mb-1 btn-sm pt-2 menubuttons"
+                            onClick={handleEditButton}
+                            title="Edit"
                           >
                             <Image
                               id={(
                                 counterInfoDB.indexOf(Project) + 1
                               ).toString()}
-                              src="/reset.svg"
+                              src="/edit.svg"
                               width={buttonWidth}
                               height={buttonHeight}
-                              alt="Reset"
-                              priority
-                            ></Image>
-                          </button>
-                          <button
-                            onClick={handleDeleteButton}
-                            className="btn btn-danger me-2 mb-1 btn-sm pt-2 menubuttons"
-                            title="Delete"
-                            id={(counterInfoDB.indexOf(Project) + 1).toString()}
-                          >
-                            <Image
-                              id={(
-                                counterInfoDB.indexOf(Project) + 1
-                              ).toString()}
-                              src="/delete.svg"
-                              width={buttonWidth}
-                              height={buttonHeight}
-                              alt="Delete"
+                              alt="Edit"
                               className=""
                               priority
                             ></Image>
                           </button>
-                          {EditModeForAllEntries &&
-                          !EditModeForAllEntries[counterInfoDB.indexOf(Project)]
-                            ?.editMode ? (
-                            <button
+                        ) : (
+                          <button
+                            onClick={handleSaveButton}
+                            id={(counterInfoDB.indexOf(Project) + 1).toString()}
+                            className="btn btn-success me-2 mb-1 btn-sm pt-2 menubuttons"
+                            title="Save"
+                          >
+                            <Image
                               id={(
                                 counterInfoDB.indexOf(Project) + 1
                               ).toString()}
-                              className="btn btn-primary me-2 mb-1 btn-sm pt-2 menubuttons"
-                              onClick={handleEditButton}
-                              title="Edit"
-                            >
-                              <Image
-                                id={(
-                                  counterInfoDB.indexOf(Project) + 1
-                                ).toString()}
-                                src="/edit.svg"
-                                width={buttonWidth}
-                                height={buttonHeight}
-                                alt="Edit"
-                                className=""
-                                priority
-                              ></Image>
-                            </button>
-                          ) : (
-                            <button
-                              onClick={handleSaveButton}
-                              id={(
-                                counterInfoDB.indexOf(Project) + 1
-                              ).toString()}
-                              className="btn btn-success me-2 mb-1 btn-sm pt-2 menubuttons"
-                              title="Save"
-                            >
-                              <Image
-                                id={(
-                                  counterInfoDB.indexOf(Project) + 1
-                                ).toString()}
-                                src="/save.svg"
-                                width={buttonWidth}
-                                height={buttonHeight}
-                                alt="Save"
-                                className=""
-                                priority
-                              ></Image>
-                            </button>
-                          )}
-                        </td>
-                      ) : null}
+                              src="/save.svg"
+                              width={buttonWidth}
+                              height={buttonHeight}
+                              alt="Save"
+                              className=""
+                              priority
+                            ></Image>
+                          </button>
+                        )}
+                      </td>
+                    ) : null}
 
-                      <td
-                        className={
-                          highlightProject[counterInfoDB.indexOf(Project)]
-                            ?.highlightTypeClass
-                        }
-                      >
-                        {" "}
-                        {counterInfoDB.indexOf(Project) + 1}
-                      </td>
-                      <td
-                        className={
-                          highlightProject[counterInfoDB.indexOf(Project)]
-                            ?.highlightTypeClass
-                        }
-                      >
-                        {Project.project_name}
-                      </td>
-                      <td
-                        className={
-                          highlightProject[counterInfoDB.indexOf(Project)]
-                            ?.highlightTypeClass
-                        }
-                      >
-                        {Project.adapter_code}
-                      </td>
-                      <td
-                        className={
-                          highlightProject[counterInfoDB.indexOf(Project)]
-                            ?.highlightTypeClass
-                        }
-                      >
-                        {Project.fixture_type}
-                      </td>
-                      <td
-                        className={
-                          highlightProject[counterInfoDB.indexOf(Project)]
-                            ?.highlightTypeClass
-                        }
-                      >
-                        {EditModeForAllEntries &&
-                        !EditModeForAllEntries[counterInfoDB.indexOf(Project)]
-                          ?.editMode ? (
-                          Project.owner_email
-                        ) : (
-                          <input
-                            id={`${counterInfoDB.indexOf(Project)}_owner_email`}
-                            name="owner_email_edit"
-                            type="email"
-                            className="form-control fw-bolder w-100"
-                            placeholder="Owner email"
-                            aria-label="Owner"
-                          ></input>
-                        )}
-                      </td>
-                      <td
-                        className={
-                          highlightProject[counterInfoDB.indexOf(Project)]
-                            ?.highlightTypeClass
-                        }
-                      >
-                        {Project.contacts}
-                      </td>
-                      <td
-                        className={
-                          highlightProject[counterInfoDB.indexOf(Project)]
-                            ?.highlightTypeClass
-                        }
-                      >
-                        {EditModeForAllEntries &&
-                        !EditModeForAllEntries[counterInfoDB.indexOf(Project)]
-                          ?.editMode ? (
-                          Project.contacts_limit
-                        ) : (
-                          <input
-                            id={`${counterInfoDB.indexOf(
-                              Project
-                            )}_contacts_limit`}
-                            name="contacts_limit_edit"
-                            type="number"
-                            className="form-control fw-bolder m-auto"
-                            placeholder="Limit"
-                            aria-label="Limit"
-                          ></input>
-                        )}
-                      </td>
-                      <td
-                        className={
-                          highlightProject[counterInfoDB.indexOf(Project)]
-                            ?.highlightTypeClass
-                        }
-                      >
-                        {EditModeForAllEntries &&
-                        !EditModeForAllEntries[counterInfoDB.indexOf(Project)]
-                          ?.editMode ? (
-                          Project.warning_at
-                        ) : (
-                          <input
-                            id={`${counterInfoDB.indexOf(Project)}_warning_at`}
-                            name="warning_at_edit"
-                            type="number"
-                            className="form-control fw-bolder m-auto"
-                            placeholder="Warning"
-                            aria-label="Warning"
-                            required
-                          ></input>
-                        )}
-                      </td>
-                      <td
-                        className={
-                          highlightProject[counterInfoDB.indexOf(Project)]
-                            ?.highlightTypeClass
-                        }
-                      >
-                        {Project.resets}
-                      </td>
-                      <td
-                        className={
-                          highlightProject[counterInfoDB.indexOf(Project)]
-                            ?.highlightTypeClass
-                        }
-                      >
-                        {Project.modified_by}
-                      </td>
-                      {
-                        <td
-                          className={
-                            highlightProject[counterInfoDB.indexOf(Project)]
-                              ?.highlightTypeClass
-                          }
-                        >
-                          {new Date(Project.last_update).getFullYear()}-
-                          {new Date(Project.last_update).getMonth() + 1}-
-                          {new Date(Project.last_update).getDate()} &nbsp;
-                          {new Date(Project.last_update).getHours()}:
-                          {String(
-                            new Date(Project.last_update).getMinutes()
-                          ).padStart(2, "0")}
-                          {/* :{new Date(Project.last_update).getSeconds()} */}
-                        </td>
+                    <td
+                      className={
+                        highlightProject[counterInfoDB.indexOf(Project)]
+                          ?.highlightTypeClass
                       }
-                    </tr>
-                  );
+                    >
+                      {" "}
+                      {counterInfoDB.indexOf(Project) + 1}
+                    </td>
+                    <td
+                      className={
+                        highlightProject[counterInfoDB.indexOf(Project)]
+                          ?.highlightTypeClass
+                      }
+                    >
+                      {Project.project_name}
+                    </td>
+                    <td
+                      className={
+                        highlightProject[counterInfoDB.indexOf(Project)]
+                          ?.highlightTypeClass
+                      }
+                    >
+                      {Project.adapter_code}
+                    </td>
+                    <td
+                      className={
+                        highlightProject[counterInfoDB.indexOf(Project)]
+                          ?.highlightTypeClass
+                      }
+                    >
+                      {Project.fixture_type}
+                    </td>
+                    <td
+                      className={
+                        highlightProject[counterInfoDB.indexOf(Project)]
+                          ?.highlightTypeClass
+                      }
+                    >
+                      {EditModeForAllEntries &&
+                      !EditModeForAllEntries[counterInfoDB.indexOf(Project)]
+                        ?.editMode ? (
+                        Project.owner_email
+                      ) : (
+                        <input
+                          id={`${counterInfoDB.indexOf(Project)}_owner_email`}
+                          name="owner_email_edit"
+                          type="email"
+                          className="form-control fw-bolder w-100"
+                          placeholder="Owner email"
+                          aria-label="Owner"
+                        ></input>
+                      )}
+                    </td>
+                    <td
+                      className={
+                        highlightProject[counterInfoDB.indexOf(Project)]
+                          ?.highlightTypeClass
+                      }
+                    >
+                      {Project.contacts}
+                    </td>
+                    <td
+                      className={
+                        highlightProject[counterInfoDB.indexOf(Project)]
+                          ?.highlightTypeClass
+                      }
+                    >
+                      {EditModeForAllEntries &&
+                      !EditModeForAllEntries[counterInfoDB.indexOf(Project)]
+                        ?.editMode ? (
+                        Project.contacts_limit
+                      ) : (
+                        <input
+                          id={`${counterInfoDB.indexOf(
+                            Project
+                          )}_contacts_limit`}
+                          name="contacts_limit_edit"
+                          type="number"
+                          className="form-control fw-bolder m-auto"
+                          placeholder="Limit"
+                          aria-label="Limit"
+                        ></input>
+                      )}
+                    </td>
+                    <td
+                      className={
+                        highlightProject[counterInfoDB.indexOf(Project)]
+                          ?.highlightTypeClass
+                      }
+                    >
+                      {EditModeForAllEntries &&
+                      !EditModeForAllEntries[counterInfoDB.indexOf(Project)]
+                        ?.editMode ? (
+                        Project.warning_at
+                      ) : (
+                        <input
+                          id={`${counterInfoDB.indexOf(Project)}_warning_at`}
+                          name="warning_at_edit"
+                          type="number"
+                          className="form-control fw-bolder m-auto"
+                          placeholder="Warning"
+                          aria-label="Warning"
+                          required
+                        ></input>
+                      )}
+                    </td>
+                    <td
+                      className={
+                        highlightProject[counterInfoDB.indexOf(Project)]
+                          ?.highlightTypeClass
+                      }
+                    >
+                      {Project.resets}
+                    </td>
+                    <td
+                      className={
+                        highlightProject[counterInfoDB.indexOf(Project)]
+                          ?.highlightTypeClass
+                      }
+                    >
+                      {Project.modified_by}
+                    </td>
+                    {
+                      <td
+                        className={
+                          highlightProject[counterInfoDB.indexOf(Project)]
+                            ?.highlightTypeClass
+                        }
+                      >
+                        {new Date(Project.last_update).getFullYear()}-
+                        {new Date(Project.last_update).getMonth() + 1}-
+                        {new Date(Project.last_update).getDate()} &nbsp;
+                        {new Date(Project.last_update).getHours()}:
+                        {String(
+                          new Date(Project.last_update).getMinutes()
+                        ).padStart(2, "0")}
+                        {/* :{new Date(Project.last_update).getSeconds()} */}
+                      </td>
+                    }
+                  </tr>
+                );
               })}
             </tbody>
           </table>
