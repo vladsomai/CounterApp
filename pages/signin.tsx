@@ -3,13 +3,12 @@ import Layout from "../components/layout";
 import Image from "next/image";
 import Modal, { ModalProps } from "../components/modal";
 import { useRouter } from "next/router";
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import Head from "next/head";
 import { useState } from "react";
 
 const Signin = ({ csrfToken }: any) => {
-  const { data: session, status } = useSession();
-  const { error } = useRouter().query;
+  const { data: session } = useSession();
   const modalElement = useRef(null);
   const closeModalBtn = useRef(null);
 

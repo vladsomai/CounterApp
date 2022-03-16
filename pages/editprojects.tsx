@@ -3,11 +3,11 @@ import Layout from "../components/layout";
 import Table from "../components/table";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import Modal, { ModalProps } from "../components/modal";
 
 const EditProjects = () => {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
   const modalElement = useRef(null);
   const closeModalBtn = useRef(null);

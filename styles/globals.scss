@@ -104,8 +104,8 @@ div::-webkit-scrollbar-thumb {
     font-size: 1.3rem;
   }
 }
-.zIndex-2000{
-    z-index: 2000;
+.zIndex-2000 {
+  z-index: 2000;
 }
 
 @include media-breakpoint-down(md) {
@@ -124,9 +124,9 @@ div::-webkit-scrollbar-thumb {
   }
 }
 
-.width-100{
-    max-width: 80vw;
-    width: 90vw;
+.width-100 {
+  max-width: 80vw;
+  width: 90vw;
 }
 
 .screen-100 {

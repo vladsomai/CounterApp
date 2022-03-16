@@ -6,10 +6,9 @@ import AddNewProject from "../components/addNewProject";
 import { useState, useRef } from "react";
 import Modal, { ModalProps } from "../components/modal";
 import Image from "next/image";
-import Link from "next/link";
 
 const CreateProject = () => {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
 
   const modalElement = useRef(null);

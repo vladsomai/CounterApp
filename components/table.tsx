@@ -1,8 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import { Project } from "../pages/api/counterTypes";
 
 const ProjectsTable = (props: any) => {
@@ -11,21 +9,17 @@ const ProjectsTable = (props: any) => {
   const postPerPage = useRef(15);
   const isMounted = useRef(false);
   const inputFilterValue = useRef(null);
-  const router = useRouter();
 
   const [counterInfoDB, setCounterInfoDB] = useState<Project[]>([]);
   const [displayedProjects, setDisplayedProjects] = useState<Project[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [API_Responded, setAPI_Responded] = useState<boolean>(false);
-  const [projectNameFilter, setProjectNameFilter] = useState<string>("");
-  const [ownerEmailFilter, setOwnerEmailFilter] = useState<string>("");
-  const [fixtureTypeFilter, setFixtureTypeFilter] = useState<string>("");
   const [connectionTimedOut, setConnectionTimedOut] = useState<boolean>(false);
 
   const buttonHeight = 20;
   const buttonWidth = 20;
 
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
   const [EditModeForAllEntries, setEditMode] = useState<any>();
 
