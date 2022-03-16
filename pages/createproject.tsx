@@ -93,7 +93,7 @@ const CreateProject = () => {
           </div>
         </div>
         <div className="d-none" ref={parentModalElement}>
-          <div className="position-fixed start-50 top-50 translate-middle w-100 h-100 blurBg d-flex justify-content-center">
+          <div className="position-fixed start-50 top-50 translate-middle w-100 h-100 blurBg d-flex justify-content-center zIndex-2000">
             <div
               className="animate__animated d-none rounded-pill p-5 d-flex flex-column justify-content-center w-50 my-auto paddingModal"
               ref={modalElement}
