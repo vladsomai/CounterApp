@@ -104,6 +104,9 @@ div::-webkit-scrollbar-thumb {
     font-size: 1.3rem;
   }
 }
+.zIndex-2000 {
+  z-index: 2000;
+}
 
 @include media-breakpoint-down(md) {
   .paddingTopBottom {
@@ -119,6 +122,11 @@ div::-webkit-scrollbar-thumb {
     padding-top: 22vh;
     padding-bottom: 10vh;
   }
+}
+
+.width-100 {
+  max-width: 80vw;
+  width: 90vw;
 }
 
 .screen-100 {

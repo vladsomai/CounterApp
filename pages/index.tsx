@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
 const Home = () => {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const router = useRouter();
   const [triggerFetch, setTriggerFetch] = useState(false);
 

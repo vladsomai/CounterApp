@@ -3,15 +3,12 @@ import Layout from "../components/layout";
 import Table from "../components/table";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import Modal, { ModalProps } from "../components/modal";
 
 const EditProjects = () => {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
-
-  const [triggerFetch, setTriggerFetch] = useState(false);
-
   const modalElement = useRef(null);
   const closeModalBtn = useRef(null);
   const parentModalElement = useRef(null);
@@ -64,15 +61,12 @@ const EditProjects = () => {
       // @ts-ignore: Object is possibly 'null'.
       modalElement.current.classList.add("animate__bounceIn");
     }
-    setTriggerFetch(true);
     setModalProps(parameters);
     // @ts-ignore: Object is possibly 'null'.
     closeModalBtn.current.focus();
   };
 
   const closeModal = () => {
-    setTriggerFetch(false);
-
     if (modalElement.current && parentModalElement.current) {
       // @ts-ignore: Object is possibly 'null'.
       modalElement.current.classList.remove("animate__bounceIn");
@@ -97,14 +91,11 @@ const EditProjects = () => {
 
         <div className="">
           <div className="paddingTopBottom">
-            <Table
-              triggerFetchProp={triggerFetch}
-              openModalAction={openModal}
-            />
+            <Table openModalAction={openModal} />
           </div>
 
           <div className="d-none" ref={parentModalElement}>
-            <div className="position-fixed start-50 top-50 translate-middle w-100 h-100 blurBg d-flex justify-content-center">
+            <div className="position-fixed start-50 top-50 translate-middle w-100 h-100 blurBg d-flex justify-content-center zIndex-2000">
               <div
                 className="animate__animated d-none rounded-pill p-5 d-flex flex-column justify-content-center w-50 my-auto paddingModal"
                 ref={modalElement}
@@ -128,30 +119,7 @@ const EditProjects = () => {
         </div>
       </>
     );
-  } else if (status === "loading")
-    return (
-      <>
-        <Head>
-          <title>Loading...</title>
-        </Head>
-
-        <div className="d-flex flex-column align-items-center justify-content-center screen-100 ">
-          <div className="d-flex justify-content-center">
-            <div
-              className="spinner-grow text-primary"
-              style={{ width: "10rem", height: "10rem" }}
-              role="status"
-            >
-              <span className=""></span>
-            </div>
-          </div>
-          <div className="d-flex justify-content-center p-5">
-            <p className="text-white text-center display-5">Loading data...</p>
-          </div>
-        </div>
-      </>
-    );
-  else {
+  } else {
     try {
       router.push("/signin");
     } catch (err) {}
