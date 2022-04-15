@@ -8,6 +8,18 @@ const userVlad = {
   password: "3ng1n33r",
 };
 
+const userCata = {
+  csrfToken: "16d5c19d0c22059793de23406140e67dbdc1f8a5ae579b5185ae83d562cda7e6",
+  email: "catalin.achim@continental.com",
+  password: "3ng1n33r",
+};
+
+const userDani = {
+  csrfToken: "16d5c19d0c22059793de23406140e67dbdc1f8a5ae579b5185ae83d562cda7e6",
+  email: "daniel.novotni@continental.com",
+  password: "3ng1n33r",
+};
+
 export default NextAuth({
   providers: [
     Github({}),
@@ -16,14 +28,24 @@ export default NextAuth({
       name: "Credentials",
       async authorize(credentials, req) {
         console.log(credentials);
-        console.log(userVlad);
-
         if (
           userVlad.email === credentials.email &&
           userVlad.password === credentials.password
         ) {
           console.log("User OK");
           return userVlad;
+        } else if (
+          userCata.email === credentials.email &&
+          userCata.password === credentials.password
+        ) {
+          console.log("User OK");
+          return userCata;
+        } else if (
+          userDani.email === credentials.email &&
+          userDani.password === credentials.password
+        ) {
+          console.log("User OK");
+          return userDani;
         } else {
           console.log("User NOK");
           throw new Error("Invalid account");
