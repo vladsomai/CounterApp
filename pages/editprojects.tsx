@@ -53,6 +53,7 @@ const EditProjects = () => {
         // @ts-ignore: Object is possibly 'null'.
         modalElement.current.classList.add("bg-info");
       }
+      setModalProps(parameters);
       // @ts-ignore: Object is possibly 'null'.
       parentModalElement.current.classList.remove("d-none");
       // @ts-ignore: Object is possibly 'null'.
@@ -61,7 +62,6 @@ const EditProjects = () => {
       // @ts-ignore: Object is possibly 'null'.
       modalElement.current.classList.add("animate__bounceIn");
     }
-    setModalProps(parameters);
     // @ts-ignore: Object is possibly 'null'.
     closeModalBtn.current.focus();
   };

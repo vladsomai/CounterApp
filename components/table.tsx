@@ -492,6 +492,7 @@ const ProjectsTable = (props: any) => {
                 <th className="bg-primary align-middle col-1">Limit</th>
                 <th className="bg-primary align-middle col-1">Warning</th>
                 <th className="bg-primary align-middle ">Resets</th>
+                <th className="bg-primary align-middle ">Temperature</th>
                 <th className="bg-primary align-middle ">Modified by</th>
                 <th className="bg-primary align-middle ">Last update</th>
               </tr>
@@ -691,6 +692,14 @@ const ProjectsTable = (props: any) => {
                       }
                     >
                       {Project.resets}
+                    </td>
+                    <td
+                      className={
+                        highlightProject[counterInfoDB.indexOf(Project)]
+                          ?.highlightTypeClass
+                      }
+                    >
+                      {Project.temperature}
                     </td>
                     <td
                       className={
