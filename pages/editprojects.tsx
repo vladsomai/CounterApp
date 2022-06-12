@@ -22,6 +22,7 @@ const EditProjects = () => {
 
   const openModal = (parameters: ModalProps) => {
     if (modalElement.current && parentModalElement.current) {
+      setModalProps(parameters);
       if (parameters.title === "Error!") {
         // @ts-ignore: Object is possibly 'null'.
         modalElement.current.classList.remove(
@@ -53,7 +54,6 @@ const EditProjects = () => {
         // @ts-ignore: Object is possibly 'null'.
         modalElement.current.classList.add("bg-info");
       }
-      setModalProps(parameters);
       // @ts-ignore: Object is possibly 'null'.
       parentModalElement.current.classList.remove("d-none");
       // @ts-ignore: Object is possibly 'null'.
