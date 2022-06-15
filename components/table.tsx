@@ -190,6 +190,7 @@ const ProjectsTable = (props: any) => {
   const handleResetButton = (e: any) => {
     const indexOfEntryToBeReseted = e.target.id - 1;
     const projectToBeReseted: Project = counterInfoDB[indexOfEntryToBeReseted];
+    console.log(session?.user);
     const loggedUser: string = String(
       session?.user?.email || session?.user?.name
     );

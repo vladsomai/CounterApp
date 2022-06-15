@@ -1,119 +1,125 @@
-import { useSession, getCsrfToken, signIn } from "next-auth/react";
-import Layout from "../components/layout";
-import Image from "next/image";
-import Modal, { ModalProps } from "../components/modal";
-import { useRouter } from "next/router";
-import { useRef } from "react";
-import Head from "next/head";
-import { useState } from "react";
+import { useSession, getCsrfToken, signIn } from 'next-auth/react'
+import Layout from '../components/layout'
+import Image from 'next/image'
+import Modal, { ModalProps } from '../components/modal'
+import { useRouter } from 'next/router'
+import { useRef } from 'react'
+import Head from 'next/head'
+import { useState } from 'react'
 
 const Signin = ({ csrfToken }: any) => {
-  const { data: session } = useSession();
-  const modalElement = useRef(null);
-  const closeModalBtn = useRef(null);
+  const { data: session } = useSession()
+  const modalElement = useRef(null)
+  const closeModalBtn = useRef(null)
 
-  const router = useRouter();
-  const parentModalElement = useRef(null);
+  const router = useRouter()
+  const parentModalElement = useRef(null)
   const [modalProps, setModalProps] = useState<ModalProps>({
-    title: "",
-    description: "",
-    pictureUrl: "/undraw_cancel_u-1-it.svg",
-    className: "",
-  });
+    title: '',
+    description: '',
+    pictureUrl: '/undraw_cancel_u-1-it.svg',
+    className: '',
+  })
 
-  const [signinError, setSigninError] = useState(false);
+  const [signinError, setSigninError] = useState(false)
 
   const closeModal = () => {
     if (modalElement.current && parentModalElement.current) {
       // @ts-ignore: Object is possibly 'null'.
-      modalElement.current.classList.remove("animate__bounceIn");
+      modalElement.current.classList.remove('animate__bounceIn')
 
       // @ts-ignore: Object is possibly 'null'.
-      modalElement.current.classList.add("animate__bounceOut");
+      modalElement.current.classList.add('animate__bounceOut')
       setTimeout(() => {
         if (modalElement.current && parentModalElement.current) {
           // @ts-ignore: Object is possibly 'null'.
-          modalElement.current.classList.add("d-none");
+          modalElement.current.classList.add('d-none')
           // @ts-ignore: Object is possibly 'null'.
-          parentModalElement.current.classList.add("d-none");
+          parentModalElement.current.classList.add('d-none')
         }
-      }, 650);
+      }, 650)
     }
-    router.push("/signin");
-  };
+    router.push('/signin')
+  }
 
   const openModal = (parameters: ModalProps) => {
     if (modalElement.current && parentModalElement.current) {
-      if (parameters.title === "Error!") {
+      if (parameters.title === 'Error!') {
         // @ts-ignore: Object is possibly 'null'.
         modalElement.current.classList.remove(
-          "bg-danger",
-          "bg-success",
-          "bg-warning"
-        );
+          'bg-danger',
+          'bg-success',
+          'bg-warning',
+        )
         // @ts-ignore: Object is possibly 'null'.
-        modalElement.current.classList.add("bg-danger");
-      } else if (parameters.title === "Success!") {
+        modalElement.current.classList.add('bg-danger')
+      } else if (parameters.title === 'Success!') {
         // @ts-ignore: Object is possibly 'null'.
         modalElement.current.classList.remove(
-          "bg-danger",
-          "bg-success",
-          "bg-warning"
-        );
+          'bg-danger',
+          'bg-success',
+          'bg-warning',
+        )
         // @ts-ignore: Object is possibly 'null'.
-        modalElement.current.classList.add("bg-success");
+        modalElement.current.classList.add('bg-success')
       }
 
       // @ts-ignore: Object is possibly 'null'.
-      parentModalElement.current.classList.remove("d-none");
+      parentModalElement.current.classList.remove('d-none')
       // @ts-ignore: Object is possibly 'null'.
-      modalElement.current.classList.remove("animate__bounceOut", "d-none");
+      modalElement.current.classList.remove('animate__bounceOut', 'd-none')
 
       // @ts-ignore: Object is possibly 'null'.
-      modalElement.current.classList.add("animate__bounceIn");
+      modalElement.current.classList.add('animate__bounceIn')
     }
-    setModalProps(parameters);
+    setModalProps(parameters)
     // @ts-ignore: Object is possibly 'null'.
-    closeModalBtn.current.focus();
-  };
+    closeModalBtn.current.focus()
+  }
+
+  const submitSigninAzure = (e: any) => {
+    signIn('azure-ad')
+  }
+
   const submitSignin = (e: any) => {
-    e.preventDefault();
-    signIn("credentials", {
+    e.preventDefault()
+
+    signIn('credentials', {
       redirect: false,
       email: e.target.email.value.toString(),
       password: e.target.password.value.toString(),
     })
       .then((res: any) => {
-        if (res?.error === "Invalid account") {
-          setSigninError(true);
+        if (res?.error === 'Invalid account') {
+          setSigninError(true)
           openModal({
-            title: "Error!",
-            description: "Invalid account!",
-            pictureUrl: "/undraw_cancel_u-1-it.svg",
-            className: "text-center",
-          });
+            title: 'Error!',
+            description: 'Invalid account!',
+            pictureUrl: '/undraw_cancel_u-1-it.svg',
+            className: 'text-center',
+          })
         } else {
-          setSigninError(false);
+          setSigninError(false)
         }
       })
       .catch((err) => {
-        setSigninError(true);
-        console.log(err);
+        setSigninError(true)
+        console.log(err)
         openModal({
-          title: "Error!",
+          title: 'Error!',
           description:
-            "Something went wrong, please contact your administrator!",
-          pictureUrl: "/undraw_cancel_u-1-it.svg",
-          className: "text-center",
-        });
-      });
-  };
+            'Something went wrong, please contact your administrator!',
+          pictureUrl: '/undraw_cancel_u-1-it.svg',
+          className: 'text-center',
+        })
+      })
+  }
 
   if (session) {
     try {
-      router.push("/editprojects");
+      router.push('/editprojects')
     } catch (err) {}
-    return null;
+    return null
   } else
     return (
       <>
@@ -168,6 +174,23 @@ const Signin = ({ csrfToken }: any) => {
                 </form>
               </div>
             </div>
+            <div className='d-flex justify-content-center my-5'>
+              <button
+                type="button"
+                onClick={submitSigninAzure}
+                className="btn btn-light fw-bold fs-2 scaleEffect"
+              >
+                <Image
+                  src="/icons8-microsoft.svg"
+                  width={25}
+                  height={25}
+                  priority
+                  alt="sign in with microsoft image"
+                  className="m-auto img-fluid"
+                ></Image>
+                &nbsp; Sign in with Microsoft
+              </button>
+            </div>
           </div>
           {signinError && (
             <div className="d-none" ref={parentModalElement}>
@@ -195,11 +218,11 @@ const Signin = ({ csrfToken }: any) => {
           )}
         </div>
       </>
-    );
-};
+    )
+}
 
-export default Signin;
+export default Signin
 
 Signin.getLayout = function getLayout(page: any) {
-  return <Layout>{page}</Layout>;
-};
+  return <Layout>{page}</Layout>
+}
