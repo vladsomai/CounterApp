@@ -6,6 +6,8 @@ import { useRouter } from "next/router";
 import { useRef } from "react";
 import Head from "next/head";
 import { useState } from "react";
+import confirmOK from "../public/confirm_OK.svg";
+import confirmNOK from "../public/undraw_cancel_u-1-it.svg";
 
 const Signin = ({ csrfToken }: any) => {
   const { data: session } = useSession();
@@ -17,7 +19,7 @@ const Signin = ({ csrfToken }: any) => {
   const [modalProps, setModalProps] = useState<ModalProps>({
     title: "",
     description: "",
-    pictureUrl: "/undraw_cancel_u-1-it.svg",
+    pictureUrl: confirmOK,
     className: "",
   });
 
@@ -43,6 +45,7 @@ const Signin = ({ csrfToken }: any) => {
   };
 
   const openModal = (parameters: ModalProps) => {
+    setModalProps(parameters);
     if (modalElement.current && parentModalElement.current) {
       if (parameters.title === "Error!") {
         // @ts-ignore: Object is possibly 'null'.
@@ -72,7 +75,6 @@ const Signin = ({ csrfToken }: any) => {
       // @ts-ignore: Object is possibly 'null'.
       modalElement.current.classList.add("animate__bounceIn");
     }
-    setModalProps(parameters);
     // @ts-ignore: Object is possibly 'null'.
     closeModalBtn.current.focus();
   };
@@ -194,6 +196,14 @@ const Signin = ({ csrfToken }: any) => {
             </div>
           )}
         </div>
+        <Image
+          src={confirmNOK}
+          className="d-none"
+          width={0}
+          height={0}
+          alt="filterPic"
+          priority
+        ></Image>
       </>
     );
 };

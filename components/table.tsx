@@ -2,6 +2,8 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { Project } from "../pages/api/counterTypes";
+import confirmOK from "../public/confirm_OK.svg";
+import confirmNOK from "../public/undraw_cancel_u-1-it.svg";
 
 const ProjectsTable = (props: any) => {
   const pagesCount = useRef<number[]>(new Array());
@@ -96,7 +98,7 @@ const ProjectsTable = (props: any) => {
       props.openModalAction({
         title: "Error!",
         description: `In case you want to update Limit and Warning, you must fill in both of the fields!`,
-        pictureUrl: "/undraw_cancel_u-1-it.svg",
+        pictureUrl: confirmNOK,
         className: "text-center",
       });
       return;
@@ -162,7 +164,7 @@ const ProjectsTable = (props: any) => {
             props.openModalAction({
               title: "Error!",
               description: `The Limit must be greater than the Warning!`,
-              pictureUrl: "/undraw_cancel_u-1-it.svg",
+              pictureUrl: confirmNOK,
               className: "text-center",
             });
             return;
@@ -179,7 +181,7 @@ const ProjectsTable = (props: any) => {
         ${updateOwnerOK ? "Owner email" : ""}
         ${updateContactsLimitAndWarningOK ? " Contacts limit and Warning " : ""}
         !`,
-          pictureUrl: "/confirm_OK.svg",
+          pictureUrl: confirmOK,
           className: "text-center",
         });
       }
@@ -215,14 +217,14 @@ const ProjectsTable = (props: any) => {
             props.openModalAction({
               title: "Success!",
               description: `Fixture with code ${projectToBeReseted.adapter_code} from ${projectToBeReseted.fixture_type} has been reset to 0 contacts!`,
-              pictureUrl: "/confirm_OK.svg",
+              pictureUrl: confirmOK,
               className: "text-center",
             });
           } else {
             props.openModalAction({
               title: "Error!",
               description: `An error occured when trying to reset the counter, check if the project has not been deleted in the meantime!`,
-              pictureUrl: "/undraw_cancel_u-1-it.svg",
+              pictureUrl: confirmNOK,
               className: "text-center",
             });
           }
@@ -257,14 +259,14 @@ const ProjectsTable = (props: any) => {
             props.openModalAction({
               title: "Success!",
               description: `Fixture with code ${projectToBeDeleted.adapter_code} from ${projectToBeDeleted.fixture_type} has been deleted!`,
-              pictureUrl: "/confirm_OK.svg",
+              pictureUrl: confirmOK,
               className: "text-center",
             });
           } else {
             props.openModalAction({
               title: "Error!",
               description: `An error occured when trying to delete the project, check if it has not been deleted in the meantime!`,
-              pictureUrl: "/undraw_cancel_u-1-it.svg",
+              pictureUrl: confirmNOK,
               className: "text-center",
             });
           }
@@ -431,6 +433,14 @@ const ProjectsTable = (props: any) => {
   if (API_Responded) {
     return (
       <>
+        <Image
+          src={confirmNOK}
+          className="d-none"
+          width={buttonWidth}
+          height={buttonHeight}
+          alt="filterPic"
+          priority
+        ></Image>
         <form
           onSubmit={checkInputValue}
           className="d-flex flex-column flex-md-row mx-4 my-4 justify-content-start bg-grey align-items-center p-3 rounded shadowEffect border border-2  "

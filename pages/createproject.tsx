@@ -6,6 +6,9 @@ import AddNewProject from "../components/addNewProject";
 import { useState, useRef } from "react";
 import Modal, { ModalProps } from "../components/modal";
 import Image from "next/image";
+import confirmOK from "../public/confirm_OK.svg";
+import confirmNOK from "../public/undraw_cancel_u-1-it.svg";
+
 
 const CreateProject = () => {
   const { status } = useSession();
@@ -18,11 +21,12 @@ const CreateProject = () => {
   const [modalProps, setModalProps] = useState<ModalProps>({
     title: "",
     description: "",
-    pictureUrl: "/undraw_cancel_u-1-it.svg",
+    pictureUrl: confirmOK,
     className: "",
   });
 
   const openModal = (parameters: ModalProps) => {
+    setModalProps(parameters);
     if (modalElement.current && parentModalElement.current) {
       if (parameters.title === "Error!") {
         // @ts-ignore: Object is possibly 'null'.
@@ -52,7 +56,6 @@ const CreateProject = () => {
       // @ts-ignore: Object is possibly 'null'.
       modalElement.current.classList.add("animate__bounceIn");
     }
-    setModalProps(parameters);
     // @ts-ignore: Object is possibly 'null'.
     closeModalBtn.current.focus();
   };
@@ -116,6 +119,14 @@ const CreateProject = () => {
             </div>
           </div>
         </div>
+        <Image
+          src={confirmNOK}
+          className="d-none"
+          width={0}
+          height={0}
+          alt="filterPic"
+          priority
+        ></Image>
       </>
     );
   } else if (status === "loading")

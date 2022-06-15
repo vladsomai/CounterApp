@@ -5,6 +5,9 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import Modal, { ModalProps } from "../components/modal";
+import Image from "next/image";
+import confirmOK from "../public/confirm_OK.svg";
+import confirmNOK from "../public/undraw_cancel_u-1-it.svg";
 
 const EditProjects = () => {
   const { status } = useSession();
@@ -16,11 +19,13 @@ const EditProjects = () => {
   const [modalProps, setModalProps] = useState<ModalProps>({
     title: "",
     description: "",
-    pictureUrl: "/undraw_cancel_u-1-it.svg",
+    pictureUrl: confirmOK,
     className: "",
   });
 
   const openModal = (parameters: ModalProps) => {
+    setModalProps(parameters);
+
     if (modalElement.current && parentModalElement.current) {
       if (parameters.title === "Error!") {
         // @ts-ignore: Object is possibly 'null'.
@@ -53,7 +58,6 @@ const EditProjects = () => {
         // @ts-ignore: Object is possibly 'null'.
         modalElement.current.classList.add("bg-info");
       }
-      setModalProps(parameters);
       // @ts-ignore: Object is possibly 'null'.
       parentModalElement.current.classList.remove("d-none");
       // @ts-ignore: Object is possibly 'null'.
@@ -117,6 +121,14 @@ const EditProjects = () => {
             </div>
           </div>
         </div>
+        <Image
+          src={confirmNOK}
+          className="d-none"
+          width={0}
+          height={0}
+          alt="filterPic"
+          priority
+        ></Image>
       </>
     );
   } else {
