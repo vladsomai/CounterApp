@@ -731,39 +731,42 @@ const ProjectsTable = (props: any) => {
               })}
             </tbody>
           </table>
-          <nav aria-label="Page navigation">
-            <ul className="pagination justify-content-center">
-              <li className="page-item">
-                <button className="page-link" onClick={previousPage}>
-                  Previous
-                </button>
-              </li>
-              {pagesCount.current.map((page: number) => (
-                <li
-                  key={page}
-                  id={page.toString()}
-                  className={
-                    currentPage === page ? 'page-item active' : 'page-item'
-                  }
-                >
-                  <button
-                    className="page-link"
-                    onClick={() => {
-                      paginate(page)
-                    }}
-                  >
-                    {page}
-                  </button>
-                </li>
-              ))}
-              <li className="page-item">
-                <button className="page-link" onClick={nextPage}>
-                  Next
-                </button>
-              </li>
-            </ul>
-          </nav>
         </div>
+        <nav
+          aria-label="Page navigation"
+          className="w-100 d-flex justify-content-center mt-5 mt-lg-2 px-2"
+        >
+          <ul className="pagination d-flex justify-content-center">
+            <li className="page-item">
+              <button className="page-link" onClick={previousPage}>
+                Previous
+              </button>
+            </li>
+            {pagesCount.current.map((page: number) => (
+              <li
+                key={page}
+                id={page.toString()}
+                className={
+                  currentPage === page ? 'page-item active' : 'page-item'
+                }
+              >
+                <button
+                  className="page-link"
+                  onClick={() => {
+                    paginate(page)
+                  }}
+                >
+                  {page}
+                </button>
+              </li>
+            ))}
+            <li className="page-item">
+              <button className="page-link" onClick={nextPage}>
+                Next
+              </button>
+            </li>
+          </ul>
+        </nav>
       </>
     )
   } else if (connectionTimedOut) {
