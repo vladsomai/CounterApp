@@ -130,6 +130,28 @@ const EditProjects = () => {
         />
       </>
     )
+  } else if (status === 'loading') {
+    return (
+      <>
+        <Head>
+          <title>Loading...</title>
+        </Head>
+        <div className="d-flex flex-column align-items-center justify-content-center screen-100 paddingTopBottom">
+          <div className="d-flex justify-content-center">
+            <div
+              className="spinner-grow text-primary"
+              style={{ width: '10rem', height: '10rem' }}
+              role="status"
+            >
+              <span className=""></span>
+            </div>
+          </div>
+          <div className="d-flex justify-content-center p-5">
+            <p className="text-white display-5">Loading data...</p>
+          </div>
+        </div>
+      </>
+    )
   } else {
     try {
       router.push('/signin')
