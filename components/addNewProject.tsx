@@ -24,18 +24,18 @@ const AddNewProject = (props: any) => {
     )
       .then((result: any) => result.json())
       .then((resultJSON: any) => {
+        console.log(resultJSON.message);
         if (resultJSON.status === 500) {
           if (
             resultJSON.message.code === "ER_ACCESS_DENIED_ERROR" ||
             resultJSON.message.code === "ECONNREFUSED"
           )
             throw "Cannot connect to DB";
-          if (resultJSON.message?.includes("constraint")) {
+
+          if (resultJSON.message.sqlMessage?.includes("constraint")) {
             resultJSON.message =
               "Please insert the limit higher than the warning!";
           }
-          console.log(resultJSON.message);
-
           props.openModalAction({
             title: "Error!",
             description: resultJSON.message,
@@ -43,6 +43,7 @@ const AddNewProject = (props: any) => {
             className: "text-center",
           });
         } else if (resultJSON.status === 200) {
+          console.log(resultJSON);
           if (resultJSON.message.affectedRows === 1) {
             props.openModalAction({
               title: "Success!",
