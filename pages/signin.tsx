@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import { useRef } from 'react'
 import Head from 'next/head'
 import { useState } from 'react'
+import confirmNOK from '../public/undraw_cancel_u-1-it.svg'
 
 const Signin = ({ csrfToken }: any) => {
   const { data: session } = useSession()
@@ -17,7 +18,7 @@ const Signin = ({ csrfToken }: any) => {
   const [modalProps, setModalProps] = useState<ModalProps>({
     title: '',
     description: '',
-    pictureUrl: '/undraw_cancel_u-1-it.svg',
+    pictureUrl: confirmNOK,
     className: '',
   })
 
@@ -95,7 +96,7 @@ const Signin = ({ csrfToken }: any) => {
           openModal({
             title: 'Error!',
             description: 'Invalid account!',
-            pictureUrl: '/undraw_cancel_u-1-it.svg',
+            pictureUrl: confirmNOK,
             className: 'text-center',
           })
         } else {
@@ -109,7 +110,7 @@ const Signin = ({ csrfToken }: any) => {
           title: 'Error!',
           description:
             'Something went wrong, please contact your administrator!',
-          pictureUrl: '/undraw_cancel_u-1-it.svg',
+          pictureUrl: confirmNOK,
           className: 'text-center',
         })
       })
@@ -126,6 +127,14 @@ const Signin = ({ csrfToken }: any) => {
         <Head>
           <title>Signin</title>
         </Head>
+        <Image
+          src={confirmNOK}
+          className=""
+          width={10}
+          height={10}
+          priority
+          alt="confirmation NOK"
+        />
         <div className="screen-100 paddingTopBottom d-flex flex-column justify-content-center container">
           <div className="d-flex flex-column justify-content-evenly">
             <div className="d-flex flex-column flex-md-row justify-content-between align-content-center position-relative">
@@ -174,7 +183,7 @@ const Signin = ({ csrfToken }: any) => {
                 </form>
               </div>
             </div>
-            <div className='d-flex justify-content-center my-5'>
+            <div className="d-flex justify-content-center my-5">
               <button
                 type="button"
                 onClick={submitSigninAzure}

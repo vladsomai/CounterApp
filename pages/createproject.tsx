@@ -1,78 +1,80 @@
-import Layout from "../components/layout";
-import Head from "next/head";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
-import AddNewProject from "../components/addNewProject";
-import { useState, useRef } from "react";
-import Modal, { ModalProps } from "../components/modal";
-import Image from "next/image";
+import Layout from '../components/layout'
+import Head from 'next/head'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
+import AddNewProject from '../components/addNewProject'
+import { useState, useRef } from 'react'
+import Modal, { ModalProps } from '../components/modal'
+import Image from 'next/image'
+import confirmNOK from '../public/undraw_cancel_u-1-it.svg'
+import confirmOK from '../public/confirm_OK.svg'
 
 const CreateProject = () => {
-  const { status } = useSession();
-  const router = useRouter();
+  const { status } = useSession()
+  const router = useRouter()
 
-  const modalElement = useRef(null);
-  const closeModalBtn = useRef(null);
-  const parentModalElement = useRef(null);
+  const modalElement = useRef(null)
+  const closeModalBtn = useRef(null)
+  const parentModalElement = useRef(null)
 
   const [modalProps, setModalProps] = useState<ModalProps>({
-    title: "",
-    description: "",
-    pictureUrl: "/undraw_cancel_u-1-it.svg",
-    className: "",
-  });
+    title: '',
+    description: '',
+    pictureUrl: confirmOK,
+    className: '',
+  })
 
   const openModal = (parameters: ModalProps) => {
     if (modalElement.current && parentModalElement.current) {
-      if (parameters.title === "Error!") {
+      if (parameters.title === 'Error!') {
         // @ts-ignore: Object is possibly 'null'.
         modalElement.current.classList.remove(
-          "bg-danger",
-          "bg-success",
-          "bg-warning"
-        );
+          'bg-danger',
+          'bg-success',
+          'bg-warning',
+        )
         // @ts-ignore: Object is possibly 'null'.
-        modalElement.current.classList.add("bg-danger");
-      } else if (parameters.title === "Success!") {
+        modalElement.current.classList.add('bg-danger')
+      } else if (parameters.title === 'Success!') {
         // @ts-ignore: Object is possibly 'null'.
         modalElement.current.classList.remove(
-          "bg-danger",
-          "bg-success",
-          "bg-warning"
-        );
+          'bg-danger',
+          'bg-success',
+          'bg-warning',
+        )
         // @ts-ignore: Object is possibly 'null'.
-        modalElement.current.classList.add("bg-success");
+        modalElement.current.classList.add('bg-success')
       }
 
       // @ts-ignore: Object is possibly 'null'.
-      parentModalElement.current.classList.remove("d-none");
+      parentModalElement.current.classList.remove('d-none')
       // @ts-ignore: Object is possibly 'null'.
-      modalElement.current.classList.remove("animate__bounceOut", "d-none");
+      modalElement.current.classList.remove('animate__bounceOut', 'd-none')
 
       // @ts-ignore: Object is possibly 'null'.
-      modalElement.current.classList.add("animate__bounceIn");
+      modalElement.current.classList.add('animate__bounceIn')
     }
-    setModalProps(parameters);
+    setModalProps(parameters)
     // @ts-ignore: Object is possibly 'null'.
-    closeModalBtn.current.focus();
-  };
+    closeModalBtn.current.focus()
+  }
 
   const closeModal = () => {
     if (modalElement.current && parentModalElement.current) {
       // @ts-ignore: Object is possibly 'null'.
-      modalElement.current.classList.remove("animate__bounceIn");
+      modalElement.current.classList.remove('animate__bounceIn')
 
       // @ts-ignore: Object is possibly 'null'.
-      modalElement.current.classList.add("animate__bounceOut");
+      modalElement.current.classList.add('animate__bounceOut')
       setTimeout(() => {
         // @ts-ignore: Object is possibly 'null'.
-        modalElement.current.classList.add("d-none");
+        modalElement.current.classList.add('d-none')
         // @ts-ignore: Object is possibly 'null'.
-        parentModalElement.current.classList.add("d-none");
-      }, 650);
+        parentModalElement.current.classList.add('d-none')
+      }, 650)
     }
-  };
-  if (status === "authenticated") {
+  }
+  if (status === 'authenticated') {
     return (
       <>
         <Head>
@@ -115,10 +117,18 @@ const CreateProject = () => {
               </div>
             </div>
           </div>
+          <Image
+            src={confirmNOK}
+            className=""
+            width={10}
+            height={10}
+            priority
+            alt="confirmation NOK"
+          />
         </div>
       </>
-    );
-  } else if (status === "loading")
+    )
+  } else if (status === 'loading')
     return (
       <>
         <Head>
@@ -128,7 +138,7 @@ const CreateProject = () => {
           <div className="d-flex justify-content-center">
             <div
               className="spinner-grow text-primary"
-              style={{ width: "10rem", height: "10rem" }}
+              style={{ width: '10rem', height: '10rem' }}
               role="status"
             >
               <span className=""></span>
@@ -139,17 +149,17 @@ const CreateProject = () => {
           </div>
         </div>
       </>
-    );
+    )
   else {
     try {
-      router.push("/signin");
+      router.push('/signin')
     } catch (err) {}
-    return null;
+    return null
   }
-};
+}
 
-export default CreateProject;
+export default CreateProject
 
 CreateProject.getLayout = function getLayout(page: any) {
-  return <Layout>{page}</Layout>;
-};
+  return <Layout>{page}</Layout>
+}
