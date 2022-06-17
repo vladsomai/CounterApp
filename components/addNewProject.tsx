@@ -33,12 +33,12 @@ const AddNewProject = (props: any) => {
             throw "Cannot connect to DB";
 
           if (resultJSON.message.sqlMessage?.includes("constraint")) {
-            resultJSON.message =
+            resultJSON.message.sqlMessage =
               "Please insert the limit higher than the warning!";
           }
           props.openModalAction({
             title: "Error!",
-            description: resultJSON.message,
+            description: resultJSON.message.sqlMessage,
             pictureUrl: "/undraw_cancel_u-1-it.svg",
             className: "text-center",
           });
