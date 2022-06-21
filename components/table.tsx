@@ -379,6 +379,7 @@ const ProjectsTable = (props: any) => {
 
     switch (searchBy) {
       case 'SearchBy':
+        alert("Please select one option from the dropdown menu!")
         return
       case 'ProjectName':
         projectNameFilter = value
