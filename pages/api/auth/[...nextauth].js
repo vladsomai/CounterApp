@@ -3,12 +3,19 @@ import Github from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import AzureADProvider from "next-auth/providers/azure-ad";
 
-const userVlad = {
-    csrfToken: "16d5c19d0c22059793de23406140e67dbdc1f8a5ae579b5185ae83d562cda7e6",
-    email: "vlad.somai@continental.com",
-    password: "3ng1n33r"
-};
-
+const accounts = [
+    {
+        csrfToken: "16d5c19d0c22059793de23406140e67dbdc1f8a5ae579b5185ae83d562cda7e6",
+        email: "vlad.somai@continental.com",
+        password: "3ng1n33r",
+        group: 'admin'
+    }, {
+        csrfToken: "16d5c19d0c22059793de23406140e67dbdc1f8a5ae579b5185ae83d562cda7e6",
+        email: "cata.achim@continental.com",
+        password: "3ng1n33r",
+        group: 'power_user'
+    }
+]
 export default NextAuth({
     providers: [
         AzureADProvider(
@@ -19,10 +26,18 @@ export default NextAuth({
             { // The name to display on the sign in form (e.g. 'Sign in with...')
                 name: "Credentials",
                 async authorize(credentials, req) {
-                    console.log(credentials);
-                    if (userVlad.email === credentials.email && userVlad.password === credentials.password) {
+                    let userFound = null;
+                    for(const user of accounts)
+                    {
+                        if(user.email==credentials.email && user.password==credentials.password)
+                        {
+                            userFound=user;
+                        }
+                    }
+
+                    if (userFound) {
                         console.log("User OK");
-                        return userVlad;
+                        return userFound;
                     } else {
                         console.log("User NOK");
                         throw new Error("Invalid account");
@@ -55,7 +70,14 @@ export default NextAuth({
         },
         async session(
             {session, token, user}
-        ) {
+        ) { 
+            for(const user of accounts)
+            {
+                if(user.email==session.user.email)
+                {
+                    session.user={email:user.email, group: user.group}
+                }
+            }
             return session;
         },
         async jwt(

@@ -506,12 +506,15 @@ const ProjectsTable = (props: any) => {
                   <tr key={counterInfoDB.indexOf(Project)}>
                     {!(props.mode === 'view') ? (
                       <td>
-                        <button
+                        {/* @ts-ignore */}
+                        {session?.user?.group =='admin'? 
+                        (
+                          <button
                           onClick={handleResetButton}
                           id={(counterInfoDB.indexOf(Project) + 1).toString()}
                           className="btn btn-secondary me-2 mb-1 btn-sm pt-2 menubuttons"
                           title="Reset"
-                        >
+                          >
                           <Image
                             id={(counterInfoDB.indexOf(Project) + 1).toString()}
                             src="/reset.svg"
@@ -521,11 +524,12 @@ const ProjectsTable = (props: any) => {
                             priority
                           ></Image>
                         </button>
+                        ):null}
                         <button
-                          onClick={handleDeleteButton}
-                          className="btn btn-danger me-2 mb-1 btn-sm pt-2 menubuttons"
-                          title="Delete"
-                          id={(counterInfoDB.indexOf(Project) + 1).toString()}
+                        onClick={handleDeleteButton}
+                        className="btn btn-danger me-2 mb-1 btn-sm pt-2 menubuttons"
+                        title="Delete"
+                        id={(counterInfoDB.indexOf(Project) + 1).toString()}
                         >
                           <Image
                             id={(counterInfoDB.indexOf(Project) + 1).toString()}
@@ -535,7 +539,7 @@ const ProjectsTable = (props: any) => {
                             alt="Delete"
                             className=""
                             priority
-                          ></Image>
+                            ></Image>
                         </button>
                         {EditModeForAllEntries &&
                         !EditModeForAllEntries[counterInfoDB.indexOf(Project)]
